@@ -1,6 +1,6 @@
 ---
 layout: default     # use your main layout
-title: Home         # page title
+title: My understanding of supervised learning for fraud detection         # page title
 ---
 
 # My understanding of supervised learning for fraud detection 
