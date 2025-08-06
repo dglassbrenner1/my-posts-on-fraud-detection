@@ -19,7 +19,7 @@ When possible, I’d also like to have a visual understanding (yeah, right).
 
 I’ll be working with the synthetic dataset from the Fraud Detection Handbook.[^1] It’s designed to mirror real-world transaction streams and already includes several engineered features. Crucially, it simulates two common fraud scenarios—compromised point-of-sale devices and compro-mised cards—so I can see how models react to different attack patterns. I'll refer to this handbook in my series of posts as the "Handbook".
 
-Here is a first post, on models commonly used for fraud detection and who uses them: For my latest insights, see my new post: [Commonly used supervised learning models](commonlyusedmodels.md).
+Here is a first post, on models commonly used for fraud detection and who uses them: [Commonly used supervised learning models](commonlyusedmodels.md).
 
 Caution: These posts reflect my own understanding of the techniques I write about. No one has reviewed or verified the accuracy of my statements besides me. As you can tell from the “lock in my understanding” phrase, I am a newbie to fraud detection. Despite a lack of credentials, I will occasionally put forth my own reactions to choices made in the Handbook, along with my reasoning, for what they are worth. That all said, I cite sources where relevant and welcome constructive comments.
 
