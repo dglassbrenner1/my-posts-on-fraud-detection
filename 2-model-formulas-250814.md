@@ -16,6 +16,8 @@ For instance, if we were talking (in a non-fraud scenario) about ordinary least 
 $\textbf{Formula for predictions}$: $y=w_0 + w_1 x$ where $w_0, w_1\in \mathbb{R}$ are the model parameters. 
 
 
+
+
 $\textbf{Optimization}$: Fixing $\lambda>0$, the model parameters are determined by minimizing $\sum_{i=1}^n (y_i - w_0 - w_1 x_i)^2 + \lambda (w_0^2 + w_1^2)$ where $\{(x_1,y_1),..., (x_n, y_n)\}\subseteq \mathbb{R}^2$ is the data to which we are fitting the model. 
 </div>
 
@@ -34,12 +36,18 @@ where each $1\leq i\leq n$ represents a transaction, $\mathcal{X}\subseteq \math
 I assume the reader is familiar with the concepts of training, validation, cross-validation, test data, and tuning hyperparameters. I'll be pretty loose about referring to the entire dataset versus the training data, assuming the reader can infer the choice from context (e.g. $\mathcal{D}$ should refer to the training data when training a model, versus the entire dataset when fitting a final model using tuned hyperparameters). 
 
 {% raw %}
+
 As usual, $\mathbf{X}$ will denote the 
 $m \times n$ matrix whose columns are 
 $\mathbf{X}_1, \ldots, \mathbf{X}_n$. The $(i,j)$th entry 
-$X_{ij}$ of $\mathbf{X}$ is the value of the $j$th feature in the $i$th sample. We will sometimes use 
-$y$ to denote the random variable from which the class data was generated, e.g. 
+$X_{ij}$ 
+of 
+$\mathbf{X}$ 
+is the value of the $j$th feature in the $i$th sample. We will sometimes use 
+$y$ 
+to denote the random variable from which the class data was generated, e.g. 
 $P(y=1 \mid \mathbf{x}\in\mathcal{X})$. 
+
 {% endraw %}
 
 ### Models
