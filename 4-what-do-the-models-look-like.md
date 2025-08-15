@@ -608,8 +608,10 @@ We expect this to look like a smoothed version of the raw fraud surface, kind of
 
 ## 4.7 Neural networks
 
-$\textbf{Model form}$: Given $L\geq 1$, $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$ where
-$a_0:=\mathbf{x}$ and for each $1\leq k\leq L-1$, $a_k:=ReLU(W_k a_{k-1} + b_k)$. So the model parameters are the $m\times m$ matrices $W_k$ and the vectors $b_k\in\mathbb{R}^m$.
+$\textbf{Model form}$: Given $L\geq 1$,
+$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$ 
+where $a_0:=\mathbf{x}$ and for each 
+$1\leq k\leq L-1$, $a_k:=ReLU(W_k a_{k-1} + b_k)$. So the model parameters are the $m\times m$ matrices $W_k$ and the vectors $b_k\in\mathbb{R}^m$.
 
 There's a reason they call neural networks a black-box model.  I can't imagine a general pattern to what neural network models look like.  I am surpised by how smooth the result is.
 
