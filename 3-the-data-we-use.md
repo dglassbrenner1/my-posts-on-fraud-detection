@@ -1,4 +1,7 @@
-# 3. The dataset we’ll use (primarily)
+---
+layout: default     # use your main layout
+title: 3. The dataset we’ll use (primarily)         # page title
+---
 
 I’ll be working with the synthetic dataset from the Fraud Detection Handbook.[^1] It’s designed to mirror real-world transaction streams and already includes several engineered features. Crucially, it simulates two common fraud scenarios—compromised point-of-sale devices and compromised cards—so I can see how models react to different attack patterns.
 

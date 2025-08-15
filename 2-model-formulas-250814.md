@@ -1,5 +1,10 @@
 
-## 2. My goal for this section
+---
+layout: default     # use your main layout
+title: 2. Model formulas         # page title
+---
+
+### My goal for this section
 
 My goal for this section seems simple enough. For each of the models we've identified as useful for fraud detection, I want to do two seemingly simple things:  1) give the formula for the model's predicted fraud rates as a function of the feature vector and any necessary parameters, and 2) give the function that is optimized in fitting the model parameters for a fixed set of hyperparameters.  
 
