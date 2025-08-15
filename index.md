@@ -29,7 +29,7 @@ Caution: These posts reflect my own understanding of the techniques I write abou
 <table width="100%">
   <tr>
     <td align="right">
-      <a href="/1-commonly-used-models.md/">Next: 1. Commonly used models →</a>
+      <a href="/1-commonly-used-models/">Next: 1. Commonly used models →</a>
     </td>
   </tr>
 </table>
