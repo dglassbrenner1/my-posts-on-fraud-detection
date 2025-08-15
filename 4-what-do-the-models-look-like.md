@@ -15,10 +15,10 @@ The Handbook states that in such a scenario, the training data often consists of
 
 To be consistent with the Handbook, we will use the same training and test data that they did.  Namely, the train_df consists of all tx for the week beginning 7/25/18.  The test_df consists of a subset of transactions for the week beginning 8/8/18, where they drop all transactions from cards that were previously identified as having a fraudulent transaction during a specific period of time. This period includes the entire training window and a portion of the test window.  
 
-I have a couple of minor quibbles with, or at least questions about, the Handbook’s choices here:
+At this point, I have a couple of questions about the Handbook’s choices:
 
-•	I don’t understand inserting a time buffer between the train and test data.
-•	I don’t understand the decision to exclude compromised cards from the test data.
+- I don’t understand inserting a time buffer between the train and test data.
+- I don’t understand the decision to exclude compromised cards from the test data.
 
 ### On the buffer between train and test
 
@@ -581,7 +581,9 @@ I used the a linear kernel because this had the highest cross-validation AUC on 
 
 <details>
 <summary>Click to expand/hide Python code</summary>
+
 <pre> ```python
+
 X = train_df[input_features]
 y = train_df['TX_FRAUD']
 
@@ -609,7 +611,9 @@ for kernel in kernels:
 # Find best kernel by highest mean CV AUC
 best_kernel = max(kernel_scores, key=kernel_scores.get)
 print(f"\nBest kernel by CV AUC: {best_kernel} with score {kernel_scores[best_kernel]:.4f}")
+
 ``` </pre>
+
 </details>
 
 ```text
@@ -621,6 +625,7 @@ Kernel: sigmoid, Mean CV AUC: 0.3789
 
 Best kernel by CV AUC: linear with score 0.8854
 ```
+
 With a linear kernel, $\sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b$ is just a linear combination of the entries of $\mathbf{x}$.  So, the decision boundary is a hyperplane, and like logistic regression, the probability surface looks like a sigmoid surface.
 
 ![SVM decision boundary against top two features](./images/SVM-decision-boundary-against-top-two-features.png)
@@ -637,12 +642,12 @@ We expect this to look like a smoothed version of the raw fraud surface, kind of
 
 ## 4.7 Neural networks
 
-$\textbf{Model form}$: Given $L\geq 1$,
+$\textbf{Model form (for MLP)}$: Given $L\geq 1$,
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$ 
 where $a_0:=\mathbf{x}$ and for each 
 $1\leq k\leq L-1$, $a_k:=ReLU(W_k a_{k-1} + b_k)$. So the model parameters are the $m\times m$ matrices $W_k$ and the vectors $b_k\in\mathbb{R}^m$.
 
-There's a reason they call neural networks a black-box model.  I can't imagine a general pattern to what neural network models look like.  I am surpised by how smooth the result is.
+It's hard for me to imagine a general pattern for what neural network models look like.  In a way, I am surpised by how smooth (in the sense of not very bumpy) the result is. Of course, this could be an artifact of holding all non-displayed features constant. 
 
 ![Neural network MLP plot against top two features](./images/neural-network-MLP-against-top-two-features.png)
 
