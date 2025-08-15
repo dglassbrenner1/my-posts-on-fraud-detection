@@ -103,10 +103,11 @@ For given values of the hyperparameters $\mathbf{\lambda}$, I think this is what
 At this point, you might wonder why we don't simultaneously optimize the model parameters and hyperparameter(s). Simulataneous optimization would essentially undermine the role of regularization. E.g. for L2-regularized logistic regression, fitting both the model parameters $\mathbf{w}$ and $\lambda$ to any given dataset $-$ whether the full data or the training data $-$ could very well give an overfit $\mathbf{w}$ with $\lambda\approx 0$. No regularization there...  That's why the model parameters and hyperparameters are tuned separately, often in a tri-level optimization framework using different subsets of the full dataset, like this:
 
 1. Optimize $\mathbf{w}$ on the training data, fixing the $\mathbf{\lambda}$: Set the values of $\mathbf{\lambda}$ to some default or user-informed initial values  
-$\mathbf{\lambda}^*$
-, and minimize $\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$ on the training data. Say the min value occurs at $\mathbf{w}^*$.
+$\mathbf{\lambda}^*$, and minimize $\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$ on the training data. Say the min value occurs at $\mathbf{w}^*$.
 
-2. Optimize $\mathbf{\lambda}$ on the validation data (or cross-validation), fixing the $\mathbf{w}$: Minimize $\text{RegLogLoss}(f_{\mathbf{w}^*}, \mathbf{\lambda})$ on this data. Say the min value occurs at $\mathbf{\lambda}^*$.
+2. Optimize $\mathbf{\lambda}$ on the validation data (or cross-validation), fixing the $\mathbf{w}$: Minimize 
+$\text{RegLogLoss}(f_{\mathbf{w}^*}, \mathbf{\lambda})$ 
+on this data. Say the min value occurs at $\mathbf{\lambda}^*$.
 
 3. Re-optimize $\mathbf{w}$ on the training (or training + validation) data, fixing the $\mathbf{\lambda}$: Get the final model parameters by minimizing $\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$ on this data.
 
@@ -139,9 +140,13 @@ $J\subseteq \{1,...,m\}$ and $a_j, b_j \in [ -\infty, +\infty ] \ \forall j\in J
 
 Decision trees give constant predictions on the leaves (so these models are locally constant). It is a simple exercise to see that the constant prediction that minimizes the log-loss is the the class-weighted average incidence of fraud in the data.  Similarly, the prediction on each leaf is the class-weighted fraud incidence.  These observations gives us the model form.
 
-$\textbf{Model form}$: $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{x}\in L_t)$$ where $\mathbb{I}(.)$ is the boolean indicator function (taking the value 1 if its argument is true and 0 otherwise), the leaves $L_1,... L_T$ are rectanguloids partitioning the feature space, and the "leaf weights" $r_1,\ldots, r_T$ are the class-weighted fraud incidences on the leaves: 
-$$r_t:= \frac{\sum_{i\in L_t} s_i y_i}{\sum_{i\in L_t} s_i}, \forall 1\leq t\leq T$$  Writing each leaf $L_t$ as 
-$$L_t = \prod_{j\in J_t} (a_{tj}, b_{tj}]$$ where $J_t\subseteq \{1,...,m\}$ and 
+$\textbf{Model form}$: $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{x}\in L_t)$$ 
+where $\mathbb{I}(.)$ is the boolean indicator function (taking the value 1 if its argument is true and 0 otherwise), the leaves 
+$L_1,... L_T$ are rectanguloids partitioning the feature space, and the "leaf weights" $r_1,\ldots, r_T$ are the class-weighted fraud incidences on the leaves: 
+$$r_t:= \frac{\sum_{i\in L_t} s_i y_i}{\sum_{i\in L_t} s_i}, \forall 1\leq t\leq T$$  
+Writing each leaf $L_t$ as 
+$$L_t = \prod_{j\in J_t} (a_{tj}, b_{tj}]$$ 
+where $J_t\subseteq \{1,...,m\}$ and 
 $a_{tj}, b_{tj} \in [ -\infty, +\infty ] \ \forall j\in J_t$, we have 
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{x}\in \prod_{j\in J_t} (a_{tj}, b_{tj}]) 
 = \sum_{t=1}^T r_t \  \prod_{j\in J_t} \mathbb{I}(a_{tj}<x_j\leq b_{tj})$$
