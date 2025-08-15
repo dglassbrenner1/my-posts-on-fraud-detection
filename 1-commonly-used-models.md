@@ -1,3 +1,8 @@
+---
+layout: default     # use your main layout
+title: 1. Commonly used supervised learning models         # page title
+---
+
 # 1. Commonly used supervised learning models
 
 I want to focus on models commonly used in fraud detection. Maybe not
@@ -118,10 +123,10 @@ That said, here is what a web search in July 2025 uncovered:
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="index.md">← Previous: The goal for these posts</a>
+      <a href="/index.md/">← Previous: The goal for these posts</a>
     </td>
     <td align="right">
-      <a href="2-model-formulas-250814.md">Next: 2. Model formulas →</a>
+      <a href="/2-model-formulas-250814.md/">Next: 2. Model formulas →</a>
     </td>
   </tr>
 </table>
