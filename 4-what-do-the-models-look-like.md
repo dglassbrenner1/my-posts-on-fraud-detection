@@ -3,6 +3,8 @@ layout: default     # use your main layout
 title: 4. What do the models look like?         # page title
 ---
 
+# 4. What do the models look like?
+
 I fit each of our models to the fraud handbook data, using their choice of training dataset. I used the tuning process described there. (Tune the model parameters on the training data using default hyperparameters. Tune the hyperparameters using stratified 5-fold cross validation - stratified becuase of the class imbalance. Re-tune the model parameters on the training data using the tuned hyperparameters.)
 
 I modeled TX_FRAUD as a function of the features, omitting the redundant features TX_DATETIME, TX_TIME_SECONDS, and TX_TIME_DAYS (as well as the Id variables and TX_FRAUD_SCENARIO).  

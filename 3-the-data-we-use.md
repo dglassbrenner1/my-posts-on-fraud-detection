@@ -3,6 +3,8 @@ layout: default     # use your main layout
 title: 3. The dataset we’ll use (primarily)         # page title
 ---
 
+# 3. The dataset we’ll use (primarily) 
+
 I’ll be working with the synthetic dataset from the Fraud Detection Handbook.[^1] It’s designed to mirror real-world transaction streams and already includes several engineered features. Crucially, it simulates two common fraud scenarios—compromised point-of-sale devices and compromised cards—so I can see how models react to different attack patterns.
 
 In total there are 1.75 million transactions, 3 ID columns (for the customer, terminal/point-of-sale, and transaction), 2 raw features (datetime & amount of transaction, and 17 engineered features. There is a binary fraud indicator and a column indicating which of three engineered fraud scenarios a fraud exhibits.

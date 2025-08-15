@@ -1,8 +1,8 @@
-
 ---
 layout: default     # use your main layout
 title: 2. Model formulas         # page title
 ---
+# 2. Model formulas 
 
 ### My goal for this section
 
