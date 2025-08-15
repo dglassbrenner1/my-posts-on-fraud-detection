@@ -14,9 +14,7 @@ For instance, if we were talking (in a non-fraud scenario) about ordinary least 
 <div style="margin-left: 30px;">
 $\textbf{Formula for predictions}$: $y=w_0 + w_1 x$ where $w_0, w_1\in \mathbb{R}$ are the model parameters. 
 </div>
-
-
-<div style="margin-left: 30px;">
+<br><br>
 $\textbf{Optimization}$: Fixing $\lambda>0$, the model parameters are determined by minimizing $\sum_{i=1}^n (y_i - w_0 - w_1 x_i)^2 + \lambda (w_0^2 + w_1^2)$ where $\{(x_1,y_1),..., (x_n, y_n)\}\subseteq \mathbb{R}^2$ is the data to which we are fitting the model. 
 </div>
 
@@ -66,7 +64,7 @@ $f_{\mathbf{w}}(\mathbf{x})$ can be viewed as a function of $\mathbf{w}\in\mathb
 
 ### Class weights
 
-Fraud data is often be adjusted by class weights to address the fact that we're most interested in the fraud signal and fraud is rare.  We'll use $s_1, ..., s_n \geq 0$ to denote the class weights, sometimes referring to them via $\mathbf{s}:=(s_1, ..., s_n) \in \mathbb{R}_n$.  (Fraud data rarely seems to involve probalistic sampling. But if it does, include the sample weights in the $s_i$ too.)
+Fraud data is often be adjusted by class weights to address the fact that we're most interested in the fraud signal and fraud is rare.  We'll use $s_1, ..., s_n \geq 0$ to denote the class weights, sometimes referring to them via $\mathbf{s}:=(s_1, ..., s_n) \in \mathbb{R}^n$.  (Fraud data rarely seems to involve probalistic sampling. But if it does, include the sample weights in the $s_i$ too.)
 
 ### Link function
 

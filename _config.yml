@@ -2,3 +2,9 @@ title: Test post with table and equation
 description: A simple Jekyll GitHub Pages site
 markdown: kramdown
 theme: minima   # You can use 'minima' or another supported theme, or leave blank for no theme
+
+kramdown:
+  input: GFM
+  math_engine: mathjax
+  math_engine_opts:
+    preview: "math rendering…"
