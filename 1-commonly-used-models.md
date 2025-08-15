@@ -1,4 +1,4 @@
-# Commonly used supervised learning models
+# 1. Commonly used supervised learning models
 
 I want to focus on models commonly used in fraud detection. Maybe not
 surprisingly, a web search doesn't uncover e.g. exactly which types of
@@ -9,7 +9,7 @@ That said, here is what a web search in July 2025 uncovered:
 
 ## The models we'll look at and examples of who has used them
 
-Logistic Regression
+### Logistic Regression
 
 - A 2023 post by Capital One mentions logistic & other forms of
   regression, suggesting Capital One has used them in some fashion.[^1]
@@ -33,7 +33,7 @@ Logistic Regression
 
 - Used in the Handbook, due to its simplicity.
 
-Decision Trees (DTs)
+### Decision Trees (DTs)
 
 - Used in the Handbook, due to its simplicity.
 
@@ -41,7 +41,7 @@ Decision Trees (DTs)
   to two other models that are used (random forests & gradient boosted
   trees).
 
-Random Forests (RFs)
+### Random Forests (RFs)
 
 - The chosen model in the 2021 Capital One post on money laundering.
 
@@ -113,3 +113,16 @@ Random Forests (RFs)
 [^7]: Stripe. (2021, December 15). *A primer on machine learning for
     fraud detection*. Stripe. Retrieved July 30, 2025, from
     <https://stripe.com/guides/primer-on-machine-learning-for-fraud-protection>
+
+
+<table width="100%">
+  <tr>
+    <td align="left">
+      <a href="index.md">← Previous: The goal for these posts</a>
+    </td>
+    <td align="right">
+      <a href="2-model-formulas-250814.md">Next: 2. Model formulas →</a>
+    </td>
+  </tr>
+</table>
+
