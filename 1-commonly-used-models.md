@@ -123,10 +123,10 @@ That said, here is what a web search in July 2025 uncovered:
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="/index.md/">← Previous: The goal for these posts</a>
+      <a href="">← Previous: The goal for these posts</a>
     </td>
     <td align="right">
-      <a href="/2-model-formulas-250814.md/">Next: 2. Model formulas →</a>
+      <a href="2-model-formulas-250814.html">Next: 2. Model formulas →</a>
     </td>
   </tr>
 </table>

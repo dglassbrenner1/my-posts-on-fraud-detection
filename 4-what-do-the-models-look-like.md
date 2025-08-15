@@ -923,7 +923,7 @@ The above plots were plotted against the top two features for each model (in ter
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="3-the-data-we-use.md">← Previous: 3. The data we use</a>
+      <a href="3-the-data-we-use.html">← Previous: 3. The data we use</a>
     </td>
     <td align="right">
       Next: 5. Post to come! →</a>

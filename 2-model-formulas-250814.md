@@ -239,10 +239,10 @@ noting that each $P(y=1 \mid \mathbf{X}_i)$ is a function of the the parameters 
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="1-commonly-used-models.md">← Previous: 1. Commonly used models</a>
+      <a href="1-commonly-used-models.html">← Previous: 1. Commonly used models</a>
     </td>
     <td align="right">
-      <a href="3-the-data-we-use.md">Next: 3. The data we use →</a>
+      <a href="3-the-data-we-use.html">Next: 3. The data we use →</a>
     </td>
   </tr>
 </table>
