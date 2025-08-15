@@ -14,7 +14,8 @@ For instance, if we were talking (in a non-fraud scenario) about ordinary least 
 <div style="margin-left: 30px;">
 
 $\textbf{Formula for predictions}$: $y=w_0 + w_1 x$ where $w_0, w_1\in \mathbb{R}$ are the model parameters. 
-        
+
+
 $\textbf{Optimization}$: Fixing $\lambda>0$, the model parameters are determined by minimizing $\sum_{i=1}^n (y_i - w_0 - w_1 x_i)^2 + \lambda (w_0^2 + w_1^2)$ where $\{(x_1,y_1),..., (x_n, y_n)\}\subseteq \mathbb{R}^2$ is the data to which we are fitting the model. 
 </div>
 
@@ -25,12 +26,18 @@ So how hard can this be...?
 ## 2.1 Setup
 
 We use the following notation for the our labeled input data $\mathcal{D}$:
-$$\mathcal{D}:=\{(\mathbf{X}_1, y_1),..., (\mathbf{X}_n, y_n)\}\subseteq \mathcal{X} \times \{ 0,1 \} $$ 
+
+$$\mathcal{D}:=\{(\mathbf{X}_1, y_1),\ldots, (\mathbf{X}_n, y_n)\}\subseteq \mathcal{X} \times \{ 0,1 \}$$ 
+
 where each $1\leq i\leq n$ represents a transaction, $\mathcal{X}\subseteq \mathbb{R}^m$ denotes the feature space, and the target class $y=1$ denotes fraudulent transactions.  We'll assume that any feature engineering has already taken place. (So the $m$ features include all engineered features.)  We also assume that any categorical features have already been numerically encoded in some fashion. We will use boldface type to indicate vectors, e.g. $\mathbf{y}:=(y_1,\ldots, y_n)$.
 
 I assume the reader is familiar with the concepts of training, validation, cross-validation, test data, and tuning hyperparameters. I'll be pretty loose about referring to the entire dataset versus the training data, assuming the reader can infer the choice from context (e.g. $\mathcal{D}$ should refer to the training data when training a model, versus the entire dataset when fitting a final model using tuned hyperparameters). 
 
-As usual, $X$ will denote the $m \times n$ matrix whose columns are $\mathbf{X}_1, ..., \mathbf{X}_n$. The $(i,j)$th entry $X_{ij}$ of $X$ is the value of the $j$th feature in the $i$th sample. We will sometimes use $y$ to denote a real-valued variable, e.g. $P(y=1 \mid \mathbf{x}\in\mathcal{X})$. 
+As usual, $\mathbf{X}$ will denote the 
+$m \times n$ matrix whose columns are 
+$\mathbf{X}_1, \ldots, \mathbf{X}_n$. The $(i,j)$th entry 
+$X_{ij}$ of $\mathbf{X}$ is the value of the $j$th feature in the $i$th sample. We will sometimes use $y$ to denote the random variable from which the class data was generated, e.g. 
+$P(y=1 \mid \mathbf{x}\in\mathcal{X})$. 
 
 ### Models
 
@@ -74,7 +81,9 @@ For given values of the hyperparameters $\mathbf{\lambda}$, I think this is what
 
 At this point, you might wonder why we don't simultaneously optimize the model parameters and hyperparameter(s). Simulataneous optimization would essentially undermine the role of regularization. E.g. for L2-regularized logistic regression, fitting both the model parameters $\mathbf{w}$ and $\lambda$ to any given dataset $-$ whether the full data or the training data $-$ could very well give an overfit $\mathbf{w}$ with $\lambda\approx 0$. No regularization there...  That's why the model parameters and hyperparameters are tuned separately, often in a tri-level optimization framework using different subsets of the full dataset, like this:
 
-1. Optimize $\mathbf{w}$ on the training data, fixing the $\mathbf{\lambda}$: Set the values of $\mathbf{\lambda}$ to some default or user-informed initial values $\mathbf{\lambda}^*$, and minimize $\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$ on the training data. Say the min value occurs at $\mathbf{w}^*$.
+1. Optimize $\mathbf{w}$ on the training data, fixing the $\mathbf{\lambda}$: Set the values of $\mathbf{\lambda}$ to some default or user-informed initial values  
+$\mathbf{\lambda}^*$
+, and minimize $\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$ on the training data. Say the min value occurs at $\mathbf{w}^*$.
 
 2. Optimize $\mathbf{\lambda}$ on the validation data (or cross-validation), fixing the $\mathbf{w}$: Minimize $\text{RegLogLoss}(f_{\mathbf{w}^*}, \mathbf{\lambda})$ on this data. Say the min value occurs at $\mathbf{\lambda}^*$.
 
