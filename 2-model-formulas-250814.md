@@ -196,15 +196,15 @@ $F$ features, for some $F\geq 1$. (The same value of $F$ is used for each tree.)
 So the random forest predicts the chance of fraud given $\mathbf{x}\in\mathcal{X}$ to be the average of the class-weighted fraud incidence in the 
 $K$ leaves to which $\mathbf{x}$ belongs.
 
-$\textbf{Optimization}$: The same sources cited for decision trees seem to suggest, but not state explicitly, that the model parameters for each tree in the forest should be designed to minimize the regularized loss function 
+$\textbf{Optimization (my take)}$: The same sources cited for decision trees seem to suggest, but not state explicitly, that the model parameters for each tree in the forest should be designed to minimize the regularized loss function 
 $$\text{RegLogLoss}(f_{\mathbf{L}}, \mathbf{\alpha}) = \frac{1}{\sum_{i=1}^n s_i} \sum_{i=1}^n s_i L(y_i, \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{X}_i\in L_t)) + \alpha T$$ 
 
 The general technique of taking a class of models (like decision trees), and forming several models from the class by bootstrapping the data is called $\textit{bagging}$. So a random forest is a collection of bagged decision trees. Bagging might or might not involve using random subsets of features for the models (but for random forests, it does).
 
 Random forests typically have lots of trees.  The default in scikit-learn is 100 trees.  As each tree is based on different data and different features, the trees can have different depths and numbers of nodes.
 
-Hastie, Trevor; Tibshirani, Robert; Friedman, Jerome (2008). The Elements of Statistical Learning (2nd ed.). Springer. ISBN 0-387-95284-5. reports that the number of features subsetted for each tree is typically $\sqrt{m}$ (rounded down) for classification trees and 
-$m/3$ (rounded down) for regression, provided there are at least 5 samples per node.
+The number of features subsetted for each tree is typically $\sqrt{m}$ (rounded down) for classification trees and 
+$m/3$ (rounded down) for regression, provided there are at least 5 samples per node. [^8]
 
 $\textbf{Notes}$:
 
@@ -224,7 +224,7 @@ $\textbf{Model form}$:
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(b+\eta \sum_{k=1}^K f_k(\mathbf{x})) = \frac{1}{1+ \exp(-b-\eta \sum_{k=1}^K f_k(\mathbf{x}))}$$ where $b$ is the log-odds of the fraud rate in 
 $\mathcal{D}$, $0<\eta<1$ is a hyperparameter (the "learning rate"), $K\geq 1$, and $f_1(\mathbf{x}),..., f_K(\mathbf{x})$ are the predictions from decision trees determined by the boosting algorithm.  (Although scikit-learn accepts learning rates larger than 1, it seems to make most sense to limit to smaller learning rates.) 
 
-$\textbf{Optimization}$: For given values of the hyperparameters $\eta, \lambda, \alpha>0$, and taking 
+$\textbf{Optimization (my take)}$: For given values of the hyperparameters $\eta, \lambda, \alpha>0$, and taking 
 $$b:= \frac{\sum_{i=1}^n s_i y_i }{\sum_{i=1}^n s_i(1-y_i)}$$ the log-odds trees $f_1,..., f_K$ should attempt to minimize 
 $$\text{RegLogLoss}= L\left(y_i, \sigma(b+\eta \sum_{k=1}^K f_k(\mathbf{X}_i))) \right) + \sum_{k=1}^K \left( \gamma T_k + \lambda ||r_k||^2 + \alpha |r_k| \right)$$
 
@@ -261,7 +261,7 @@ $$
 \quad \xi_i \geq 0, \quad \forall i \in \{1, \ldots, n\}
 $$
 
-where $\tilde{y}_i = 2y_i - 1.$ [^8] [^9] 
+where $\tilde{y}_i = 2y_i - 1.$ [^9] [^10] 
 
 ## 2.7 K-nearest neighbors
 
@@ -300,9 +300,11 @@ noting that each $P(y=1 \mid \mathbf{X}_i)$ is a function of the the parameters 
 
 [^7]: See for instance: GeeksforGeeks. (2025, July 23). Solving the multicollinearity problem with decision tree. GeeksforGeeks. https://www.geeksforgeeks.org/machine-learning/solving-the-multicollinearity-problem-with-decision-tree/
 
-[^8]: Ding, Y., & Huang, S. (2024). A generalized framework with adaptive weighted soft-margin for imbalanced SVM classification. arXiv. https://arxiv.org/abs/2403.08378
+[^8]: Hastie, Trevor; Tibshirani, Robert; Friedman, Jerome (2008). The Elements of Statistical Learning (2nd ed.). Springer. ISBN 0-387-95284-5.
 
-[^9]: Hastie, T., Rosset, S., Tibshirani, R., & Zhu, J. (2004). The entire regularization path for the support vector machine. Journal of Machine Learning Research, 5, 1391–1415. http://www.jmlr.org/papers/volume5/hastie04a/hastie04a.pdf
+[^9]: Ding, Y., & Huang, S. (2024). A generalized framework with adaptive weighted soft-margin for imbalanced SVM classification. arXiv. https://arxiv.org/abs/2403.08378
+
+[^10]: Hastie, T., Rosset, S., Tibshirani, R., & Zhu, J. (2004). The entire regularization path for the support vector machine. Journal of Machine Learning Research, 5, 1391–1415. http://www.jmlr.org/papers/volume5/hastie04a/hastie04a.pdf
 
 
 
