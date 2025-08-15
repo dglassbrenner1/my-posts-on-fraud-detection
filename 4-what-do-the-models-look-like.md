@@ -5,9 +5,38 @@ title: 4. What do the models look like?         # page title
 
 # 4. What do the models look like?
 
-I fit each of our models to the fraud handbook data, using their choice of training dataset. I used the tuning process described there. (Tune the model parameters on the training data using default hyperparameters. Tune the hyperparameters using stratified 5-fold cross validation - stratified becuase of the class imbalance. Re-tune the model parameters on the training data using the tuned hyperparameters.)
+I fit each of our models to the fraud handbook data, using their choice of training dataset. I used the tuning process we described in the regulariztaion section of [Model formulas](2-model-formulas-250814.md). (Tune the model parameters on the training data using default hyperparameters. Tune the hyperparameters using stratified 5-fold cross validation - stratified becuase of the class imbalance. Re-tune the model parameters on the training data using the tuned hyperparameters.)
 
 I modeled TX_FRAUD as a function of the features, omitting the redundant features TX_DATETIME, TX_TIME_SECONDS, and TX_TIME_DAYS (as well as the Id variables and TX_FRAUD_SCENARIO).  
+
+## An aside on the Handbook's trainign and test data
+
+The Handbook states that in such a scenario, the training data often consists of one set of consecutive days, followed by a gap (“delay”) period, followed by another set of consecutive days for the test data. As noted earlier, the Handbook makes the simplifying assumption that fraud is detected exactly seven days after it occurs.  So, a transaction made on 4/1/18 labeled as fraud or legit isn’t known to be fraud or legit until 4/8/18. 
+
+To be consistent with the Handbook, we will use the same training and test data that they did.  Namely, the train_df consists of all tx for the week beginning 7/25/18.  The test_df consists of a subset of transactions for the week beginning 8/8/18, where they drop all transactions from cards that were previously identified as having a fraudulent transaction during a specific period of time. This period includes the entire training window and a portion of the test window.  
+
+I have a couple of minor quibbles with, or at least questions about, the Handbook’s choices here:
+
+•	I don’t understand inserting a time buffer between the train and test data.
+•	I don’t understand the decision to exclude compromised cards from the test data.
+
+### On the buffer between train and test
+
+The Handbook seems to say this is necessitated by the delay in knowing whether a transaction is legit or not.  From the standpoint of simply knowing that all of your training and test data are correctly labelled, the one-week delay in knowledge of whether a tx in fraud would seem to me just to require that the training and test windows both occur at least a week prior to when you are training and testing your models. It wouldn’t seem to me to require a buffer between train and test.
+
+That said, I think that you might want a buffer to ensure that the features involving look-back windows (1, 7, 30-day windows for customers and terminals) in the test data are completely free of influence from the training dataset.  But that would seem to require a longer buffer (like 30 days).
+
+### On excluding compromised cards from the test data
+
+I think the decision of whether or not to include transactions in the test data from compromised cards might depend on your objective.  Including them can risk a model simply “memorizing” that a certain card is more likely to be fraudulent, even if you don’t (as you wouldn’t) include customer_id in your models. Such memorization could come about from engineered features that essentially reflect (thus leak information about) the card’s fraud history, like (# of fraud transactions for this card in train_df)/(#transactions for this card in train_df). But our engineered features related to the customer are the numbers of transactions and transaction amounts in the previous 1, 7, and 30-day windows.  They have nothing to do with fraud, so our engineered features don’t risk such leakage.
+
+You might want to drop them simply to reflect that there will be new cards with no fraud history.  Conversely, you might want to keep them to reflect that most future txs will happen on cards for which you have a history of transactions (fraudulent or not).  
+
+Another reason you might want to keep them is that dropping them would result in a test set with more cards with no fraud history.  This could lead you to underestimate both P(actual fraud | predicted fraud), i.e. precision, and P(predict fraud | actual fraud), i.e., recall.
+
+But, like I said, I’m going to keep my test_df the same as in the Handbook.
+
+### Back to plotting
 
 To be able to plot anything, I chose the top two features for each model, using permutation feature importance and fixed the values for other features at their means.  I plotted a 3D plot of $P(y=1 \mid \mathbf{x})$ and the corresponding 2D contour plot. Let's compare them to our understanding from the equations for $P(y=1 \mid \mathbf{x})$. (So here, only the two most "important" features in $\mathbf{x}$ are varying.)
 
