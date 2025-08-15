@@ -37,7 +37,8 @@ I assume the reader is familiar with the concepts of training, validation, cross
 As usual, $\mathbf{X}$ will denote the 
 $m \times n$ matrix whose columns are 
 $\mathbf{X}_1, \ldots, \mathbf{X}_n$. The $(i,j)$th entry 
-$X_{ij}$ of $\mathbf{X}$ is the value of the $j$th feature in the $i$th sample. We will sometimes use $y$ to denote the random variable from which the class data was generated, e.g. 
+$X_{ij}$ of $\mathbf{X}$ is the value of the $j$th feature in the $i$th sample. We will sometimes use 
+$y$ to denote the random variable from which the class data was generated, e.g. 
 $P(y=1 \mid \mathbf{x}\in\mathcal{X})$. 
 {% endraw %}
 
