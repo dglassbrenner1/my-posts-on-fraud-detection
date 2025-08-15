@@ -15,6 +15,7 @@ For instance, if we were talking (in a non-fraud scenario) about ordinary least 
 $\textbf{Formula for predictions}$: $y=w_0 + w_1 x$ where $w_0, w_1\in \mathbb{R}$ are the model parameters. 
 </div>
 
+
 <div style="margin-left: 30px;">
 $\textbf{Optimization}$: Fixing $\lambda>0$, the model parameters are determined by minimizing $\sum_{i=1}^n (y_i - w_0 - w_1 x_i)^2 + \lambda (w_0^2 + w_1^2)$ where $\{(x_1,y_1),..., (x_n, y_n)\}\subseteq \mathbb{R}^2$ is the data to which we are fitting the model. 
 </div>
@@ -37,8 +38,8 @@ I assume the reader is familiar with the concepts of training, validation, cross
 {% raw %}
 
 As usual, $\mathbf{X}$ will denote the 
-$m \times n$ matrix whose columns are 
-$\mathbf{X}_1, \ldots, \mathbf{X}_n$. The $(i,j)$th entry 
+$m \times n$ matrix whose columns are $\mathbf{X}_1, \ldots, \mathbf{X}_n$.
+The $(i,j)$th entry 
 $X_{ij}$ 
 of 
 $\mathbf{X}$ 
