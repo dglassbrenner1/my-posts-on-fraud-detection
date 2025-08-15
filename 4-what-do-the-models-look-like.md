@@ -9,7 +9,7 @@ To be able to plot anything, I chose the top two features for each model, using 
 <details>
 <summary>Click to expand/hide Python code</summary>
 
-```python
+<pre> ```python
 """ Setting things up """
 
 import pandas as pd
@@ -497,8 +497,7 @@ for name, pipeline in optimized_pipelines.items():
     print("-" * 50)
 
 
-```
-
+``` </pre>
 </details>
 
 ## 4.1 Logistic regression
@@ -544,8 +543,7 @@ I used the a linear kernel because this had the highest cross-validation AUC on 
 
 <details>
 <summary>Click to expand/hide Python code</summary>
-
-```python
+<pre> ```python
 X = train_df[input_features]
 y = train_df['TX_FRAUD']
 
@@ -573,8 +571,7 @@ for kernel in kernels:
 # Find best kernel by highest mean CV AUC
 best_kernel = max(kernel_scores, key=kernel_scores.get)
 print(f"\nBest kernel by CV AUC: {best_kernel} with score {kernel_scores[best_kernel]:.4f}")
-```
-
+``` </pre>
 </details>
 
 ```text
