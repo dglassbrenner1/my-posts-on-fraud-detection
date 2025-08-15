@@ -38,7 +38,8 @@ I assume the reader is familiar with the concepts of training, validation, cross
 {% raw %}
 
 As usual, $\mathbf{X}$ will denote the 
-$m \times n$ matrix whose columns are $\mathbf{X}_1, \ldots, \mathbf{X}_n$.
+$m \times n$ matrix whose columns are 
+$\mathbf{X}_1, \ldots, \mathbf{X}_n$.
 The $(i,j)$th entry 
 $X_{ij}$ 
 of 
@@ -265,7 +266,7 @@ where $\tilde{y}_i = 2y_i - 1.$ [^9] [^10]
 
 ## 2.7 K-nearest neighbors
 
-$\textbf{Model form}$: Given $k\geq 1$, estimate  
+$\textbf{Model form}$: Given $k\geq 1$,   
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ where $N_k(\mathbf{x})$ is the set of indices of the 
 $k$ samples in $\mathcal{D}$ with the 
 $k$ smallest values of $||\mathbf{X}_i - \mathbf{x}||$. 
@@ -278,8 +279,10 @@ Also, I'm using Euclidean distance, although other choices are possible.
 
 For now at least, I'm just going to consider feedforward nerual networks (aka multilayer perceptrons) with ReLU activations on all hidden layers and a sigmoid output layer.  This seems to be a standard deep neural network architecture for fraud detection
 
-$\textbf{Model form}$: Given $L\geq 1$, $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$ where
-$a_0:=\mathbf{x}$ and for each $1\leq k\leq L-1$, $a_k:=ReLU(W_k a_{k-1} + b_k)$. So the model parameters are the 
+$\textbf{Model form}$: Given $L\geq 1$, 
+$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$ 
+where $a_0:=\mathbf{x}$ and for each 
+$1\leq k\leq L-1$, $a_k:=ReLU(W_k a_{k-1} + b_k)$. So the model parameters are the 
 $m\times m$ matrices $W_k$ and the vectors $b_k\in\mathbb{R}^m$.
 
 $\textbf{Optimization}$: Put all the parameters from the $W_k$ and $b_k$ into one long parameter vector $\mathbf{w}\in\mathbb{R}^{Lm(m+1)}$. For a given value of the L2 hyperparameter $\lambda>0$, the model parameters $w$ are determined by minimizing the regularized log-loss: $$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}) = \frac{1}{\sum_{i=1}^n s_i} \sum_{i=1}^n s_i L(y_i, P(y=1 \mid \mathbf{X}_i)) + \lambda \|w\|^2$$
