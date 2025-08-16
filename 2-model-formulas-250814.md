@@ -89,9 +89,8 @@ For given values of the hyperparameters $\mathbf{\lambda}$, I think this is what
 At this point, you might wonder why we don't simultaneously optimize the model parameters and hyperparameter(s). Simulataneous optimization would essentially undermine the role of regularization. E.g. for L2-regularized logistic regression, fitting both the model parameters $\mathbf{w}$ and $\lambda$ to any given dataset $-$ whether the full data or the training data $-$ could very well give an overfit $\mathbf{w}$ with $\lambda\approx 0$. No regularization there...  That's why the model parameters and hyperparameters are tuned separately, often in a tri-level optimization framework using different subsets of the full dataset, like this:
 
 1. Optimize $\mathbf{w}$ on the training data, fixing the $\mathbf{\lambda}$: Set the values of $\mathbf{\lambda}$ to some default or user-informed initial values  
-$\mathbf{\lambda}^*$
-, and minimize 
-$$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$$ 
+$\mathbf{\lambda}^*)$, and minimize 
+$$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$$
 on the training data. Say the min value occurs at $\mathbf{w}^*$.
 
 2. Optimize $\mathbf{\lambda}$ on the validation data (or cross-validation), fixing the $\mathbf{w}$: Minimize 
