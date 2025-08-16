@@ -96,13 +96,11 @@ At this point, you might wonder why we don't simultaneously optimize the model p
 $\mathbf{\lambda}^*$, and minimize 
 
 $$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$$
-
 on the training data. Say the min value occurs at $\mathbf{w}^*$.
 
 2. Optimize $\mathbf{\lambda}$ on the validation data (or cross-validation), fixing the $\mathbf{w}$: Minimize 
 
 $$\text{RegLogLoss}(f_{\mathbf{w}^*}, \mathbf{\lambda})$$ 
-
 on this data. Say the min value occurs at $\mathbf{\lambda}^*$.
 
 3. Re-optimize $\mathbf{w}$ on the training (or training + validation) data, fixing the $\mathbf{\lambda}$: Get the final model parameters by minimizing $\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$ on this data.
