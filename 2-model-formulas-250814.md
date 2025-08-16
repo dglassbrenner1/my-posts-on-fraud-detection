@@ -33,9 +33,9 @@ where each $1\leq i\leq n$ represents a transaction, $\mathcal{X}\subseteq \math
 I assume the reader is familiar with the concepts of training, validation, cross-validation, test data, and tuning hyperparameters. I'll be pretty loose about referring to the entire dataset versus the training data, assuming the reader can infer the choice from context (e.g. $\mathcal{D}$ should refer to the training data when training a model, versus the entire dataset when fitting a final model using tuned hyperparameters). 
 
 As usual, $\mathbf{X}$ will denote the $m\times n$ 
-matrix whose columns are $\mathbf{X}_1, \ldots, \mathbf{X}_n$. The $(i,j)$th entry 
-$X_{ij}$ of $\mathbf{X}$ is the value of the $j$th feature in the $i$th sample. We will somtimes use 
-$y$ to denote the random variables from which the class data was generated, e.g. $P(y=1 \ mid \mathbf{x}\in\mathcal{X})$.
+matrix whose columns are 
+$$\mathbf{X}_1, \ldots, \mathbf{X}_n$$. The (i,j)th entry $X_{ij}$ of $\mathbf{X}$ is the value of the jth feature in the ith sample. We will somtimes use y to denote the random variables from which the class data was generated, e.g. 
+$P(y=1 \ mid \mathbf{x}\in\mathcal{X})$.
 
 ### Models
 
