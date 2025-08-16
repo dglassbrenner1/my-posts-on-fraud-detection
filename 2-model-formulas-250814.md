@@ -12,9 +12,13 @@ My goal for this section seems simple enough. For each of the models we've ident
 For instance, if we were talking (in a non-fraud scenario) about ordinary least squares linear regression on a single feature with an L2 regularization penalty, this is easy: 
 
 <div style="margin-left: 30px;">
-$\textbf{Formula for predictions}$: $y=w_0 + w_1 x$ where $w_0, w_1\in \mathbb{R}$ are the model parameters. 
+$\textbf{Formula for predictions}$: $y=w_0 + w_1 x$, where $w_0, w_1\in \mathbb{R}$ are the model parameters. 
 <br><br>
-$\textbf{Optimization}$: Fixing $\lambda>0$, the model parameters are determined by minimizing $\sum_{i=1}^n (y_i - w_0 - w_1 x_i)^2 + \lambda (w_0^2 + w_1^2)$ where $\{(x_1,y_1),..., (x_n, y_n)\}\subseteq \mathbb{R}^2$ is the data to which we are fitting the model. 
+$\textbf{Optimization}$: Fixing $\lambda>0$, the model parameters are determined by minimizing 
+
+$$\sum_{i=1}^n (y_i - w_0 - w_1 x_i)^2 + \lambda (w_0^2 + w_1^2)$$ 
+
+where $\{(x_1,y_1),..., (x_n, y_n)\}\subseteq \mathbb{R}^2$ is the data to which we are fitting the model. 
 </div>
 
 
@@ -89,12 +93,16 @@ For given values of the hyperparameters $\mathbf{\lambda}$, I think this is what
 At this point, you might wonder why we don't simultaneously optimize the model parameters and hyperparameter(s). Simulataneous optimization would essentially undermine the role of regularization. E.g. for L2-regularized logistic regression, fitting both the model parameters $\mathbf{w}$ and $\lambda$ to any given dataset $-$ whether the full data or the training data $-$ could very well give an overfit $\mathbf{w}$ with $\lambda\approx 0$. No regularization there...  That's why the model parameters and hyperparameters are tuned separately, often in a tri-level optimization framework using different subsets of the full dataset, like this:
 
 1. Optimize $\mathbf{w}$ on the training data, fixing the $\mathbf{\lambda}$: Set the values of $\mathbf{\lambda}$ to some default or user-informed initial values  
-$\mathbf{\lambda}^*)$, and minimize 
+$\mathbf{\lambda}^*$, and minimize 
+
 $$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$$
+
 on the training data. Say the min value occurs at $\mathbf{w}^*$.
 
 2. Optimize $\mathbf{\lambda}$ on the validation data (or cross-validation), fixing the $\mathbf{w}$: Minimize 
+
 $$\text{RegLogLoss}(f_{\mathbf{w}^*}, \mathbf{\lambda})$$ 
+
 on this data. Say the min value occurs at $\mathbf{\lambda}^*$.
 
 3. Re-optimize $\mathbf{w}$ on the training (or training + validation) data, fixing the $\mathbf{\lambda}$: Get the final model parameters by minimizing $\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$ on this data.
@@ -132,13 +140,19 @@ $J\subseteq \{1,...,m\}$ and $a_j, b_j \in [ -\infty, +\infty ] \ \forall j\in J
 Decision trees give constant predictions on the leaves (so these models are locally constant). It is a simple exercise to see that the constant prediction that minimizes the log-loss is the the class-weighted average incidence of fraud in the data.  Similarly, the prediction on each leaf is the class-weighted fraud incidence.  These observations gives us the model form.
 
 $\textbf{Model form}$: $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{x}\in L_t)$$ 
+
 where $\mathbb{I}(.)$ is the boolean indicator function (taking the value 1 if its argument is true and 0 otherwise), the leaves 
 $L_1,... L_T$ are rectanguloids partitioning the feature space, and the "leaf weights" $r_1,\ldots, r_T$ are the class-weighted fraud incidences on the leaves: 
+
 $$r_t:= \frac{\sum_{i\in L_t} s_i y_i}{\sum_{i\in L_t} s_i}, \forall 1\leq t\leq T$$  
+
 Writing each leaf $L_t$ as 
+
 $$L_t = \prod_{j\in J_t} (a_{tj}, b_{tj}]$$ 
+
 where $J_t\subseteq \{1,...,m\}$ and 
 $a_{tj}, b_{tj} \in [ -\infty, +\infty ] \ \forall j\in J_t$, we have 
+
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{x}\in \prod_{j\in J_t} (a_{tj}, b_{tj}]) 
 = \sum_{t=1}^T r_t \  \prod_{j\in J_t} \mathbb{I}(a_{tj}<x_j\leq b_{tj})$$
 
@@ -150,6 +164,7 @@ So rather than presenting a definitive-sounding "Optimization" section, I presen
 
 $\textbf{Optimization (my take)}$: Having determined the leaf weights, all that remains to build the tree is determining the leaves themselves $-$ that is, the partitioning of the feature space into 
 $L_1,..., L_T$ for some $T>0$. For given $\alpha>0$, the partition $L_1,..., L_T$ should minimize the regularized log-loss:
+
 $$\text{RegLogLoss}(f_{\mathbf{L}}, \mathbf{\alpha}) = \frac{1}{\sum_{i=1}^n s_i} \sum_{i=1}^n s_i L(y_i, \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{X}_i\in L_t)) + \alpha T$$ 
 
 Of course, the model parameters $L_1,..., L_T$ aren't real numbers, so we can't even talk about $\text{RegLogLoss}(f_{\mathbf{L}}, \mathbf{\alpha})$ being differentiable in $\mathbf{L}$. So unlike logistic regression, we can't minimize the regularized log-loss through numerical methods. Nielsen points out that the optimization is NP-hard, requiring essentially an exhaustive search of the possible solutions. Knowing each 
@@ -181,6 +196,7 @@ The randomized pertubation is accomplished by bootstrapping the data.  That is, 
 
 $\textbf{Model form}$: 
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{1}{K} \sum_{k=1}^K P_k (y=1 \mid \mathbf{x})$$ 
+
 where $P_k (y=1 \mid \mathbf{x})$ is the prediction from a decision tree 
 $T_k$ trained on a bootstrap sample of size $|\mathcal{D}|$ from the data $\mathcal{D}$ and from a simple random sample of 
 $F$ features, for some $F\geq 1$. (The same value of $F$ is used for each tree.)
@@ -189,6 +205,7 @@ So the random forest predicts the chance of fraud given $\mathbf{x}\in\mathcal{X
 $K$ leaves to which $\mathbf{x}$ belongs.
 
 $\textbf{Optimization (my take)}$: The same sources cited for decision trees seem to suggest, but not state explicitly, that the model parameters for each tree in the forest should be designed to minimize the regularized loss function 
+
 $$\text{RegLogLoss}(f_{\mathbf{L}}, \mathbf{\alpha}) = \frac{1}{\sum_{i=1}^n s_i} \sum_{i=1}^n s_i L(y_i, \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{X}_i\in L_t)) + \alpha T$$ 
 
 The general technique of taking a class of models (like decision trees), and forming several models from the class by bootstrapping the data is called $\textit{bagging}$. So a random forest is a collection of bagged decision trees. Bagging might or might not involve using random subsets of features for the models (but for random forests, it does).
@@ -214,11 +231,13 @@ Having looked at one type of ensemble (bagging), we now look at another (boostin
 
 $\textbf{Model form}$: 
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(b+\eta \sum_{k=1}^K f_k(\mathbf{x})) = \frac{1}{1+ \exp(-b-\eta \sum_{k=1}^K f_k(\mathbf{x}))}$$ 
+
 where $b$ is the log-odds of the fraud rate in 
 $\mathcal{D}$, $0<\eta<1$ is a hyperparameter (the "learning rate"), $K\geq 1$, and $f_1(\mathbf{x}),..., f_K(\mathbf{x})$ are the predictions from decision trees determined by the boosting algorithm.  (Although scikit-learn accepts learning rates larger than 1, it seems to make most sense to limit to smaller learning rates.) 
 
 $\textbf{Optimization (my take)}$: For given values of the hyperparameters $\eta, \lambda, \alpha>0$, and taking 
 $$b:= \frac{\sum_{i=1}^n s_i y_i }{\sum_{i=1}^n s_i(1-y_i)}$$ the log-odds trees $f_1,..., f_K$ should attempt to minimize 
+
 $$\text{RegLogLoss}= L\left(y_i, \sigma(b+\eta \sum_{k=1}^K f_k(\mathbf{X}_i))) \right) + \sum_{k=1}^K \left( \gamma T_k + \lambda ||r_k||^2 + \alpha |r_k| \right)$$
 
 As with random forests, the resulting trees can have different depths and numbers of leaves.
@@ -230,11 +249,13 @@ And they predict a classification of fraud-vs-legit (separating the two via a hy
 
 $\textbf{Model form for class prediction}$: 
 $$y = 0.5 + 0.5 \ sgn \left( \sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b \right)$$
+
 where 
 $K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$ is a user-specified kernel.
 
 $\textbf{Model form for probabilities}$: 
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma \left( A \left( \sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b \right) + B \right)$$
+
 where $K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$ is a user-specified kernel.
 
 The model parameters are $w_1,\ldots, w_n\geq 0$, $b\in\mathbb{R}$, plus any parameters involved in the kernel 
@@ -262,6 +283,7 @@ where $\tilde{y}_i = 2y_i - 1.$ [^9] [^10]
 
 $\textbf{Model form}$:    
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ 
+
 where $k\geq 1$ is user-specified (or tuned), $N_k(\mathbf{x})$ is the set of indices of the 
 $k$ samples in $\mathcal{D}$ with the 
 $k$ smallest values of $||\mathbf{X}_i - \mathbf{x}||$. 
@@ -276,12 +298,14 @@ For now at least, I'm just going to consider feedforward nerual networks (aka mu
 
 $\textbf{Model form}$: 
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$ 
+
 where $L\geq 1$ is user-specified, $a_0:=\mathbf{x}$ and for each 
 $1\leq k\leq L-1$, $a_k:=ReLU(W_k a_{k-1} + b_k)$. So the model parameters are the 
 $m\times m$ matrices $W_k$ and the vectors $b_k\in\mathbb{R}^m$.
 
 $\textbf{Optimization}$: Put all the parameters from the $W_k$ and $b_k$ into one long parameter vector $\mathbf{w}\in\mathbb{R}^{Lm(m+1)}$. For a given value of the L2 hyperparameter $\lambda>0$, the model parameters $w$ are determined by minimizing the regularized log-loss: 
 $$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}) = \frac{1}{\sum_{i=1}^n s_i} \sum_{i=1}^n s_i L(y_i, P(y=1 \mid \mathbf{X}_i)) + \lambda \|w\|^2$$
+
 noting that each $P(y=1 \mid \mathbf{X}_i)$ is a function of the the parameters $\mathbf{w}$. 
 
 [^1]: https://en.wikipedia.org/wiki/Decision_tree_learning#cite_note-35
