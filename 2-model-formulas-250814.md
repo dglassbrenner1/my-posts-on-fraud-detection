@@ -90,18 +90,22 @@ For given values of the hyperparameters $\mathbf{\lambda}$, I think this is what
 At this point, you might wonder why we don't simultaneously optimize the model parameters and hyperparameter(s). Simulataneous optimization would essentially undermine the role of regularization. E.g. for L2-regularized logistic regression, fitting both the model parameters $\mathbf{w}$ and $\lambda$ to any given dataset $-$ whether the full data or the training data $-$ could very well give an overfit $\mathbf{w}$ with $\lambda\approx 0$. No regularization there...  That's why the model parameters and hyperparameters are tuned separately, often in a tri-level optimization framework using different subsets of the full dataset, like this:
 
 1. Optimize $\mathbf{w}$ on the training data, fixing the $\mathbf{\lambda}$: Set the values of $\mathbf{\lambda}$ to some default or user-informed initial values  
-$\mathbf{\lambda}^*$, and minimize $\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$ on the training data. Say the min value occurs at $\mathbf{w}^*$.
+$\mathbf{\lambda}^*$
+, and minimize 
+$$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$$ 
+on the training data. Say the min value occurs at $\mathbf{w}^*$.
 
 2. Optimize $\mathbf{\lambda}$ on the validation data (or cross-validation), fixing the $\mathbf{w}$: Minimize 
-$\text{RegLogLoss}(f_{\mathbf{w}^*}, \mathbf{\lambda})$ 
+$$\text{RegLogLoss}(f_{\mathbf{w}^*}, \mathbf{\lambda})$$ 
 on this data. Say the min value occurs at $\mathbf{\lambda}^*$.
 
 3. Re-optimize $\mathbf{w}$ on the training (or training + validation) data, fixing the $\mathbf{\lambda}$: Get the final model parameters by minimizing $\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$ on this data.
 
 ## 2.2 Logistic regression
 
-$\textbf{Model form}$: $$P(y=1 \ | \ \mathbf{x}\in\mathcal{X}) = \sigma(\mathbf{w}^t \mathbf{x} + b) = \frac{1}{1 + \exp(-\sum_{i=1}^n w_i x_i  - b)}$$
- where $b, w_1,..., w_m \in \mathbb{R}$ are the model parameters. 
+$\textbf{Model form}$: 
+$$P(y=1 \ | \ \mathbf{x}\in\mathcal{X}) = \sigma(\mathbf{w}^t \mathbf{x} + b) = \frac{1}{1 + \exp(-\sum_{i=1}^n w_i x_i  - b)}$$
+where $b, w_1,..., w_m \in \mathbb{R}$ are the model parameters. 
 
 $\textbf{Optimization}$: The model parameters $b,\mathbf{w}$ are determined by minimizing the regularized loss function for a given value of the hyperparameter $\lambda$:
 
@@ -120,7 +124,9 @@ Notes:
 
 ## 2.3 Decision trees
 
-Trees are formed by repeatedly partitioning the feature space into half spaces $\{ \mathbf{x}\in\mathbb{R}^m: x_i \leq c_i\}$ and $\{ \mathbf{x}\in\mathbb{R}^m : x_i > c_i \}$ where $1\leq i\leq m$ and $c_i\in\mathbb{R}$. This gives rise to leaves of the form 
+Trees are formed by repeatedly partitioning the feature space into half spaces 
+$$\{ \mathbf{x}\in\mathbb{R}^m: x_i \leq c_i\}$ and $\{ \mathbf{x}\in\mathbb{R}^m : x_i > c_i \}$$ 
+where $1\leq i\leq m$ and $c_i\in\mathbb{R}$. This gives rise to leaves of the form 
 $\prod_{j\in J} \{a_j < x_j \leq b_j\}$ where 
 $J\subseteq \{1,...,m\}$ and $a_j, b_j \in [ -\infty, +\infty ] \ \forall j\in J$. 
 (The interval $(a_j, b_j]$ can be bounded at both ends if the $j$th feature is visited multiple times in the tree.) Geometrically, the leaves are rectanguloids. 
