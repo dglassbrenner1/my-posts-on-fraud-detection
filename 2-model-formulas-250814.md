@@ -34,8 +34,7 @@ I assume the reader is familiar with the concepts of training, validation, cross
 
 As usual, $\mathbf{X}$ will denote the $m\times n$ 
 matrix whose columns are 
-$$\mathbf{X}_1, \ldots, \mathbf{X}_n$$. The (i,j)th entry $X_{ij}$ of $\mathbf{X}$ is the value of the jth feature in the ith sample. We will somtimes use y to denote the random variables from which the class data was generated, e.g. 
-$P(y=1 \ mid \mathbf{x}\in\mathcal{X})$.
+$$\mathbf{X}_1, \ldots, \mathbf{X}_n$$. The (i,j)th entry $X_{ij}$ of $\mathbf{X}$ is the value of the jth feature in the ith sample. We will somtimes use y to denote the random variables from which the class data was generated, e.g. $P(y=1 \ mid \mathbf{x}\in\mathcal{X})$.
 
 ### Models
 
@@ -115,11 +114,11 @@ Aside from hyperparameter tuning, the problem is now straightforward, as indicat
 
 Notes:
 
-•	Logistic models are easy to interpret.
+- Logistic models are easy to interpret.
 
-•	Susceptible to redundant features, e.g. multicollinearity
+- Susceptible to redundant features, e.g. multicollinearity
 
-•	Susceptible to features with wildly different means & variances, so standardize numeric features before applying
+- Susceptible to features with wildly different means & variances, so standardize numeric features before applying
 
 
 ## 2.3 Decision trees
@@ -166,23 +165,24 @@ Finally, we note that cost-complexity pruning determines its optimal subtrees us
 
 $\mathbf{Notes}$:
 
-•	Decision trees aren't susceptible to features with wildly different means & variances, so one needn't standardize numeric features before applying
+- Decision trees aren't susceptible to features with wildly different means & variances, so one needn't standardize numeric features before applying
 
-•	The effect of redundant features on decision trees is a little nuanced. Trees aren't susceptible to redundant features, e.g. multicollinearity, in the sense that, e.g. if two features are highly correlated, a decision tree might use one feature or the other as it makes its splits.  But the tree will still be built and approximately solve the regularized log-loss. What will be lost though, if you're not aware of the correlation (or in general, which features are mutually redundant), is the magnitude of feature importance (which might be divided among the redundant features).
+- The effect of redundant features on decision trees is a little nuanced. Trees aren't susceptible to redundant features, e.g. multicollinearity, in the sense that, e.g. if two features are highly correlated, a decision tree might use one feature or the other as it makes its splits.  But the tree will still be built and approximately solve the regularized log-loss. What will be lost though, if you're not aware of the correlation (or in general, which features are mutually redundant), is the magnitude of feature importance (which might be divided among the redundant features).
 
-•	And they're easily interpreted
+- And they're easily interpreted
 
-•	But if they're not sufficiently pruned, then they tend to overfit the data (low bias, high variance) 
+- But if they're not sufficiently pruned, then they tend to overfit the data (low bias, high variance) 
 
 
 ## 2.4 Random forests
 
 Random forests address the high variance of decision trees. It does this by averaging the results of several trees, each built on a randomized pertubation of the data $\mathcal{D}$ and a random subset of the features.  
 
-The randomized pertubation is accomplished by bootstrapping the data.  That is, by replacing $\mathcal{D}$ with a simple random sample with replacement of the same size $|\mathcal{D}|$.
+The randomized pertubation is accomplished by bootstrapping the data.  That is, by replacing $\mathcal{D}$ with a simple random sample with replacement of the same size $\vert\mathcal{D}\vert$.
 
 $\textbf{Model form}$: 
-$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{1}{K} \sum_{k=1}^K P_k (y=1 \mid \mathbf{x})$$ where $P_k (y=1 \mid \mathbf{x})$ is the prediction from a decision tree 
+$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{1}{K} \sum_{k=1}^K P_k (y=1 \mid \mathbf{x})$$ 
+where $P_k (y=1 \mid \mathbf{x})$ is the prediction from a decision tree 
 $T_k$ trained on a bootstrap sample of size $|\mathcal{D}|$ from the data $\mathcal{D}$ and from a simple random sample of 
 $F$ features, for some $F\geq 1$. (The same value of $F$ is used for each tree.)
 
@@ -201,20 +201,21 @@ $m/3$ (rounded down) for regression, provided there are at least 5 samples per n
 
 $\textbf{Notes}$:
 
-•	The random perturbations to the training data and features considered make random forests outperform decision trees. In fact, random forests are described in the Handbook as having state-of-the-art performance for fraud detection. 
+- The random perturbations to the training data and features considered make random forests outperform decision trees. In fact, random forests are described in the Handbook as having state-of-the-art performance for fraud detection. 
 
-•	Like decision trees, random forests aren't susceptible to features with wildly different means & variances, so one needn't standardize numeric features before applying.
+- Like decision trees, random forests aren't susceptible to features with wildly different means & variances, so one needn't standardize numeric features before applying.
 
-•	Random forests are less susceptible to feature redundancy than individual trees are. [^7] 
+- Random forests are less susceptible to feature redundancy than individual trees are. [^7] 
 
-•	Random forests are harder to interpret than decision trees.  For any given feature vector, you can certainly identify the leaves it falls in, and their associated class-weighted fraud incidence as indicated by the data $\mathcal{D}$.  But with often 100 trees, this information is probably too complex to be helpful.
+- Random forests are harder to interpret than decision trees.  For any given feature vector, you can certainly identify the leaves it falls in, and their associated class-weighted fraud incidence as indicated by the data $\mathcal{D}$.  But with often 100 trees, this information is probably too complex to be helpful.
 
 ## 2.5 Gradient boosted trees
 
 Having looked at one type of ensemble (bagging), we now look at another (boosting).  While the decision trees in a random forest can be built in parallel, those in gradient boosting are built sequentially. And rather than simply averaging the tree predictions like in random forests, gradient boosted trees predict the log-odds as a linear combination of the log-odds predicted from the trees.  I will only look at XGBoost, which seems popular.
 
 $\textbf{Model form}$: 
-$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(b+\eta \sum_{k=1}^K f_k(\mathbf{x})) = \frac{1}{1+ \exp(-b-\eta \sum_{k=1}^K f_k(\mathbf{x}))}$$ where $b$ is the log-odds of the fraud rate in 
+$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(b+\eta \sum_{k=1}^K f_k(\mathbf{x})) = \frac{1}{1+ \exp(-b-\eta \sum_{k=1}^K f_k(\mathbf{x}))}$$ 
+where $b$ is the log-odds of the fraud rate in 
 $\mathcal{D}$, $0<\eta<1$ is a hyperparameter (the "learning rate"), $K\geq 1$, and $f_1(\mathbf{x}),..., f_K(\mathbf{x})$ are the predictions from decision trees determined by the boosting algorithm.  (Although scikit-learn accepts learning rates larger than 1, it seems to make most sense to limit to smaller learning rates.) 
 
 $\textbf{Optimization (my take)}$: For given values of the hyperparameters $\eta, \lambda, \alpha>0$, and taking 
@@ -228,12 +229,14 @@ As with random forests, the resulting trees can have different depths and number
 SVMs are an outlier in two respects: They don't use the same loss function: Instead of log-loss, they use hinge loss.
 And they predict a classification of fraud-vs-legit (separating the two via a hyperplane in a high-dimensional space defined by the kernel), not a formula for $P(y=1 \mid \mathbf{x}\in\mathcal{X})$. You can generate probabilities via "Platt scaling", which fits a sigmoid function to the predicted class using validation. We'll give both versions of the model form:
 
-$\textbf{Model form for class prediction}$: Given a kernel 
-$K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$, 
+$\textbf{Model form for class prediction}$: 
 $$y = 0.5 + 0.5 \ sgn \left( \sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b \right)$$
+where 
+$K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$ is a user-specified kernel.
 
-$\textbf{Model form for probabilities}$: Given a kernel $K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$, 
+$\textbf{Model form for probabilities}$: 
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma \left( A \left( \sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b \right) + B \right)$$
+where $K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$ is a user-specified kernel.
 
 The model parameters are $w_1,\ldots, w_n\geq 0$, $b\in\mathbb{R}$, plus any parameters involved in the kernel 
 $K$. The parameters $A$ and $B$ are considered to be hyperparameters as they are usually fit using validation. The $2y_i - 1$ term simply translates our {0,1} encoding of legit-vs-fraud to a {-1,1} encoding, and the 0.5 terms in the class predictions translate them back.  The sgn() function returns the sign of its argument (+1, -1, or 0). The support vectors are those $\mathbf{X}_i$ for which $w_i>0$.
@@ -258,8 +261,9 @@ where $\tilde{y}_i = 2y_i - 1.$ [^9] [^10]
 
 ## 2.7 K-nearest neighbors
 
-$\textbf{Model form}$: Given $k\geq 1$,   
-$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ where $N_k(\mathbf{x})$ is the set of indices of the 
+$\textbf{Model form}$:    
+$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ 
+where $k\geq 1$ is user-specified (or tuned), $N_k(\mathbf{x})$ is the set of indices of the 
 $k$ samples in $\mathcal{D}$ with the 
 $k$ smallest values of $||\mathbf{X}_i - \mathbf{x}||$. 
 
@@ -271,13 +275,14 @@ Also, I'm using Euclidean distance, although other choices are possible.
 
 For now at least, I'm just going to consider feedforward nerual networks (aka multilayer perceptrons) with ReLU activations on all hidden layers and a sigmoid output layer.  This seems to be a standard deep neural network architecture for fraud detection
 
-$\textbf{Model form}$: Given $L\geq 1$, 
+$\textbf{Model form}$: 
 $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$ 
-where $a_0:=\mathbf{x}$ and for each 
+where $L\geq 1$ is user-specified, $a_0:=\mathbf{x}$ and for each 
 $1\leq k\leq L-1$, $a_k:=ReLU(W_k a_{k-1} + b_k)$. So the model parameters are the 
 $m\times m$ matrices $W_k$ and the vectors $b_k\in\mathbb{R}^m$.
 
-$\textbf{Optimization}$: Put all the parameters from the $W_k$ and $b_k$ into one long parameter vector $\mathbf{w}\in\mathbb{R}^{Lm(m+1)}$. For a given value of the L2 hyperparameter $\lambda>0$, the model parameters $w$ are determined by minimizing the regularized log-loss: $$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}) = \frac{1}{\sum_{i=1}^n s_i} \sum_{i=1}^n s_i L(y_i, P(y=1 \mid \mathbf{X}_i)) + \lambda \|w\|^2$$
+$\textbf{Optimization}$: Put all the parameters from the $W_k$ and $b_k$ into one long parameter vector $\mathbf{w}\in\mathbb{R}^{Lm(m+1)}$. For a given value of the L2 hyperparameter $\lambda>0$, the model parameters $w$ are determined by minimizing the regularized log-loss: 
+$$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}) = \frac{1}{\sum_{i=1}^n s_i} \sum_{i=1}^n s_i L(y_i, P(y=1 \mid \mathbf{X}_i)) + \lambda \|w\|^2$$
 noting that each $P(y=1 \mid \mathbf{X}_i)$ is a function of the the parameters $\mathbf{w}$. 
 
 [^1]: https://en.wikipedia.org/wiki/Decision_tree_learning#cite_note-35
