@@ -81,7 +81,7 @@ $i^{\text{th}}$ coin being $f_{\mathbf{w}}(\mathbf{X}_i)$, and wrote down a list
 
 ### Regularization
 
-Regularization, along with cross-validation, is one of the ways to keep models from being too complex (i.e. controlling the model variance). When applicable, we will pretty much stick to L2-regularization, which seems to be commonly used.  In this case, the regularization function for a model with model parameters $\mathbf{w}$ is $$\Omega(\mathbf{w}), \lambda := \lambda \|w\|^2$$
+Regularization, along with cross-validation, is one of the ways to keep models from being too complex (i.e. controlling the model variance). When applicable, we will pretty much stick to L2-regularization, which seems to be commonly used.  In this case, the regularization function for a model with model parameters $\mathbf{w}$ is $$\Omega(\mathbf{w}, \lambda ):= \lambda \|\mathbf{w}\|^2$$
 where $\lambda>0$ is a hyperparameter (the "regularization strength"). (In scikit-learn, you specify the "inverse regularization strength $C$, defined as $C:=1/(2\lambda)$.) For some models, like decision trees where we want to control things like tree depth and the number of leaves, regularization will look a little different.
 
 Whatever form the regularization $\Omega (\mathbf{w}, \mathbf{\lambda})$ takes (allowing for multiple hyperparameters $\mathbf{\lambda}$), The regularized log-loss is 
@@ -90,20 +90,28 @@ $$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}) :=\text{LogLoss}(f_{\mathb
 
 For given values of the hyperparameters $\mathbf{\lambda}$, I think this is what models in general aim to minimize. When $\Omega()$ is convex and twice-differentiable in $\textbf{w}$, you can minimize it, for fixed hyperparameters, by gradient descent or Newton's method.  When it's not, as will happen for tree-based models, I think what happens is that the optimization becomes NP-hard, essentially requiring an exhaustive search of a large parameter space. I think that's why in tree-based methods, "greedy" algorithms are employed that solve an analogous optimization in steps.
 
-At this point, you might wonder why we don't simultaneously optimize the model parameters and hyperparameter(s). Simulataneous optimization would essentially undermine the role of regularization. E.g. for L2-regularized logistic regression, fitting both the model parameters $\mathbf{w}$ and $\lambda$ to any given dataset $-$ whether the full data or the training data $-$ could very well give an overfit $\mathbf{w}$ with $\lambda\approx 0$. No regularization there...  That's why the model parameters and hyperparameters are tuned separately, often in a tri-level optimization framework using different subsets of the full dataset, like this:
+At this point, you might wonder why we don't simultaneously optimize the model parameters and hyperparameter(s). Simulataneous optimization would essentially undermine the role of regularization. E.g. for L2-regularized logistic regression, fitting both the model parameters $\mathbf{w}$ and $\lambda$ to any given dataset $-$ whether the full data or the training data $-$ could very well give an overfit $\mathbf{w}$ with $\lambda\approx 0$. No regularization there...  That's why the model parameters and hyperparameters are tuned separately.
 
-1. Optimize $\mathbf{w}$ on the training data, fixing the $\mathbf{\lambda}$: Set the values of $\mathbf{\lambda}$ to some default or user-informed initial values  
-$\mathbf{\lambda}^*$, and minimize 
+It seems that most approaches to hyperparameter tuning first limit the search space to some region $\Lambda$ of reasonable values and then aim to solve the following bilevel optimization
+problem: Find the $\mathbf{\lambda}$ that minimizes 
 
-$$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$$
-on the training data. Say the min value occurs at $\mathbf{w}^*$.
+$$\text{ValLoss}(\mathbf{w}_{\mathbf{\lambda}}, \mathbf{\lambda})$$
 
-2. Optimize $\mathbf{\lambda}$ on the validation data (or cross-validation), fixing the $\mathbf{w}$: Minimize 
+where $\text{ValLoss}: \mathbb{R}^W \times \Lambda \rightarrow \mathbb{R}$ is a measure of 
+the generalization error of the model and 
+$\mathbf{w}_{\mathbf{\lambda}}$ is the value of $\mathbf{w}$ that minimizes
+$\text{RegLogLoss}(f_\mathbf{w}, \mathbf{\lambda})$
+for a given value of $\mathbf{\lambda}$. [^1] 
 
-$$\text{RegLogLoss}(f_{\mathbf{w}^*}, \mathbf{\lambda})$$ 
-on this data. Say the min value occurs at $\mathbf{\lambda}^*$.
+This sounds to me like finding:
 
-3. Re-optimize $\mathbf{w}$ on the training (or training + validation) data, fixing the $\mathbf{\lambda}$: Get the final model parameters by minimizing $\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}^*)$ on this data.
+$$\argmin_{\mathbf{\lambda} \in \Lambda} \text{ValLoss}(\argmin_{\mathbf{w}\in\mathbb{R}^W} \text{RegLogLoss}(f_\mathbf{w}, \mathbf{\lambda}), \mathbf{\lambda})$$
+
+where $\Lambda$ is a user-specified collection of hyperparameter combinations.
+
+To truly measure how well the model generalizes to non-training data, $\text{ValLoss}$ typically involves the validation data or cross-validation. $\text{ValLoss}$ might simply be the regularized log-loss evaluated on a validation set (or cross-validation). Or it might be a different measure of loss, driven by business objectives.
+
+When both loss functions are differentiable and convex, we can solve the optimizations by gradient descent. But the optimization for $\text{ValLoss}$ is often approximated by searching selected combinations of the $\Lambda$ search space (via, e.g., Python's GridSearchCV). 
 
 ## 2.2 Logistic regression
 
@@ -129,11 +137,12 @@ Notes:
 ## 2.3 Decision trees
 
 Trees are formed by repeatedly partitioning the feature space into half spaces 
-$$\{ \mathbf{x}\in\mathbb{R}^m: x_i \leq c_i\}$ and $\{ \mathbf{x}\in\mathbb{R}^m : x_i > c_i \}$$ 
+
+$$\{ \mathbf{x}\in\mathbb{R}^m: x_i \leq c_i\} \text{ and } \{ \mathbf{x}\in\mathbb{R}^m : x_i > c_i \}$$ 
+
 where $1\leq i\leq m$ and $c_i\in\mathbb{R}$. This gives rise to leaves of the form 
-$\prod_{j\in J} \{a_j < x_j \leq b_j\}$ where 
-$J\subseteq \{1,...,m\}$ and $a_j, b_j \in [ -\infty, +\infty ] \ \forall j\in J$. 
-(The interval $(a_j, b_j]$ can be bounded at both ends if the $j$th feature is visited multiple times in the tree.) Geometrically, the leaves are rectanguloids. 
+$$\prod_{j\in J} \{a_j < x_j \leq b_j\}$$ where 
+$J\subseteq \{1,...,m\}$ and $a_j, b_j \in [ -\infty, +\infty ] \ \forall j\in J$. (The interval $(a_j, b_j]$ can be bounded at both ends if the $j$th feature is visited multiple times in the tree.) Geometrically, the leaves are rectanguloids. 
 
 Decision trees give constant predictions on the leaves (so these models are locally constant). It is a simple exercise to see that the constant prediction that minimizes the log-loss is the the class-weighted average incidence of fraud in the data.  Similarly, the prediction on each leaf is the class-weighted fraud incidence.  These observations gives us the model form.
 
@@ -156,7 +165,7 @@ $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{x
 
 That is a decision tree simply partitions the feature space into rectanguloids and predicts the chance of fraud in each rectanguloid to be the fraud incidence for the portion of the data $\mathcal{D}$ that falls into the rectanguloid.
 
-Regarding optimization, optimization for non-tree-based models is a walk in the park.  It is easy to find sources that state the function that for a given set of hyperparameters is to be optimized to get the model parameters. For tree-based methods, this seems much harder to find.  Various sources such as Wikipedia, X and X say that under very general conditions regarding the loss function finding the optimal decision tree is an NP-hard problem. [^1]  I assume that attempting to minimize the log-loss or regularized log-loss would fit such criteria. But I wasn't able to find a source saying e.g. that the objective in fitting a decision tree (or random forest or gradient boosted trees) is to minimize the regularized log-loss.  Instead, sources present the "greedy" algorithm that optimizes each step in a tree-building and tree-pruning process, and (sometimes) acknowledge that the result is "suboptimal" without specifyig the optimization that would make a tree "optimal". (Or maybe I didn't read the papers carefully enough?)    [^2]  [^3]  [^4]  [^5]  [^6] 
+Regarding optimization, optimization for non-tree-based models is a walk in the park.  It is easy to find sources that state the function that for a given set of hyperparameters is to be optimized to get the model parameters. For tree-based methods, this seems much harder to find.  Various sources such as Wikipedia, X and X say that under very general conditions regarding the loss function finding the optimal decision tree is an NP-hard problem. [^2]  I assume that attempting to minimize the log-loss or regularized log-loss would fit such criteria. But I wasn't able to find a source saying e.g. that the objective in fitting a decision tree (or random forest or gradient boosted trees) is to minimize the regularized log-loss.  Instead, sources present the "greedy" algorithm that optimizes each step in a tree-building and tree-pruning process, and (sometimes) acknowledge that the result is "suboptimal" without specifyig the optimization that would make a tree "optimal". (Or maybe I didn't read the papers carefully enough?)    [^3]  [^4]  [^5]  [^6]  [^7] 
 
 So rather than presenting a definitive-sounding "Optimization" section, I present an "Optimization (my take)" reflecting my reading between the lines. 
 
@@ -219,7 +228,7 @@ $\textbf{Notes}$:
 
 - Like decision trees, random forests aren't susceptible to features with wildly different means & variances, so one needn't standardize numeric features before applying.
 
-- Random forests are less susceptible to feature redundancy than individual trees are. [^7] 
+- Random forests are less susceptible to feature redundancy than individual trees are. [^9] 
 
 - Random forests are harder to interpret than decision trees.  For any given feature vector, you can certainly identify the leaves it falls in, and their associated class-weighted fraud incidence as indicated by the data $\mathcal{D}$.  But with often 100 trees, this information is probably too complex to be helpful.
 
@@ -275,7 +284,7 @@ $$
 \quad \xi_i \geq 0, \quad \forall i \in \{1, \ldots, n\}
 $$
 
-where $\tilde{y}_i = 2y_i - 1.$ [^9] [^10] 
+where $\tilde{y}_i = 2y_i - 1.$ [^10] [^11] 
 
 ## 2.7 K-nearest neighbors
 
@@ -306,26 +315,28 @@ $$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}) = \frac{1}{\sum_{i=1}^n s_
 
 noting that each $P(y=1 \mid \mathbf{X}_i)$ is a function of the the parameters $\mathbf{w}$. 
 
-[^1]: https://en.wikipedia.org/wiki/Decision_tree_learning#cite_note-35
+[^1]: Franceschi, L., Frasconi, P., Salzo, S., Grazzi, R., & Pontil, M. (2018). Bilevel programming for hyperparameter optimization and meta-learning. Proceedings of the 35th International Conference on Machine Learning (ICML), 80, 1568–1577. https://proceedings.mlr.press/v80/franceschi18a.html
 
-[^2]: Nielsen, D. (2016). Tree boosting with XGBoost: Why does XGBoost win "every" machine learning competition? [Master’s thesis, Norwegian University of Science and Technology]. NTNU Open. https://ntnuopen.ntnu.no/ntnu-xmlui/bitstream/handle/11250/2433761/16128_FULLTEXT.pdf?sequence=1&isAllowed=y. 
+[^2]: https://en.wikipedia.org/wiki/Decision_tree_learning#cite_note-35
+
+[^3]: Nielsen, D. (2016). Tree boosting with XGBoost: Why does XGBoost win "every" machine learning competition? [Master’s thesis, Norwegian University of Science and Technology]. NTNU Open. https://ntnuopen.ntnu.no/ntnu-xmlui/bitstream/handle/11250/2433761/16128_FULLTEXT.pdf?sequence=1&isAllowed=y. 
 
 
-[^3]: Konstantinov, A. V., & Utkin, L. V. (2025). A novel gradient-based method for decision trees optimizing arbitrary differentiable loss functions. arXiv preprint arXiv:2503.17855. https://arxiv.org/abs/2503.17855
+[^4]: Konstantinov, A. V., & Utkin, L. V. (2025). A novel gradient-based method for decision trees optimizing arbitrary differentiable loss functions. arXiv preprint arXiv:2503.17855. https://arxiv.org/abs/2503.17855
 
-[^4]: Kohler, H., Akrour, R., & Preux, P. (2025). Breiman meets Bellman: Non-Greedy Decision Trees with MDPs. arXiv. https://arxiv.org/html/2309.12701v5#S3
+[^5]: Kohler, H., Akrour, R., & Preux, P. (2025). Breiman meets Bellman: Non-Greedy Decision Trees with MDPs. arXiv. https://arxiv.org/html/2309.12701v5#S3
 
-[^5]: Bongiorno, D., D’Onofrio, A., & Triki, C. (2024). Loss-optimal classification trees: A generalized framework and the logistic case. TOP, 32(2), 409–446. https://doi.org/10.1007/s11750-024-00674-y
+[^6]: Bongiorno, D., D’Onofrio, A., & Triki, C. (2024). Loss-optimal classification trees: A generalized framework and the logistic case. TOP, 32(2), 409–446. https://doi.org/10.1007/s11750-024-00674-y
 
-[^6]: van der Linden, J. G. M., Vos, D., de Weerdt, M., Verwer, S., & Demirović, E. (2025). Optimal or greedy decision trees? Revisiting their objectives, tuning, and performance. arXiv. https://arxiv.org/abs/2409.12788
+[^7]: van der Linden, J. G. M., Vos, D., de Weerdt, M., Verwer, S., & Demirović, E. (2025). Optimal or greedy decision trees? Revisiting their objectives, tuning, and performance. arXiv. https://arxiv.org/abs/2409.12788
 
-[^7]: See for instance: GeeksforGeeks. (2025, July 23). Solving the multicollinearity problem with decision tree. GeeksforGeeks. https://www.geeksforgeeks.org/machine-learning/solving-the-multicollinearity-problem-with-decision-tree/
+[^8]: See for instance: GeeksforGeeks. (2025, July 23). Solving the multicollinearity problem with decision tree. GeeksforGeeks. https://www.geeksforgeeks.org/machine-learning/solving-the-multicollinearity-problem-with-decision-tree/
 
-[^8]: Hastie, Trevor; Tibshirani, Robert; Friedman, Jerome (2008). The Elements of Statistical Learning (2nd ed.). Springer. ISBN 0-387-95284-5.
+[^9]: Hastie, Trevor; Tibshirani, Robert; Friedman, Jerome (2008). The Elements of Statistical Learning (2nd ed.). Springer. ISBN 0-387-95284-5.
 
-[^9]: Ding, Y., & Huang, S. (2024). A generalized framework with adaptive weighted soft-margin for imbalanced SVM classification. arXiv. https://arxiv.org/abs/2403.08378
+[^10]: Ding, Y., & Huang, S. (2024). A generalized framework with adaptive weighted soft-margin for imbalanced SVM classification. arXiv. https://arxiv.org/abs/2403.08378
 
-[^10]: Hastie, T., Rosset, S., Tibshirani, R., & Zhu, J. (2004). The entire regularization path for the support vector machine. Journal of Machine Learning Research, 5, 1391–1415. http://www.jmlr.org/papers/volume5/hastie04a/hastie04a.pdf
+[^111]: Hastie, T., Rosset, S., Tibshirani, R., & Zhu, J. (2004). The entire regularization path for the support vector machine. Journal of Machine Learning Research, 5, 1391–1415. http://www.jmlr.org/papers/volume5/hastie04a/hastie04a.pdf
 
 
 
