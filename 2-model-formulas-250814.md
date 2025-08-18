@@ -336,7 +336,7 @@ noting that each $P(y=1 \mid \mathbf{X}_i)$ is a function of the the parameters 
 
 [^10]: Ding, Y., & Huang, S. (2024). A generalized framework with adaptive weighted soft-margin for imbalanced SVM classification. arXiv. https://arxiv.org/abs/2403.08378
 
-[^111]: Hastie, T., Rosset, S., Tibshirani, R., & Zhu, J. (2004). The entire regularization path for the support vector machine. Journal of Machine Learning Research, 5, 1391–1415. http://www.jmlr.org/papers/volume5/hastie04a/hastie04a.pdf
+[^11]: Hastie, T., Rosset, S., Tibshirani, R., & Zhu, J. (2004). The entire regularization path for the support vector machine. Journal of Machine Learning Research, 5, 1391–1415. http://www.jmlr.org/papers/volume5/hastie04a/hastie04a.pdf
 
 
 
