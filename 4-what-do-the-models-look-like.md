@@ -968,7 +968,7 @@ The above plots were plotted against the top two features for each model (in ter
       <a href="3-the-data-we-use.html">← Previous: 3. The data we use</a>
     </td>
     <td align="right">
-      <a href="5-performance-metrics.html">← Next: 5. Performance metrics →</a>
+      <a href="5-performance-metrics.html"> Next: 5. Performance metrics →</a>
     </td>
   </tr>
 </table>
