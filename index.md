@@ -11,13 +11,29 @@ I’m writing this series to lock in my own understanding of supervised learning
 
 Having read a lot of material explaining machine learning in non-specific terms, I am most interested in:
 
-•	a clear understanding of the models, metrics, and assorted techniques commonly used in fraud detection, and
+-	a clear understanding of the models, metrics, and assorted techniques commonly used in fraud detection, 
 
-•	what sets supervised learning for fraud detection apart from supervised learning in general (such as the extreme class imbalance, and the different costs for false positives vs false negatives).
+-	what sets supervised learning for fraud detection apart from supervised learning in general (such as the extreme class imbalance, and the different costs for false positives vs false negatives), and
+
+- what types of business objectives can we solve?
 
 When possible, I’d also like to have a visual understanding (yeah, right).  
 
 I’ll be working with the synthetic dataset from the Fraud Detection Handbook.[^1] It’s designed to mirror real-world transaction streams and already includes several engineered features. Crucially, it simulates two common fraud scenarios—compromised point-of-sale devices and compro-mised cards—so I can see how models react to different attack patterns. I'll refer to this handbook in my series of posts as the "Handbook".
+
+To get the juices flowing, let's think about business objectives. In general terms, you want to catch as much fraud as possible, while minimizing false alarms. And you have limited resources with which to catch fraud. You have fraud analysts who can investigate a certain number of suspicious transactions (or cards with suspicious transactions) per day. And there are different costs for missing fraud vs incurring false alarms.  Thinking more specifically, you might want to ask:
+
+- I have fraud analysts who can can collectively review x cards with suspicious transactions per hour.  How much fraud can I catch (what percent of volume or dollars) with these resources?  How many false alarms will I incur to do this?  What if I increased my investigative capacity (hired more fraud analysts)?
+
+- Given our current transaction volume, what's the smallest total fraud-related cost (including the cost of fraud itself and the amount I spend investigating suspicious transactions) I would need to spend? How many investigators would I need to achieve it? 
+
+- How much money will your proposed fraud detection scheme save me?
+
+- How rapidly can your proposed fraud detection scheme respond to changing patterns of fraud?
+
+- And, for all of the above, how confident are you in your estimates? What kinds of qualifiers and bounds would you need to put on your answers to be, say, 95% confident that your estimates will hold going forward?  
+
+Some of these questions will surely be easier to answer than others.
 
 Here is a first post, on models commonly used for fraud detection and who uses them: [Commonly used supervised learning models](1-commonly-used-models.md).
 

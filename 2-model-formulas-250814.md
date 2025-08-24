@@ -38,11 +38,12 @@ I assume the reader is familiar with the concepts of training, validation, cross
 
 As usual, $\mathbf{X}$ will denote the $m\times n$ 
 matrix whose columns are 
-$$\mathbf{X}_1, \ldots, \mathbf{X}_n$$. The (i,j)th entry $X_{ij}$ of $\mathbf{X}$ is the value of the jth feature in the ith sample. We will somtimes use y to denote the random variables from which the class data was generated, e.g. $P(y=1 \ mid \mathbf{x}\in\mathcal{X})$.
+$\mathbf{X}_1, \ldots, \mathbf{X}_n$. 
+The (i,j)th entry $X_{ij}$ of $\mathbf{X}$ is the value of the jth feature in the ith sample. We will use $Y$$ to denote the random variable from which the class data was generated, e.g. $P(Y=1 \ \mid \mathbf{x}\in\mathcal{X})$.
 
 ### Models
 
-Of course, we are interested in modeling $P(y=1 \mid \mathbf{x}\in\mathcal{X})$, the likelihood of fraud conditioned on the values of the features. Any given model of this probability specified parameters $\mathbf{w}\in\mathbb{R}^W$ for some $W\geq 1$ will be a function 
+Consider a randomly selected transaction $(\mathbf{x}, y)\in\mathcal{X}\times \{ 0,1\}$. We are interested in modeling $P(y=1 \mid \mathbf{x}\in\mathcal{X})$, the likelihood of fraud conditioned on the values of the features. Any given model of this probability specified by parameters $\mathbf{w}\in\mathbb{R}^W$ for some $W\geq 1$ will be a function 
 $$f_{\mathbf{w}}:\mathcal{X}\rightarrow [0,1]$$ 
 with $f_{\mathbf{w}}(\mathbf{x})$ denoting the model's predicted probabilty of fraud at feature vector $\mathbf{x}$.  
 
@@ -90,7 +91,7 @@ $$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}) :=\text{LogLoss}(f_{\mathb
 
 For given values of the hyperparameters $\mathbf{\lambda}$, I think this is what models in general aim to minimize. When $\Omega()$ is convex and twice-differentiable in $\textbf{w}$, you can minimize it, for fixed hyperparameters, by gradient descent or Newton's method.  When it's not, as will happen for tree-based models, I think what happens is that the optimization becomes NP-hard, essentially requiring an exhaustive search of a large parameter space. I think that's why in tree-based methods, "greedy" algorithms are employed that solve an analogous optimization in steps.
 
-At this point, you might wonder why we don't simultaneously optimize the model parameters and hyperparameter(s). Simulataneous optimization would essentially undermine the role of regularization. E.g. for L2-regularized logistic regression, fitting both the model parameters $\mathbf{w}$ and $\lambda$ to any given dataset $-$ whether the full data or the training data $-$ could very well give an overfit $\mathbf{w}$ with $\lambda\approx 0$. No regularization there...  That's why the model parameters and hyperparameters are tuned separately.
+At this point, you might wonder why we don't simultaneously optimize the model parameters and hyperparameter(s). Simulataneous optimization would essentially undermine the role of regularization. E.g. for L2-regularized logistic regression, fitting both the model parameters $\mathbf{w}$ and $\lambda$ to any given dataset $-$ whether the full data or the training data $-$ could very well give an overfit $\mathbf{w}$ with $\lambda\approx 0$. No regularization there...  There's a second reason too: We don't want to base everything on the training data, for fear of overfitting.  We can guard against overfitting by setting the hyperparameters to achieve a different objective $-$ minimizing generalization error. For both of these reasons, the model parameters and hyperparameters are tuned separately.
 
 It seems that most approaches to hyperparameter tuning first limit the search space to some region $\Lambda$ of reasonable values and then aim to solve the following bilevel optimization
 problem: Find the $\mathbf{\lambda}$ that minimizes 
@@ -111,12 +112,12 @@ where $\Lambda$ is a user-specified collection of hyperparameter combinations.
 
 To truly measure how well the model generalizes to non-training data, $\text{ValLoss}$ typically involves the validation data or cross-validation. $\text{ValLoss}$ might simply be the regularized log-loss evaluated on a validation set (or cross-validation). Or it might be a different measure of loss, driven by business objectives.
 
-When both loss functions are differentiable and convex, we can solve the optimizations by gradient descent. But the optimization for $\text{ValLoss}$ is often approximated by searching selected combinations of the $\Lambda$ search space (via, e.g., Python's GridSearchCV). 
+When both loss functions are differentiable and convex, we can solve both optimizations by gradient descent. But the optimization for $\text{ValLoss}$ is often approximated by searching selected combinations of the $\Lambda$ search space (via, e.g., Python's GridSearchCV). 
 
 ## 2.2 Logistic regression
 
 $\textbf{Model form}$: 
-$$P(y=1 \ | \ \mathbf{x}\in\mathcal{X}) = \sigma(\mathbf{w}^t \mathbf{x} + b) = \frac{1}{1 + \exp(-\sum_{i=1}^n w_i x_i  - b)}$$
+$$P(Y=1 \ | \ \mathbf{x}\in\mathcal{X}) = \sigma(\mathbf{w}^t \mathbf{x} + b) = \frac{1}{1 + \exp(-\sum_{i=1}^n w_i x_i  - b)}$$
 where $b, w_1,..., w_m \in \mathbb{R}$ are the model parameters. 
 
 $\textbf{Optimization}$: The model parameters $b,\mathbf{w}$ are determined by minimizing the regularized loss function for a given value of the hyperparameter $\lambda$:
@@ -146,7 +147,7 @@ $J\subseteq \{1,...,m\}$ and $a_j, b_j \in [ -\infty, +\infty ] \ \forall j\in J
 
 Decision trees give constant predictions on the leaves (so these models are locally constant). It is a simple exercise to see that the constant prediction that minimizes the log-loss is the the class-weighted average incidence of fraud in the data.  Similarly, the prediction on each leaf is the class-weighted fraud incidence.  These observations gives us the model form.
 
-$\textbf{Model form}$: $$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{x}\in L_t)$$ 
+$\textbf{Model form}$: $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{x}\in L_t)$$ 
 
 where $\mathbb{I}(.)$ is the boolean indicator function (taking the value 1 if its argument is true and 0 otherwise), the leaves 
 $L_1,... L_T$ are rectanguloids partitioning the feature space, and the "leaf weights" $r_1,\ldots, r_T$ are the class-weighted fraud incidences on the leaves: 
@@ -160,7 +161,7 @@ $$L_t = \prod_{j\in J_t} (a_{tj}, b_{tj}]$$
 where $J_t\subseteq \{1,...,m\}$ and 
 $a_{tj}, b_{tj} \in [ -\infty, +\infty ] \ \forall j\in J_t$, we have 
 
-$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{x}\in \prod_{j\in J_t} (a_{tj}, b_{tj}]) 
+$$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{x}\in \prod_{j\in J_t} (a_{tj}, b_{tj}]) 
 = \sum_{t=1}^T r_t \  \prod_{j\in J_t} \mathbb{I}(a_{tj}<x_j\leq b_{tj})$$
 
 That is a decision tree simply partitions the feature space into rectanguloids and predicts the chance of fraud in each rectanguloid to be the fraud incidence for the portion of the data $\mathcal{D}$ that falls into the rectanguloid.
@@ -202,7 +203,7 @@ Random forests address the high variance of decision trees. It does this by aver
 The randomized pertubation is accomplished by bootstrapping the data.  That is, by replacing $\mathcal{D}$ with a simple random sample with replacement of the same size $\vert\mathcal{D}\vert$.
 
 $\textbf{Model form}$: 
-$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{1}{K} \sum_{k=1}^K P_k (y=1 \mid \mathbf{x})$$ 
+$$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{1}{K} \sum_{k=1}^K P_k (y=1 \mid \mathbf{x})$$ 
 
 where $P_k (y=1 \mid \mathbf{x})$ is the prediction from a decision tree 
 $T_k$ trained on a bootstrap sample of size $|\mathcal{D}|$ from the data $\mathcal{D}$ and from a simple random sample of 
@@ -237,7 +238,7 @@ $\textbf{Notes}$:
 Having looked at one type of ensemble (bagging), we now look at another (boosting).  While the decision trees in a random forest can be built in parallel, those in gradient boosting are built sequentially. And rather than simply averaging the tree predictions like in random forests, gradient boosted trees predict the log-odds as a linear combination of the log-odds predicted from the trees.  I will only look at XGBoost, which seems popular.
 
 $\textbf{Model form}$: 
-$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(b+\eta \sum_{k=1}^K f_k(\mathbf{x})) = \frac{1}{1+ \exp(-b-\eta \sum_{k=1}^K f_k(\mathbf{x}))}$$ 
+$$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(b+\eta \sum_{k=1}^K f_k(\mathbf{x})) = \frac{1}{1+ \exp(-b-\eta \sum_{k=1}^K f_k(\mathbf{x}))}$$ 
 
 where $b$ is the log-odds of the fraud rate in 
 $\mathcal{D}$, $0<\eta<1$ is a hyperparameter (the "learning rate"), $K\geq 1$, and $f_1(\mathbf{x}),..., f_K(\mathbf{x})$ are the predictions from decision trees determined by the boosting algorithm.  (Although scikit-learn accepts learning rates larger than 1, it seems to make most sense to limit to smaller learning rates.) 
@@ -252,16 +253,16 @@ As with random forests, the resulting trees can have different depths and number
 ## 2.6 Support vector machines
 
 SVMs are an outlier in two respects: They don't use the same loss function: Instead of log-loss, they use hinge loss.
-And they predict a classification of fraud-vs-legit (separating the two via a hyperplane in a high-dimensional space defined by the kernel), not a formula for $P(y=1 \mid \mathbf{x}\in\mathcal{X})$. You can generate probabilities via "Platt scaling", which fits a sigmoid function to the predicted class using validation. We'll give both versions of the model form:
+And they predict a classification of fraud-vs-legit (separating the two via a hyperplane in a high-dimensional space defined by the kernel), not a formula for $P(Y=1 \mid \mathbf{x}\in\mathcal{X})$. You can generate probabilities via "Platt scaling", which fits a sigmoid function to the predicted class using validation. We'll give both versions of the model form:
 
 $\textbf{Model form for class prediction}$: 
-$$y = 0.5 + 0.5 \ sgn \left( \sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b \right)$$
+$$Y = 0.5 + 0.5 \ sgn \left( \sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b \right)$$
 
 where 
 $K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$ is a user-specified kernel.
 
 $\textbf{Model form for probabilities}$: 
-$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma \left( A \left( \sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b \right) + B \right)$$
+$$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma \left( A \left( \sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b \right) + B \right)$$
 
 where $K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$ is a user-specified kernel.
 
@@ -289,7 +290,7 @@ where $\tilde{y}_i = 2y_i - 1.$ [^10] [^11]
 ## 2.7 K-nearest neighbors
 
 $\textbf{Model form}$:    
-$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ 
+$$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ 
 
 where $k\geq 1$ is user-specified (or tuned), $N_k(\mathbf{x})$ is the set of indices of the 
 $k$ samples in $\mathcal{D}$ with the 
@@ -304,7 +305,7 @@ Also, I'm using Euclidean distance, although other choices are possible.
 For now at least, I'm just going to consider feedforward nerual networks (aka multilayer perceptrons) with ReLU activations on all hidden layers and a sigmoid output layer.  This seems to be a standard deep neural network architecture for fraud detection
 
 $\textbf{Model form}$: 
-$$P(y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$ 
+$$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$ 
 
 where $L\geq 1$ is user-specified, $a_0:=\mathbf{x}$ and for each 
 $1\leq k\leq L-1$, $a_k:=ReLU(W_k a_{k-1} + b_k)$. So the model parameters are the 
@@ -313,7 +314,7 @@ $m\times m$ matrices $W_k$ and the vectors $b_k\in\mathbb{R}^m$.
 $\textbf{Optimization}$: Put all the parameters from the $W_k$ and $b_k$ into one long parameter vector $\mathbf{w}\in\mathbb{R}^{Lm(m+1)}$. For a given value of the L2 hyperparameter $\lambda>0$, the model parameters $w$ are determined by minimizing the regularized log-loss: 
 $$\text{RegLogLoss}(f_{\mathbf{w}}, \mathbf{\lambda}) = \frac{1}{\sum_{i=1}^n s_i} \sum_{i=1}^n s_i L(y_i, P(y=1 \mid \mathbf{X}_i)) + \lambda \|w\|^2$$
 
-noting that each $P(y=1 \mid \mathbf{X}_i)$ is a function of the the parameters $\mathbf{w}$. 
+noting that each $P(Y=1 \mid \mathbf{X}_i)$ is a function of the the parameters $\mathbf{w}$. 
 
 [^1]: Franceschi, L., Frasconi, P., Salzo, S., Grazzi, R., & Pontil, M. (2018). Bilevel programming for hyperparameter optimization and meta-learning. Proceedings of the 35th International Conference on Machine Learning (ICML), 80, 1568–1577. https://proceedings.mlr.press/v80/franceschi18a.html
 

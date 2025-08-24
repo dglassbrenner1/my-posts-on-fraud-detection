@@ -1,8 +1,0 @@
----
-layout: default     # use your main layout
-title: 5. Performance metrics         # page title
----
-
-# 5. Performance metrics
-
-For the purpose of plotting, we chose fit and tuned our models according to AUC ROC. According to the Handbook, this is "currently the de-facto metric for assessing fraud detection accuracies". But the Handbook also points to recent research that this metric can be misleading for highly imbalanced data and that the area under the Precision-Recall curve is recommended.  So let's take a closer look at these and other performance metrics commonly used to assess fraud detection models.

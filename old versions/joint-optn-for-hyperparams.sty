@@ -1,0 +1,108 @@
+# Direct Answer
+
+Yes. The ability to jointly optimize model weights and continuous hyperparameters carries over unchanged when using a class-weighted regularized log-loss. You simply embed class weights into the inner loss, and the same hypergradient or joint‐optimization machinery applies. All the caveats—non-differentiable tree hyperparameters, computational cost, and production workflow separation—remain valid.
+
+---
+
+## 1. Updated Joint Objective
+
+The inner (training) loss becomes class-weighted:
+
+\[
+$$\mathcal{L}_{\text{train}}(w, \mathbf{w_{\text{cls}}}; \lambda)
+= -\sum_{i=1}^N
+w_{\text{cls}}(y_i)\Bigl[y_i\log p_w(x_i)+(1-y_i)\log(1-p_w(x_i))\Bigr]
++ \lambda\,\Omega(w)$$
+\]
+
+Here  
+- \($w_{\text{cls}}(y)$\) assigns a weight to each class (e.g., higher for the fraud class).  
+- \($\lambda$\) is your continuous regularization hyperparameter.  
+
+The joint problem is still:
+
+\[
+$$\min_{\substack{w,\;\lambda\in[\lambda_{\min},\lambda_{\max}],\\w_{\text{cls}}\in[w_{\min},w_{\max}]}}
+\mathcal{L}_{\text{train}}(w, w_{\text{cls}}; \lambda)
++ R(\lambda, w_{\text{cls}})$$
+\]
+
+You can even **treat class-weights** \(w_{\text{cls}}\) as hyperparameters to be learned.
+
+---
+
+## 2. Updated PyTorch Example
+
+```python
+import torch
+from torch import nn, optim
+
+X_train, y_train = ...        # FloatTensor, {0,1}
+lambda_min, lambda_max = 1e-5, 1.0
+w = torch.zeros((X_train.shape[1],1), requires_grad=True)
+log_lambda = torch.tensor(-3.0, requires_grad=True)
+
+# Two class-weights as log-parameters
+log_w_neg = torch.tensor(0.0, requires_grad=True)
+log_w_pos = torch.tensor(1.0, requires_grad=True)
+
+optimizer = optim.Adam([w, log_lambda, log_w_neg, log_w_pos], lr=1e-2)
+
+for _ in range(200):
+    lamb = torch.clamp(log_lambda.exp(), lambda_min, lambda_max)
+    w_neg = torch.clamp(log_w_neg.exp(), 1e-2, 10.0)
+    w_pos = torch.clamp(log_w_pos.exp(), 1e-2, 100.0)
+
+    logits = X_train @ w
+    # Create weight mask per example
+    sample_weights = torch.where(y_train==1, w_pos, w_neg)
+
+    bce = nn.BCEWithLogitsLoss(reduction='none')
+    loss = (bce(logits, y_train) * sample_weights).mean()
+
+    reg = lamb * (w**2).sum()
+    total_loss = loss + reg
+
+    optimizer.zero_grad()
+    total_loss.backward()
+    optimizer.step()
+
+print("λ =", lamb.item(), "w_neg =", w_neg.item(), "w_pos =", w_pos.item())
+```
+
+---
+
+## 3. Practical Takeaways for Fraud Teams
+
+- Reserve joint optimization for **continuous** hyperparameters (regularization, dropout, class weights).  
+- Keep **discrete** controls (tree depth, number of trees, feature subsample) in an outer search loop.  
+- Always monitor cost-sensitive metrics (e.g., weighted log-loss on a validation fold, precision-recall AUC).  
+- Use nested cross-validation to ensure you’re not overfitting both model parameters and class weights.
+
+---
+
+## 4. The Bilevel Optimization View without class weights
+
+1. Inner objective (train):
+Minimize
+$$\mathcal{L}_{\text{train}}(w; \lambda) 
+= -\sum_{i \in \text{train}} \Bigl[y_i \log p_w(x_i) + (1-y_i)\log(1-p_w(x_i))\Bigr] 
++ \lambda \, \Omega(w)$$
+
+2. Outer objective (validation or penalty on λ):
+Minimize
+$$\mathcal{L}_{\text{val}}(w^*(\lambda)) 
+\quad\text{s.t.}\quad 
+
+\lambda \in [\lambda_{\min}, \lambda_{\max}]$$
+
+3. Joint formulation:
+$$\min_{w,\;\lambda \in [a,b]} \;
+
+
+\underbrace{\mathcal{L}_{\text{train}}(w; \lambda)}_{\text{weighted log-loss}} 
+
+
++ \alpha\,R(\lambda)$$
+
+Here, $R(\lambda)$ can enforce smoothness or penalize extreme regularization values.
