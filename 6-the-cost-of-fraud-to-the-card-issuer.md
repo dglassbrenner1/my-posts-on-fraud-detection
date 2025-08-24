@@ -183,7 +183,7 @@ To produce a more reasonable total cost estimate for a single card issuer fraud 
 
 - $N = 100,000$$ transactions per hour 
 - $f = 0.0005$ (0.05%) 
-- $t_avg = 0.04$ transactions per card per hour (about 1 transaction per day) — consistent with ~257 transactions per year per cardholder
+- $t_{avg} = 0.04$ transactions per card per hour (about 1 transaction per day) — consistent with ~257 transactions per year per cardholder
 - $P = 0.85$ (85%) — precision at card level reflecting a good fraud model
 - $R = 0.65$ (65%) — recall at card level
 - $n_a = 500$ cards reviewed per analyst per hour
