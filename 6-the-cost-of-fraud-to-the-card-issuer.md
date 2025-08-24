@@ -21,7 +21,7 @@ Assume that each time an analyst reviews a card with fraud, it is marked as comp
 ***
 
 
-## Step 1: Define Input Variables
+### Step 1: Define Input Variables
 
 - $N$: Total number of transactions in the period
 - $f$: Fraction of fraudulent transactions (transaction-level fraud rate)
@@ -42,26 +42,26 @@ Additional cost variables:
 
 ***
 
-## Step 2: Calculate Base Quantities
+### Step 2: Calculate Base Quantities
 
-### Number of Fraudulent Cards
+#### Number of Fraudulent Cards
 $$
 N_f = \frac{N \times f}{t_{\text{avg}}}
 $$
 
-### True Positives (Fraudulent Cards Detected)
+#### True Positives (Fraudulent Cards Detected)
 $$
 TP = R \times N_f
 $$
 
-### Number of Flagged Cards 
+#### Number of Flagged Cards 
 $$
 N_{\text{flagged}} = \frac{TP}{P} = \frac{R N_f}{P}
 $$
 
 ***
 
-## Step 3: Partition Flagged Cards
+### Step 3: Partition Flagged Cards
 
 - Automatically declined cards:
 $$
@@ -75,7 +75,7 @@ $$
 
 ***
 
-## Step 4: Analyst Review Capacity
+### Step 4: Analyst Review Capacity
 
 - Analyst review capacity (max cards reviewed per period):
 $$
@@ -89,7 +89,7 @@ $$
 
 ***
 
-## Step 5: Fraud and False Positives in Reviewed Set
+### Step 5: Fraud and False Positives in Reviewed Set
 
 Assuming flagged cards are uniformly sampled with respect to fraud and legit:
 
@@ -105,7 +105,7 @@ $$
 
 ***
 
-## Step 6: Fraud Detected and Missed Overall
+### Step 6: Fraud Detected and Missed Overall
 
 - Fraud detected by automatic declines:
 $$
@@ -129,7 +129,7 @@ $$
 
 ***
 
-## Step 7: Cost Components
+### Step 7: Cost Components
 
 - Analyst staffing cost:
 $$
@@ -148,7 +148,7 @@ $$
 
 ***
 
-## Step 8: Final Total Cost Formula
+### Step 8: Final Total Cost Formula
 
 $$
 \boxed{
