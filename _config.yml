@@ -1,7 +1,8 @@
 title: Test post with table and equation
 description: A simple Jekyll GitHub Pages site
 markdown: kramdown
-theme: minima   # You can use 'minima' or another supported theme, or leave blank for no theme
+theme: just-the-docs   # You can use 'minima' or another supported theme, or leave blank for no theme
+remote_theme: just-the-docs/just-the-docs
 
 kramdown:
   input: GFM

@@ -9,7 +9,7 @@ I fit each of our models to the fraud handbook data, using their choice of train
 
 I modeled TX_FRAUD as a function of the features, omitting the redundant features TX_DATETIME, TX_TIME_SECONDS, and TX_TIME_DAYS (as well as the Id variables and TX_FRAUD_SCENARIO).  
 
-## An aside on the Handbook's trainign and test data
+## An aside on the Handbook's training and test data
 
 The Handbook states that in such a scenario, the training data often consists of one set of consecutive days, followed by a gap (“delay”) period, followed by another set of consecutive days for the test data. As noted earlier, the Handbook makes the simplifying assumption that fraud is detected exactly seven days after it occurs.  So, a transaction made on 4/1/18 labeled as fraud or legit isn’t known to be fraud or legit until 4/8/18. 
 

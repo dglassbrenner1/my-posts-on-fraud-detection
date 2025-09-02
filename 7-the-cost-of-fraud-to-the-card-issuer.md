@@ -299,7 +299,7 @@ But right now our models are pretty simple. We haven't looked at better incorpor
       <a href="5-performance-metrics.html">← Previous: 5. Performance metrics</a>
     </td>
     <td align="right">
-      Next: 7. Post to come! →</a>
+      <a href="7-prequential-validation.html"> Next: 7. Prequential validation →</a>
     </td>
   </tr>
 </table>

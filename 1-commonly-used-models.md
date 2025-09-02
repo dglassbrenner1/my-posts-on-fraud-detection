@@ -6,7 +6,7 @@ title: 1. Commonly used supervised learning models         # page title
 # 1. Commonly used supervised learning models
 
 I want to focus on models commonly used in fraud detection. Maybe not
-surprisingly, a web search doesn't uncover e.g. exactly which types of
+surprisingly, a web search doesn't uncover, e.g., exactly which types of
 models Visa uses. And if you did find a post on what Visa uses, it could
 well be out-of-date.
 
@@ -16,7 +16,7 @@ That said, here is what a web search in July 2025 uncovered:
 
 ### Logistic Regression
 
-- A 2023 post by Capital One mentions logistic & other forms of
+- A 2023 post by Capital One mentions logistic and other forms of
   regression, suggesting Capital One has used them in some fashion.[^1]
 
 - A 2021 post by Capital One mentions logistic regression among models
@@ -36,57 +36,58 @@ That said, here is what a web search in July 2025 uncovered:
 
 <!-- -->
 
-- Used in the Handbook, due to its simplicity.
+- The Handbook includes logistic regression among its models considered.
 
-### Decision Trees (DTs)
+### Decision Trees 
 
-- Used in the Handbook, due to its simplicity.
+- Decision trees are also used in the Handbook.
 
-- Not mentioned specifically in any other posts, but DTs are fundamental
-  to two other models that are used (random forests & gradient boosted
+- While decision trees seem too simplistic to use as standalone fraud models, they are the fundamental
+  building blocks for the next two more commonly used models (random forests and gradient-boosted
   trees).
 
-### Random Forests (RFs)
+### Random Forests 
 
-- The chosen model in the 2021 Capital One post on money laundering.
+- Random forests were the best performing model in the 2021 Capital One post on money laundering.
 
-- Used in the Handbook, described as having state-of-the-art performance
+- The Handbook describe random forests as having state-of-the-art performance
   for fraud detection.
 
-### Gradient Boosted Trees (GBTs) 
+### Gradient-Boosted Trees 
 
-- Mentioned in the 2022 Fintech News post as then-current technique used
+- The 2022 Fintech News post reported gradient-boosted trees to be the then-current technique used
   by PayPal.
 
 - XGBoost was among the models considered in the 2021 Capital One post
   on money laundering.
 
-- Also used in the Handbook, and also described as having
+- Like random forests, the Handbook also characterized gradient-boosted trees as having
   state-of-the-art performance for fraud detection.
 
-- A 2020 post by NVIDIA said that American Express included gradient
-  boosted models in its portfolio. [^5]
+- A 2020 post by NVIDIA reported that American Express included gradient-boosted models in its portfolio. [^5]
 
-### Support Vector Machines (SVMs) 
+### Support Vector Machines  
 
-- Not used in the Handbook or any posts, but seems to figure prominently
+- Support Vector Machine classifiers aren't used in the Handbook or any posts I could find, they figured prominently
   in a 2019 survey by Priscilla et al that is used in the Handbook.[^6]
 
-### k-Nearest Neighbors (kNN) 
+### k-Nearest Neighbors 
 
-- Not used in the Handbook or any posts, but also mentioned in the 2019
+- Like Support Vector Machines, k-Nearest Neighbor models weren't used in the Handbook, but they were mentioned in the 2019
   by Priscilla et al survey.
 
 ### Neural Networks (NNs) 
 
-- The 2022 Fintech News post mentions PayPal using them.
+- The 2022 Fintech News post reported that PayPal used them.
 
 - A 2021 post by Stripe said they use neural networks.[^7]
 
-- The 2021 Capital One post said they use NNs to detect money
+- The 2021 Capital One post said they use neural networks to detect money
   laundering.
 
-- The 2020 NVIDIA post mentions American Express also using NNs.
+- The 2020 NVIDIA post mentions American Express also using neural networks.
+
+These seven models seem to be the most often used models for fraud detection. Next, let's look at what aspects of applying these models to fraud detection differ from other binary classification problems.
 
 [^1]: Capital One Tech. (2023, July 27). Boost model performance:
     Logistic regression in R. Medium.
@@ -126,7 +127,7 @@ That said, here is what a web search in July 2025 uncovered:
       <a href="/">← Previous: The goal for these posts</a>
     </td>
     <td align="right">
-      <a href="2-model-formulas-250814.html">Next: 2. Model formulas →</a>
+      <a href="2-whats-the-same-and-not.html">Next: 2. What's the same and not →</a>
     </td>
   </tr>
 </table>
