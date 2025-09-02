@@ -3,9 +3,9 @@ layout: default     # use your main layout
 title: 4. What do the models look like?         # page title
 ---
 
-# 4. What do the models look like?
+# 5. What do the models look like?
 
-I fit each of our models to the fraud handbook data, using their choice of training dataset. I used the tuning process we described in the regulariztaion section of [Model formulas](2-model-formulas-250814.md). (Tune the model parameters on the training data using default hyperparameters. Tune the hyperparameters using stratified 5-fold cross validation - stratified becuase of the class imbalance. Re-tune the model parameters on the training data using the tuned hyperparameters.)
+I fit each of our models to the fraud handbook data, using their choice of training dataset. I used the tuning process we described in the regulariztaion section of [Model formulas](3-model-formulas.md). (Tune the model parameters on the training data using default hyperparameters. Tune the hyperparameters using stratified 5-fold cross validation - stratified becuase of the class imbalance. Re-tune the model parameters on the training data using the tuned hyperparameters.)
 
 I modeled TX_FRAUD as a function of the features, omitting the redundant features TX_DATETIME, TX_TIME_SECONDS, and TX_TIME_DAYS (as well as the Id variables and TX_FRAUD_SCENARIO).  
 
@@ -534,7 +534,7 @@ for name, pipeline in optimized_pipelines.items():
 ``` </pre>
 </details>
 
-## 4.1 Logistic regression
+## 5.1 Logistic regression
 
 $\textbf{Model form}$: $$P(Y=1 \ | \ \mathbf{x}\in\mathcal{X}) = \sigma(\mathbf{w}^t \mathbf{x} + b) = \frac{1}{1 + \exp(-\sum_{i=1}^n w_i x_i  - b)}$$
  where $b, w_1,..., w_m \in \mathbb{R}$ are the model parameters. 
@@ -543,7 +543,7 @@ We expect the model to be a sigmoid surface, which is exactly what it looks like
 
 ![Logistic regression plot against top two features](./images/logistic-regression-against-top-two-features.png)
 
-## 4.2 Decision trees
+## 5.2 Decision trees
 
 $\textbf{Model form}$: $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{t=1}^T r_t \ \mathbb{I}(\mathbf{x}\in L_t)$$ where $\mathbb{I}(.)$ is the boolean indicator function (taking the value 1 if its argument is true and 0 otherwise), the leaves $L_1,... L_T$ are rectanguloids partitioning the feature space, and the "leaf weights" $r_1,..., r_T$ are the class-weighted fraud incidences on the leaves: $$r_t:= \frac{\sum_{i\in L_t} s_i y_i}{\sum_{i\in L_t} s_i}, \forall 1\leq t\leq T$$  
 
@@ -553,7 +553,7 @@ We expect this model to look like a bunch of steps on rectanguloids parallel to 
 
 ![Decision tree unlimited depth plot against top two features](./images/decision-tree-unlimited-depth-against-top-two-features.png)
 
-## 4.3 Random forests
+## 5.3 Random forests
 
 $\textbf{Model form}$: $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{1}{K} \sum_{k=1}^K P_k (y=1 \mid \mathbf{x})$$ where $P_k (y=1 \mid \mathbf{x})$ is the prediction from a decision tree $T_k$ trained on a bootstrap sample of size $|\mathcal{D}|$ from the data $\mathcal{D}$ and from a simple random sample of 
 $F$ features, for some $F\geq 1$. (The same value of $F$ is used for each tree.)
@@ -563,7 +563,7 @@ $K$ leaves to which $\mathbf{x}$ belongs. If I'm thinking right, I would also ex
 
 ![Random forest plot against top two features](./images/random-forest-against-top-two-features.png)
 
-## 4.4 Gradient boosted trees
+## 5.4 Gradient boosted trees
 
 $\textbf{Model form}$: 
 $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(b+\eta \sum_{k=1}^K f_k(\mathbf{x})) = \frac{1}{1+ \exp(-b-\eta \sum_{k=1}^K f_k(\mathbf{x}))}$$ where $b$ is the log-odds of the fraud rate in 
@@ -573,7 +573,7 @@ It's hard to imagine what a gradient boosted tree would look like.  We're taking
 
 ![XGBoost plot against top two features](./images/XGBoost-against-top-two-features.png)
 
-## 4.5 Support vector machines
+## 5.5 Support vector machines
 
 $\textbf{Model form}$: Given a kernel $K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$, $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma \left( A \left( \sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b \right) + B \right)$$
 
@@ -632,7 +632,7 @@ With a linear kernel, $\sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b
 
 ![SVM linear kernel plot against top two features](./images/SVM-linear-kernel-against-top-two-features.png)
 
-## 4.6 K-nearest neighbors
+## 5.6 K-nearest neighbors
 
 $\textbf{Model form}$: Given $k\geq 1$, estimate  $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ where $N_k(\mathbf{x})$ is the set of indices of the $k$ samples in $\mathcal{D}$ with the $k$ smallest values of $||\mathbf{X}_i - \mathbf{x}||$. 
 
@@ -640,7 +640,7 @@ We expect this to look like a smoothed version of the raw fraud surface, kind of
 
 ![k-nearest neighbors plot against top two features](./images/k-nearest-neighbors-against-top-two-features.png)
 
-## 4.7 Neural networks
+## 5.7 Neural networks
 
 $\textbf{Model form (for MLP)}$: Given $L\geq 1$,
 $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$ 
@@ -965,10 +965,10 @@ The above plots were plotted against the top two features for each model (in ter
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="3-the-data-we-use.html">← Previous: 3. The data we use</a>
+      <a href="4-the-data-we-use.html">← Previous: 4. The data we use</a>
     </td>
     <td align="right">
-      <a href="5-performance-metrics.html"> Next: 5. Performance metrics →</a>
+      <a href="6-performance-metrics.html"> Next: 6. Performance metrics →</a>
     </td>
   </tr>
 </table>

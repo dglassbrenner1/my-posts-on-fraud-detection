@@ -1,9 +1,9 @@
 ---
 layout: default     # use your main layout
-title: Incorporating the cost of fraud         # page title
+title: 7. Incorporating the cost of fraud         # page title
 ---
 
-# 6. Incorporating the cost of fraud
+# 7. Incorporating the cost of fraud
 
 In the introduction, we posed questions involving cost like:
 
@@ -11,7 +11,7 @@ In the introduction, we posed questions involving cost like:
 
 Let's put together a simple formula for the cost of fraud to the card issuer.  The Handbook mentions that some fraud detection systems are developed with the costs of false positives and negatives in mind, but doesn't seem to develop this notion further.  I was curious to look at how this could play out.
 
-## 6.1 A formula for the cost of fraud to the card issuer
+## 7.1 A formula for the cost of fraud to the card issuer
 
 Let's consider the type of scenario we were starting to flesh out at the end of the last post, but let's add in "automatic declines".  
 
@@ -233,7 +233,7 @@ print(f"Total Cost to Issuer for One Hour: ${cost:,.0f}")
 </details>
 
 
-## 6.2 The minimum cost of fraud with a perfect ML model
+## 7.2 The minimum cost of fraud with a perfect ML model
 
 Suppose we had a model that captured all fraud with no false positives, i.e. $P=1$ and $R=1$. The the cost simplifies to:
 
@@ -261,7 +261,7 @@ print(f"Total Cost to Issuer for One Hour w Perfect Model: ${cost:,.0f}")
 ``` </pre>
 </details>
 
-## 6.3 Optimizing staffing for a given model
+## 7.3 Optimizing staffing for a given model
 
 Suppose we have a model with the card precision and card recall we were using earlier, namely $P = 0.85, R = 0.65$. Then the minimal cost would come from reducing staff to two fraud analysts, bringing the hourly cost of fraud down to $664,329.
 
@@ -296,10 +296,10 @@ But right now our models are pretty simple. We haven't looked at better incorpor
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="5-performance-metrics.html">← Previous: 5. Performance metrics</a>
+      <a href="6-performance-metrics.html">← Previous: 6. Performance metrics</a>
     </td>
     <td align="right">
-      <a href="7-prequential-validation.html"> Next: 7. Prequential validation →</a>
+      <a href="8-prequential-validation.html"> Next: 8. Prequential validation →</a>
     </td>
   </tr>
 </table>

@@ -1,15 +1,15 @@
 ---
 layout: default     # use your main layout
-title: 3. The dataset we’ll use (primarily)         # page title
+title: 4. The dataset we’ll use (primarily)         # page title
 ---
 
-# 3. The dataset we’ll use (primarily) 
+# 4. The dataset we’ll use (primarily) 
 
 I’ll be working with the synthetic dataset from the Fraud Detection Handbook.[^1] It’s designed to mirror real-world transaction streams and already includes several engineered features. Crucially, it simulates two common fraud scenarios—compromised point-of-sale devices and compromised cards—so I can see how models react to different attack patterns.
 
 In total there are 1.75 million transactions, 3 ID columns (for the customer, terminal/point-of-sale, and transaction), 2 raw features (datetime & amount of transaction, and 17 engineered features. There is a binary fraud indicator and a column indicating which of three engineered fraud scenarios a fraud exhibits.
 
-## 3.1 How transactions were generated 
+## 4.1 How transactions were generated 
 
 The transactions were generated in a manner that incorporates common aspects of credit card transactions:
 
@@ -23,7 +23,7 @@ The result was 1.75 million transactions over a 6-month period (April through Se
 
 One can quibble about whether the choices made in incorporating these notions is too restrictive or permissive, or whether other behaviors should have been baked into the data. But what really drew me to the data is how it injected fraud.
 
-## 3.2 How fraud was incorporated 
+## 4.2 How fraud was incorporated 
 
 So far the transactions haven’t been labeled as legitimate or fraudulent. The simulation labels fraud in three steps, corresponding to three types of fraud patterns.
 
@@ -64,7 +64,7 @@ Because there are so many customers and terminals, the amount of fraud generated
 
 <img src="images/tx-by-fraud-scenario.png" style="width:6.5in;height:4.03194in" alt="A graph with numbers and a bar" />
 
-## 3.3 Engineered features
+## 4.3 Engineered features
 
 So far, the simulated data has these features:
 
@@ -157,11 +157,11 @@ I like these features. Two tiny things I might have done differently are:
 
 But these are minor quibbles. I will use the Handbook’s features for my calculations.
 
-## 3.4. Things to be mindful of
+## 4.4. Things to be mindful of
 
 Because of the way fraud was incorporated, the data exhibit some arguably atypical patterns. These are far outweighed by the value the data bring in its Scenario 2 & 3 signals, but worth noting. Also, the engineered features have introduced some redundancy to be mindful of when modeling.
 
-### 3.4.1. Typical and atypical fraud patterns
+### 4.4.1. Typical and atypical fraud patterns
 
 First, some more trivial matters. TX_AMOUNT is heavily right-skewed; most transactions are low-value, but fraud often clusters at higher amounts. Here’s a two‐panel view of how TX_AMOUNT behaves for all vs. fraud transactions—one on a linear scale (showing the bulk of low‐value activity) and one on a log scale (revealing where fraud clusters at higher amounts).
 
@@ -177,15 +177,15 @@ But here’s the big one: We’ll want to be mindful that the way the fraud was 
 
 This comes about because of Scenarios 2 and 3, each of which introduces an increasing amount of fraud during the first month.
 
-Under Scneario 2, day 1 (April 1, 2018) has two compromised terminals, each of which gives fraudlent transactions until 28 days later (April X). Day 2 adds two more compromised terminals, with fraud until April X). On day 28 (April X), the maximum \# of compromised terminals (56) is reached and stays that way for the remaining days. An increasing \# of compromised terminals during April 1-X leads to an increasing \# of fraud transactions during this period. (This is not quite right because the daily selection of terminals is made with replacement, so a given terminal can be compromised for multiple 28-day periods, but you get the idea.)
+Under Scenario 2, day 1 (April 1, 2018) has two compromised terminals, each of which gives fraudlent transactions until 28 days later (April X). Day 2 adds two more compromised terminals, with fraud until April X). On day 28 (April X), the maximum \# of compromised terminals (56) is reached and stays that way for the remaining days. An increasing \# of compromised terminals during April 1-X leads to an increasing \# of fraud transactions during this period. (This is not quite right because the daily selection of terminals is made with replacement, so a given terminal can be compromised for multiple 28-day periods, but you get the idea.)
 
-Likewise with Scneario 2, day 1 picks 3 victims to have their card (and 1/3 of their transactions) comrpomised for 14 days, day 2 picks another (possibly overlapping) 3 victims for the same treatment, etc. The maximum \# of victims (42) is reached on day 14, and sustained for the rest of the dataset. As the victimes grown during April 1-X, so does the fraud.
+Likewise with Scenario 2, day 1 picks 3 victims to have their card (and 1/3 of their transactions) comrpomised for 14 days, day 2 picks another (possibly overlapping) 3 victims for the same treatment, etc. The maximum \# of victims (42) is reached on day 14, and sustained for the rest of the dataset. As the victimes grown during April 1-X, so does the fraud.
 
 This is illustrated in the next figure, whose dashed lines show the ramp-up in compromised terminals and customers in the first month. The colored dots show the corresponding increase in fraud transactions over the same period.
 
 <img src="images/ramp-up-in-cust-term-in-first-month.png" style="width:6.5in;height:2.13056in" alt="A graph of a graph" />
 
-### 3.4.2. Redundant features
+### 4.4.2. Redundant features
 
 Some of the models we’ll consider are more susceptible to the presence of redundant features. We’ll want to be mindful that some of the engineered features contain similar information to the original features. Of course, the two engineered features measuring elapsed time from the first transaction are nearly completely correlated. (I’m guessing the reason their correlation isn’t 100% is due to rounding.) So, we won’t include both in any model. More interestinglyy, the rolling-count features over 7- and 30-day windows are very strongly correlated with the raw transaction count (r ≥ 0.79). Average-amount and risk features have near-zero to low correlations (r ≤ 0.11), suggesting they carry unique information.
 
@@ -219,10 +219,10 @@ But overall, thanks to the Handbook, we have a data set of 1.75 million transact
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="2-model-formulas-250814.html">← Previous: 2. Model formulas</a>
+      <a href="3-model-formulas.html">← Previous: 2. Model formulas</a>
     </td>
     <td align="right">
-      <a href="4-what-do-the-models-look-like.html">Next: 4. What do the models look like? →</a>
+      <a href="5-what-do-the-models-look-like.html">Next: 4. What do the models look like? →</a>
     </td>
   </tr>
 </table>

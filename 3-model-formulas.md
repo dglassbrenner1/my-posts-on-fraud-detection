@@ -310,10 +310,10 @@ Let's take a break from math and look at the data.
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="2-whats-the-same-and-not.html">← Previous: 1. Commonly used models</a>
+      <a href="2-whats-the-same-and-not.html">← Previous: 2. What's the same and what's different</a>
     </td>
     <td align="right">
-      <a href="4-the-data-we-use.html">Next: 3. The data we use →</a>
+      <a href="4-the-data-we-use.html">Next: 4. The data we use →</a>
     </td>
   </tr>
 </table>

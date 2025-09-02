@@ -1,11 +1,11 @@
 ---
 layout: default     # use your main layout
-title: 5. Performance metrics         # page title
+title: 6. Performance metrics         # page title
 ---
 
-# 5. Performance metrics
+# 6. Performance metrics
 
-In Section 3 (What do the models look like?), we fit and tuned our models according to regularized log-loss. While this isn't unreasonable, it wouldn't make much sense to compare the performance of models using regularized log-loss.  For instance, the regularization for tree-based models involved the numbers of leaves, while that for logistic regression used the length of the weight vector.
+In Section 4 (What do the models look like?), we fit and tuned our models according to regularized log-loss. While this isn't unreasonable, it wouldn't make much sense to compare the performance of models using regularized log-loss.  For instance, the regularization for tree-based models involved the numbers of leaves, while that for logistic regression used the length of the weight vector.
 
 According to the Handbook, the ROC AUC is "currently the de-facto metric for assessing fraud detection accuracies". But the Handbook also points to recent research that this metric can be misleading for highly imbalanced data and that the area under the Precision-Recall curve is recommended over ROC AUC.  As you would expect, the choice of metric is tied to business objectives. So let's take a closer look at performance metrics commonly used to assess fraud detection models.
 
@@ -15,7 +15,7 @@ In broad terms, the objective is obvious: you want to catch as much fraud as you
 
 - the cost of false negatives (failing to catch fraud) is generally much higher than the cost of false positives (predicting a legitimate transaction to be fraud)
 
-## 5.1 Setup
+## 6.1 Setup
 
 All but one of our models output probabilities, not classifications. So, if a fraud detection system operates by flagging transactions as potentially fraudulent, we need to translate the probabilities into these flags.  The most natural way would seem to be to specify a probability threshold, above which all transactions are flagged as potential fraud.
 
@@ -30,7 +30,7 @@ $$
 
 so $\hat{Y}_t$ and the true classification $y$ are also random variables with values in {0,1}. At the two extremes, the classifier $\hat{Y}_0$ classifies all but the probability zero cases as fraud, while $\hat{Y}_1$ classifies nothing as fraud.
 
-## 5.2 Threshold-based metrics
+## 6.2 Threshold-based metrics
 
 I will only consider some of the many metrics used.
 
@@ -48,7 +48,7 @@ $$\mathrm{Precision}(t) := P( Y = 1 \mid \hat{Y}_t = 1 )$$
 
 So all three metrics (TPR, FPR, and Precision) are functions from [0,1] to [0,1].  
 
-### 5.2.1 Properties of TPR (Recall), FPR, and Precision
+### 6.2.1 Properties of TPR (Recall), FPR, and Precision
 
 #### Continuity (or lack thereof)
 These functions might or might not be continuous, depending on the model. E.g. for logistic regression, the unconditional probabilities $P(\hat{Y}_t =1)$ is one minus the cdf of the model probabilities, is continuous.  For locally constant models like tree-based methods, we wouldn't expect TPR, FPR, or Precision to be continuous. 
@@ -76,11 +76,11 @@ Note that TPR (Recall) and FPR are decreasing functions of $t$. We would expect 
 
 Of course, you can estimate any of these quantities (TPR, FPR, Precision) at any given threshold using data containing fraud and legit transactions (and for $\text{Precision}(t)$, you'll need cases that your model predicts to be fraud with probability > t). Evaluation metrics should reflect generalized performance, so should be estimated from validation data.
 
-## 5.3 Threshold-free metrics 
+## 6.3 Threshold-free metrics 
 
 I will only look at the ROC AUC and AP. 
 
-### 5.3.1 ROC curve and PR curves 
+### 6.3.1 ROC curve and PR curves 
 
 Both ROC and PR (Precision-Recall) are parametric curves, parametrized by the threshold in a classification. They are defined by: 
 
@@ -91,7 +91,7 @@ $$\mathrm{PR}(t) = \big( \mathrm{Recall}(t), \, \mathrm{Precision}(t) \big) = \l
 so each is a function from [0,1] to the unit square [0,1] $\times$ [0,1].
 
 
-### 5.3.2 Properties of the ROC and PR curves
+### 6.3.2 Properties of the ROC and PR curves
 
 #### The starts and ends of the curves
 Looking at the start and end of these curves, we have 
@@ -171,7 +171,7 @@ Related to the area under the PR curve is the Average Precision. It is the weigh
 The biggest knock on the ROC curve and its AUC is that they both include ranges of FPRs that you would never consider using in real life. E.g., a FPR of 10% would surely be unacceptable, so why include it when assessing a model's performance? I'm not sure why the PR curve doesn't receive similar criticism for including surely unacceptable levels of recall (e.g. only catching 10 percent of fraud).
 
 
-### 5.3.3 The ROC and PR curves for our models
+### 6.3.3 The ROC and PR curves for our models
 
 Here's what the curves look like for our models.  In the first set of plots, I plotted the (estimated) curves on the Handbook's test dataset.  The curve for a given model is estimated using each distinct predicted probability as a threshold and then interpolating in between the resulting points.  So for a model that predicts x distinct probabilities on the test data, the ROC and PR curves estimated from the same data will plot x data points and interpolate the rest.  This "x" varies a lot for our models:
 
@@ -598,7 +598,7 @@ print(md_table)
 With this (maybe unrealistic?) business requirement, the best we can do is with the Support Vector Classifier, and its performance doesn't look so hot.  While it would correctly flag 95% of fraud cases, it would also wrongly flag 76% of legit transactions as fraud. Only 0.8% of its fraud alerts would be correct!
 
 
-## 5.4 Unregularized log-loss
+## 6.4 Unregularized log-loss
 
 We noted earlier than regularized log-loss wouldn't provide a fair comparison between models that regularize in different ways.  But unregularized log-loss should provide a fair comparison.  Here are the values for our models, computed both on the training data and, for a better indication of generalizability, on the validation folds of the training data.
 
@@ -664,7 +664,7 @@ print_log_loss_md_table(results)
 
 The log-loss metric favors the same group of 5 models over the two decision trees and k-nearest neighbors model.  Interestingly, the depth-two decision tree seems to generalize substantially better than the deeper (but still regularized) tree.
 
-## 5.5 Precision@k, Recall@k, CardPrecision@k, and CardRecall@k
+## 6.5 Precision@k, Recall@k, CardPrecision@k, and CardRecall@k
 
 The Handbook also talks about these metrics, which help us incorporate the card issuer's capacity to investigate fraud. (Or at least, they talk about Precision@k and CardPrecision@k, and it seems natural to extend the same notions to Recall)
 
@@ -976,10 +976,10 @@ Note that the 95%-confidence ellipsoids don't respect the fact that precision an
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="4-what-do-the-models-look-like.html">← Previous: 4. What do the models look like?</a>
+      <a href="5-what-do-the-models-look-like.html">← Previous: 5. What do the models look like?</a>
     </td>
     <td align="right">
-      <a href="6-the-cost-of-fraud-to-the-card-issuer.html">Next: 6. Incorporating the cost of fraud →</a>
+      <a href="7-the-cost-of-fraud-to-the-card-issuer.html">Next: 7. Incorporating the cost of fraud →</a>
     </td>
   </tr>
 </table>

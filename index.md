@@ -17,7 +17,7 @@ Having read a lot of material explaining machine learning in less-than-mathemati
 
 - what types of business objectives can we solve?
 
-I want to get enough into the mathematical weeds to be able to modify methods to incorporate particular business circumstances.  And when possible, I’d also like to have a visual understanding (yeah, right), as this helps me confirm my mathematical understanding.  
+I want to get enough into the mathematical weeds to be able to modify methods to incorporate particular business circumstances.  And I’d like to have some sense of what plots of the models look like (yeah, right), as this helps me confirm my mathematical understanding.  
 
 ## Primary data source
 
