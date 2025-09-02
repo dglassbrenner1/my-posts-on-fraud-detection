@@ -1,9 +1,9 @@
 ---
 layout: default     # use your main layout
-title: 7. Prequential validation         # page title
+title: 8. Prequential validation         # page title
 ---
 
-# 7. Prequential validation
+# 8. Prequential validation
 
 Now back to modeling and one of the other ways that modeling fraud is different from other machine learning applications.
 
@@ -31,7 +31,7 @@ I refit the models using 4-fold prequential validation and got ...
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="/6-the-cost-of-fraud-to-the-card-issuer.html">← Previous: The cost of fraud</a>
+      <a href="/7-the-cost-of-fraud-to-the-card-issuer.html">← Previous: 7. The cost of fraud</a>
     </td>
     <td align="right">
       Next: Post to come! →</a>

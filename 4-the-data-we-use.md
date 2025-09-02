@@ -222,7 +222,7 @@ But overall, thanks to the Handbook, we have a data set of 1.75 million transact
       <a href="3-model-formulas.html">← Previous: 2. Model formulas</a>
     </td>
     <td align="right">
-      <a href="5-what-do-the-models-look-like.html">Next: 4. What do the models look like? →</a>
+      <a href="5-what-do-the-models-look-like.html">Next: 5. What do the models look like? →</a>
     </td>
   </tr>
 </table>
