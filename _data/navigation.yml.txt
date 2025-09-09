@@ -1,0 +1,6 @@
+- title: Home
+  url: /
+- title: 1-commonly-used-models
+  url: /1-commonly-used-models/
+- title: 2-whats-the-same-and-not
+  url: /2-whats-the-same-and-not/
