@@ -48,7 +48,8 @@ With the exception of support vector machines (which use hinge loss), I'll use t
 To review, the log-loss of a single predicted probability $z$ of a label $y$ is 
 $$L(y,z) = -y\ln z - (1-y) \ln(1-z)$$ 
 
-Now, suppose we are considering models $f_{\mathbf{w}}:\mathcal{X}\rightarrow [0,1]$ from a given family (e.g. neural networks). The log-loss of the model using parameters $\mathbf{w}$ on a subset $S\subseteq\{1,\ldots,n\}$ is the class-weighted average of the log-losses of the predictions on the subset of $\mathcal{D}$ indexed by $S$:
+Now, suppose we are considering models $f_{\mathbf{w}}:\mathcal{X}\rightarrow [0,1]$ from a given family (e.g. neural networks). The log-loss of the model using parameters $\mathbf{w}$ on a subset 
+$S\subseteq\{1,\ldots,n\}$ is the class-weighted average of the log-losses of the predictions on the subset of $\mathcal{D}$ indexed by $S$:
 
 $$LogLoss(\mathbf{w}, S):=\frac{1}{\sum_{i\in S} s_i} \sum_{i\in S} s_i L(y_i, f_{\mathbf{w}}(\mathbf{x}_i)) = \frac{-1}{\sum_{i\in S} s_i} \sum_{i\in S} s_i 
 \left(y_i \ln f_{\mathbf{w}}(\mathbf{x}_i) + (1 - y_i) \ln(1 - f_{\mathbf{w}}(\mathbf{x}_i))\right)$$
@@ -117,7 +118,8 @@ Writing each leaf $L_v$ as
 
 $$L_v = \prod_{j\in J_v} (a_{vj}, b_{vj}]$$ 
 
-where $J_v\subseteq \{1,\ldots,m\}$ and 
+where 
+$J_v\subseteq \{1,\ldots,m\}$ and 
 $a_{vj}, b_{vj} \in [ -\infty, +\infty ] \ \forall j\in J_v$, we have 
 
 $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{v=1}^V r_v \ \mathbb{I}(\mathbf{x}\in \prod_{j\in J_v} (a_{vj}, b_{vj}]) 
@@ -127,12 +129,13 @@ That is, a decision tree simply partitions the feature space into rectanguloids 
 
 $\textbf{Model parameters}$: So what are the model parameters for a decision tree? Well, to make a decision tree (as I have formulated them), you need to specify: 
 - the number $V$ of leaves, 
-- $J_v\subseteq \{1,\ldots,m\}$ for all $1\leq v\leq V$, and 
+- $J_v\subseteq \{1,\ldots, m \}$ for all $1\leq v\leq V$, and 
 - $a_{vj}, b_{vj} \in [ -\infty, +\infty ] \ \forall j\in J_v$
 
 and the $J_v, a_{vj}, b_{vj}$ are constrained in that the resulting $L_v = \prod_{j\in J_v} (a_{vj}, b_{vj}]$ for $1\leq v\leq V$ collectively have to partition the feature space.  
 
-The number of leaves $V$ is usually treated as a hyperparameter. So the model parameters would be the $J_v\subseteq \{1,\ldots,m\}$ and the 
+The number of leaves $V$ is usually treated as a hyperparameter. So the model parameters would be the 
+$J_v\subseteq \{1,\ldots,m\}$ and the 
 $a_{vj}, b_{vj} \in [ -\infty, +\infty ]$. 
 
 $\textbf{Regularization}$: I'll just regularize the number $V$ of leaves, so $\Omega (\mathbf{w},\lambda) := \lambda V$. But you can also regularize other aspects, like the maximum depth of the tree and the number of samples per leaf.
@@ -203,7 +206,10 @@ $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(b+\eta \sum_{k=1}^K f_k(\mathbf{
 where $b$ is the log-odds of the fraud rate in the training data $T$, 
 $0<\eta<1$ is a hyperparameter (the "learning rate"), $K\geq 1$, and $f_1(\mathbf{x}),..., f_K(\mathbf{x})$ are the predictions from the decision trees determined by the boosting algorithm.  (Although scikit-learn accepts learning rates larger than 1, it seems to make most sense to limit to smaller learning rates.) 
 
-$\textbf{Regularization}$: XGBoost regularizes the numbers $V_1,\ldots, V_K$ of leaves in each tree and puts L1 and L2 penalties on the leaf predictions.  If we denote the vector of leaf predictions from the $k$th tree by $\mathbf{r}_k$, then the regularization is $\sum_{k=1}^K \left( \gamma V_k + \lambda ||r_k||^2 + \alpha |r_k| \right)$ 
+$\textbf{Regularization}$: 
+XGBoost regularizes the numbers $V_1,\ldots, V_K$ of leaves in each tree and puts L1 and L2 penalties on the leaf predictions.  If we denote the vector of leaf predictions from the $k$th tree by 
+$\mathbf{r}_k$, then the regularization is 
+$\sum_{k=1}^K \left( \gamma V_k + \lambda ||r_k||^2 + \alpha |r_k| \right)$ 
 
 $\textbf{Optimization (my take)}$: For given values of the hyperparameters $\eta, \gamma, \lambda, \alpha>0$, and taking 
 $$b:= \frac{\sum_{i=1}^n s_i y_i }{\sum_{i=1}^n s_i(1-y_i)},$$ 
