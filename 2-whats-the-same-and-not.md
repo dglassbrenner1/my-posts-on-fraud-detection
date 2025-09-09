@@ -41,11 +41,11 @@ We still try to accomplish the goal (finding the $\mathbf{w}$ for which $f_{\mat
 $$T_1\subseteq \{1, \ldots,n \}$$ and validation data 
 $$V_1\subseteq\{1, \ldots,n\}$$, or a $k$-fold cross-validation setup 
 $(T_1, V_1), \ldots, (T_k, V_k)$ for $k\geq 1$. (I'm identifying members 
-$(\mathbf{x}_i, y_i)$ of 
+$$(\mathbf{x}_i, y_i)$$ of 
 $\mathcal{D}$ with their indices 
-$i\in \{ 1, \ldots, n \}$
+$$i\in \{ 1, \ldots, n \}$$
 .) Set $k:=1$ in the former case and 
-$T:=\cup_{i=1}^k T_i$ in either case (so $T$ corresponds to the full training dataset).  Also select a test dataset for final model assessment.
+$$T:=\cup_{i=1}^k T_i$$ in either case (so $T$ corresponds to the full training dataset).  Also select a test dataset for final model assessment.
    
 2. **Specify a loss function (or two)**: Specify two loss function $$Loss:\mathbb{R}^W\times\mathcal{P}(\{1,\ldots, n\})\rightarrow\mathbb{R}$$ and $$ValLoss:\mathbb{R}^W\times\mathcal{P}(\{1,\ldots, n\})\rightarrow\mathbb{R}$$ each of which assesses, for a given set of model parameters $\mathbf{w}\in\mathbb{R}^W$ and 
 $S\subseteq \{1, \ldots, n \}$, how close the predicted values $$\{ f_{\mathbf{w}} (\mathbf{x}_i): i\in S \}$$ are to the actual values 
