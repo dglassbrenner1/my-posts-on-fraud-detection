@@ -16,12 +16,13 @@ We use the following notation for the our labeled input data $\mathcal{D}$:
 $$\mathcal{D}:=\{(x_{11},\ldots, x_{1m}, y_1),\ldots, (x_{n1},\ldots,x_{nm}, y_n)\}\subseteq \mathcal{X} \times \{ 0,1 \}$$ 
 
 where eachof the $n$ vectors in $\mathcal{D}$ represents a transaction, $\mathcal{X}\subseteq \mathbb{R}^m$ denotes the feature space, and the target class $y=1$ denotes fraudulent transactions.  We'll assume that any feature engineering has already taken place. (So the $m$ features include all engineered features.)  We also assume that any categorical features have already been numerically encoded in some fashion. We will use boldface type to indicate vectors, e.g., $\mathbf{y}:=(y_1,\ldots, y_n)$.  For the doubly-indexed 
-$x_{ij}$, we let $$\mathbf{x}_i := (x_{i1},\ldots,x_{im})$$, the features for the $i$th transaction, for 
+$$x_{ij}$$, we let $$\mathbf{x}_i := (x_{i1},\ldots,x_{im})$$, the features for the $i$th transaction, for 
 $1\leq i\leq n$.
 
 ### Models
 
-Consider a randomly selected transaction $(\mathbf{x}, y)\in\mathcal{X}\times \{ 0,1\}$. We are interested in modeling $P(y=1 \mid \mathbf{x}\in\mathcal{X})$, the likelihood of fraud conditioned on the values of the features. Any given model of this probability specified by parameters $\mathbf{w}\in\mathbb{R}^W$ for some $W\geq 1$ will be a function 
+Consider a randomly selected transaction 
+$$(\mathbf{x}, y)\in\mathcal{X}\times \{0, 1\}$$. We are interested in modeling $P(y=1 \mid \mathbf{x}\in\mathcal{X})$, the likelihood of fraud conditioned on the values of the features. Any given model of this probability specified by parameters $\mathbf{w}\in\mathbb{R}^W$ for some $W\geq 1$ will be a function 
 $$f_{\mathbf{w}}:\mathcal{X}\rightarrow [0,1]$$ 
 with $f_{\mathbf{w}}(\mathbf{x})$ denoting the model's predicted probabilty of fraud $P(y=1 \mid \mathbf{x}\in\mathcal{X})$ at feature vector $\mathbf{x}$.  
 
