@@ -30,15 +30,17 @@ Why am I writing down the explicit function being optimized in the final model f
 ## 3.1 Additional setup
 
 ### 3.1.1 Random variables
-We will use $Y, X_1,..., X_m$ to denote the random variables from which the data $\mathcal{D}$ was generated, so that $P(Y=1 \ \mid \mathbf{x}\in\mathcal{X})$ refers to the distribution of $Y$ conditioned on the features $X_1=x_1,\ldots , X_m=x_m$.
+We will use $$Y, X_1, \ldots , X_m$$ to denote the random variables from which the data $$\mathcal{D}$$ was generated, so that 
+$$P(Y=1 \ \mid \mathbf{x}\in\mathcal{X})$$ refers to the distribution of $Y$ conditioned on the features $$X_1=x_1, \ldots , X_m=x_m$$.
 
 ### 3.1.2 Class weights
 
-Fraud data is sometimes adjusted by class weights to address the fact that we're most interested in the fraud signal and fraud is rare.  We'll use $s_1, ..., s_n \geq 0$ to denote the class weights, sometimes referring to them via $\mathbf{s}:=(s_1, ..., s_n) \in \mathbb{R}^n$.  (Fraud data rarely seems to involve probabilistic sampling. But if it does, include the sample weights in the $s_i$ too.)
+Fraud data is sometimes adjusted by class weights to address the fact that we're most interested in the fraud signal and fraud is rare.  We'll use 
+$$s_1, \ldots, s_n \geq 0$$ to denote the class weights, sometimes referring to them via $$\mathbf{s}:=(s_1, ..., s_n) \in \mathbb{R}^n$$.  (Fraud data rarely seems to involve probabilistic sampling. But if it does, include the sample weights in the $s_i$ too.)
 
 ### 3.1.3 Link function
 
-We'll be transitioning back and forth between probabilities and their log-odds, so let $\sigma:\mathbb{R}\rightarrow (0,1)$ denote the sigmoid link function 
+We'll be transitioning back and forth between probabilities and their log-odds, so let $$\sigma:\mathbb{R}\rightarrow (0,1)$$ denote the sigmoid link function 
 $$\sigma(x)=\frac{1}{1+\exp(-x)}$$ So, $\sigma$ is invertible with inverse 
 $$\sigma^{-1} (x):=\ln \frac{x}{1-x}$$
 
@@ -49,15 +51,18 @@ With the exception of support vector machines (which use hinge loss), I'll use t
 To review, the log-loss of a single predicted probability $z$ of a label $y$ is 
 $$L(y,z) = -y\ln z - (1-y) \ln(1-z)$$ 
 
-Now, suppose we are considering models $f_{\mathbf{w}}:\mathcal{X}\rightarrow [0,1]$ from a given family (e.g. neural networks). The log-loss of the model using parameters $\mathbf{w}$ on a subset 
-$S\subseteq\{1,\ldots,n\}$ is the class-weighted average of the log-losses of the predictions on the subset of $\mathcal{D}$ indexed by $S$:
+Now, suppose we are considering models 
+$$f_{\mathbf{w}}:\mathcal{X}\rightarrow [0,1]$$ from a given family (e.g. neural networks). The log-loss of the model using parameters $\mathbf{w}$ on a subset 
+$$S\subseteq\{1, \ldots,n\}$$ is the class-weighted average of the log-losses of the predictions on the subset of $\mathcal{D}$ indexed by $S$:
 
 $$LogLoss(\mathbf{w}, S):=\frac{1}{\sum_{i\in S} s_i} \sum_{i\in S} s_i L(y_i, f_{\mathbf{w}}(\mathbf{x}_i)) = \frac{-1}{\sum_{i\in S} s_i} \sum_{i\in S} s_i 
 \left(y_i \ln f_{\mathbf{w}}(\mathbf{x}_i) + (1 - y_i) \ln(1 - f_{\mathbf{w}}(\mathbf{x}_i))\right)$$
 
-The log-loss is familiar to statisticians as the negative log-likelihood applied to a binomial distribution.  If the class weights were all 1, then $-LogLoss(\mathbf{w}, \{1,\ldots,n\})$ would be the chance of seeing the data 
-$y_1,..., y_n$ if we flipped $n$ coins (independently) with $P(\text{heads})$ for the 
-$i^{\text{th}}$ coin being $f_{\mathbf{w}}(\mathbf{x}_i)$, and wrote down a list of the results, with 1 for every heads and 0 for every tails.
+The log-loss is familiar to statisticians as the negative log-likelihood applied to a binomial distribution.  If the class weights were all 1, then 
+$$-LogLoss(\mathbf{w}, \{1, \ldots,n\})$$ would be the chance of seeing the data 
+$$y_1, \ldots, y_n$$ if we flipped $n$ coins (independently) with $P(\text{heads})$ for the 
+$i^{\text{th}}$ coin being 
+$$f_{\mathbf{w}}(\mathbf{x}_i)$$, and wrote down a list of the results, with 1 for every heads and 0 for every tails.
 
 ### 3.1.5 Optimization with log-loss
 
@@ -72,11 +77,12 @@ So, now, let's hit the models.
 
 $\textbf{Model form}$: 
 $$P(Y=1 \ | \ \mathbf{x}\in\mathcal{X}) = \sigma(\mathbf{w}^t \mathbf{x} + w_0) = \frac{1}{1 + \exp(-\sum_{i=1}^m w_i x_i  - w_0)}$$
-where $w_0, w_1,..., w_m \in \mathbb{R}$ are the model parameters. 
+where $$w_0, w_1, \ldots, w_m \in \mathbb{R}$$ are the model parameters. 
 
-$\textbf{Regularization}$: We'll use an L2 penalty, so $\Omega (\mathbf{w},\lambda) := \lambda \sum_{i=1}^m w_i^2$. (Again, the bias term $w_0$ typically isn't regularized.)
+$\textbf{Regularization}$: We'll use an L2 penalty, so 
+$$\Omega (\mathbf{w},\lambda) := \lambda \sum_{i=1}^m w_i^2$$. (Again, the bias term $w_0$ typically isn't regularized.)
 
-$\textbf{Optimization for the model parameters} \ \mathbf{w}$: Note that for each $1\leq i\leq n$, we have the following simplification in our log-loss function:
+$$\textbf{Optimization for the model parameters} \ \mathbf{w}$$: Note that for each $$1\leq i\leq n$$, we have the following simplification in our log-loss function:
 $$\begin{align*}- s_i \left( y_i \ln f_{\mathbf{w}}(\mathbf{x}_i) + (1 - y_i) \ln (1 - f_{\mathbf{w}}(\mathbf{x}_i))\right)
 & = - s_i \left( y_i \ln \frac{1}{1 + \exp(-\sum_{i=1}^m w_i x_i  - w_0)} + (1 - y_i) \ln\left(1 - \frac{1}{1 + \exp(-\sum_{i=1}^m w_i x_i  - w_0)}\right)\right) \\
 & = s_i \left( y_i \ln \left(1 + \exp\left(-\sum_{i=1}^m w_i x_i  - w_0\right)\right) + (1 - y_i) \ln\left(1 + \exp\left(\sum_{i=1}^m w_i x_i  + w_0\right)\right)\right)\end{align*}$$
@@ -104,14 +110,15 @@ $$\{ \mathbf{x}\in\mathbb{R}^m: x_i \leq c_i\} \text{ and } \{ \mathbf{x}\in\mat
 
 where $1\leq i\leq m$ and $c_i\in\mathbb{R}$. This gives rise to leaves of the form 
 $$\prod_{j\in J} \{a_j < x_j \leq b_j\}$$ where 
-$J\subseteq \{1,...,m\}$ and $a_j, b_j \in [ -\infty, +\infty ] \ \forall j\in J$. (The interval $(a_j, b_j]$ can be bounded at both ends if the $j$th feature is visited multiple times in the tree.) Geometrically, the leaves are rectanguloids. 
+$$J\subseteq \{1, \ldots, m\}$$ and $$a_j, b_j \in [ -\infty, +\infty ] \ \forall j\in J$$. (The interval $$(a_j, b_j]$$ can be bounded at both ends if the $j$th feature is visited multiple times in the tree.) Geometrically, the leaves are rectanguloids. 
 
 Decision trees give constant predictions on the leaves (so these models are locally constant). It is a simple exercise to see that the constant prediction that minimizes the log-loss is the the class-weighted average incidence of fraud in the data.  Similarly, the prediction on each leaf is the class-weighted fraud incidence.  These observations gives us the model form.
 
-$\textbf{Model form}$: A decision tree with $V$ leaves predicts as follows: $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{v=1}^V r_t \ \mathbb{I}(\mathbf{x}\in L_v)$$ 
+$\textbf{Model form}$: A decision tree with $V$ leaves predicts as follows: 
+$$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{v=1}^V r_t \ \mathbb{I}(\mathbf{x}\in L_v)$$ 
 
 where $\mathbb{I}(.)$ is the boolean indicator function (taking the value 1 if its argument is true and 0 otherwise), the leaves 
-$L_1,... L_V$ are rectanguloids partitioning the feature space, and the "leaf weights" $r_1,\ldots, r_V$ are the class-weighted fraud incidences on the leaves: 
+$$L_1, \ldots, L_V$$ are rectanguloids partitioning the feature space, and the "leaf weights" $$r_1, \ldots, r_V$$ are the class-weighted fraud incidences on the leaves: 
 
 $$r_v:= \frac{\sum_{i\in L_v} s_i y_i}{\sum_{i\in L_v} s_i}, \forall 1\leq v\leq V$$  
 
@@ -120,8 +127,8 @@ Writing each leaf $L_v$ as
 $$L_v = \prod_{j\in J_v} (a_{vj}, b_{vj}]$$ 
 
 where 
-$J_v\subseteq \{1,\ldots, m \}$ and 
-$a_{vj}, b_{vj} \in [ -\infty, +\infty ] \ \forall j\in J_v$, we have 
+$$J_v\subseteq \{1, \ldots, m \}$$ and 
+$$a_{vj}, b_{vj} \in [ -\infty, +\infty ] \ \forall j\in J_v$$, we have 
 
 $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{v=1}^V r_v \ \mathbb{I}(\mathbf{x}\in \prod_{j\in J_v} (a_{vj}, b_{vj}]) 
 = \sum_{v=1}^V r_v \  \prod_{j\in J_v} \mathbb{I}(a_{vj}<x_j\leq b_{vj})$$
@@ -130,16 +137,18 @@ That is, a decision tree simply partitions the feature space into rectanguloids 
 
 $\textbf{Model parameters}$: So what are the model parameters for a decision tree? Well, to make a decision tree (as I have formulated them), you need to specify: 
 - the number $V$ of leaves, 
-- $J_v\subseteq \{1,\ldots, m \}$ for all $1\leq v\leq V$, and 
-- $a_{vj}, b_{vj} \in [ -\infty, +\infty ] \ \forall j\in J_v$
+- $$J_v\subseteq \{1, \ldots, m \}$$ for all $$1\leq v\leq V$$, and 
+- $$a_{vj}, b_{vj} \in [ -\infty, +\infty ] \ \forall j\in J_v$$
 
-and the $J_v, a_{vj}, b_{vj}$ are constrained in that the resulting $L_v = \prod_{j\in J_v} (a_{vj}, b_{vj}]$ for $1\leq v\leq V$ collectively have to partition the feature space.  
+and the 
+$$J_v, a_{vj}, b_{vj}$$ are constrained in that the resulting $$L_v = \prod_{j\in J_v} (a_{vj}, b_{vj}]$$ for $$1\leq v\leq V$$ collectively have to partition the feature space.  
 
 The number of leaves $V$ is usually treated as a hyperparameter. So the model parameters would be the 
-$J_v\subseteq \{1,\ldots,m\}$ and the 
-$a_{vj}, b_{vj} \in [ -\infty, +\infty ]$. 
+$$J_v\subseteq \{1, \ldots, m\}$$ and the 
+$$a_{vj}, b_{vj} \in [ -\infty, +\infty ]$$. 
 
-$\textbf{Regularization}$: I'll just regularize the number $V$ of leaves, so $\Omega (\mathbf{w},\lambda) := \lambda V$. But you can also regularize other aspects, like the maximum depth of the tree and the number of samples per leaf.
+$\textbf{Regularization}$: I'll just regularize the number $V$ of leaves, so 
+$$\Omega (\mathbf{w},\lambda) := \lambda V$$. But you can also regularize other aspects, like the maximum depth of the tree and the number of samples per leaf.
 
 $\textbf{Optimization for the model parameters}$: The regularized log-loss on the training data is:
 
@@ -171,7 +180,8 @@ The randomized pertubation is accomplished by bootstrapping the data.  That is, 
 $\textbf{Model form}$: 
 $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{1}{K} \sum_{k=1}^K P_k (Y=1 \mid \mathbf{x})$$ 
 
-where $P_k (Y=1 \mid \mathbf{x})$, for each $1\leq k\leq K$, is the prediction from a decision tree 
+where 
+$$P_k (Y=1 \mid \mathbf{x})$$, for each $$1\leq k\leq K$$, is the prediction from a decision tree 
 trained on a bootstrap sample of size $\vert T\vert$ from the training data $T$ and from a simple random sample of 
 $F$ features, for some $F\geq 1$. (The same value of $F$ is used for each tree.)
 
@@ -205,16 +215,19 @@ $\textbf{Model form}$:
 $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(b+\eta \sum_{k=1}^K f_k(\mathbf{x})) = \frac{1}{1+ \exp(-b-\eta \sum_{k=1}^K f_k(\mathbf{x}))}$$ 
 
 where $b$ is the log-odds of the fraud rate in the training data $T$, 
-$0<\eta<1$ is a hyperparameter (the "learning rate"), $K\geq 1$, and $f_1(\mathbf{x}),..., f_K(\mathbf{x})$ are the predictions from the decision trees determined by the boosting algorithm.  (Although scikit-learn accepts learning rates larger than 1, it seems to make most sense to limit to smaller learning rates.) 
+$0<\eta<1$ is a hyperparameter (the "learning rate"), $K\geq 1$, and 
+$$f_1(\mathbf{x}), \ldots, f_K(\mathbf{x})$$ are the predictions from the decision trees determined by the boosting algorithm.  (Although scikit-learn accepts learning rates larger than 1, it seems to make most sense to limit to smaller learning rates.) 
 
 $\textbf{Regularization}$: 
-XGBoost regularizes the numbers $V_1,\ldots, V_K$ of leaves in each tree and puts L1 and L2 penalties on the leaf predictions.  If we denote the vector of leaf predictions from the $k$th tree by 
+XGBoost regularizes the numbers $$V_1, \ldots, V_K$$ of leaves in each tree and puts L1 and L2 penalties on the leaf predictions.  If we denote the vector of leaf predictions from the $k$th tree by 
 $\mathbf{r}_k$, then the regularization is 
-$\sum_{k=1}^K \left( \gamma V_k + \lambda ||r_k||^2 + \alpha |r_k| \right)$ 
+$$\sum_{k=1}^K \left( \gamma V_k + \lambda ||r_k||^2 + \alpha |r_k| \right)$$ 
 
-$\textbf{Optimization (my take)}$: For given values of the hyperparameters $\eta, \gamma, \lambda, \alpha>0$, and taking 
+$\textbf{Optimization (my take)}$: For given values of the hyperparameters 
+$$\eta, \gamma, \lambda, \alpha>0$$, and taking 
 $$b:= \frac{\sum_{i=1}^n s_i y_i }{\sum_{i=1}^n s_i(1-y_i)},$$ 
-the log-odds trees $f_1,..., f_K$ should again attempt to minimize the regularized log-loss of the predictions, which is:
+the log-odds trees 
+$$f_1, \ldots, f_K$$ should again attempt to minimize the regularized log-loss of the predictions, which is:
 $$\sum_{k=1}^K \left( \gamma T_k + \lambda ||r_k||^2 + \alpha |r_k| \right) + \frac{1}{\sum_{i\in T} s_i} s_i \left( y_i \ln \left(1 + \exp\left(-b-\eta \sum_{k=1}^K f_k(\mathbf{x})\right)\right) + (1 - y_i) \ln\left(1 + \exp\left(b+\eta \sum_{k=1}^K f_k(\mathbf{x})\right)\right)\right) $$
 
 As with random forests, the resulting trees can have different depths and numbers of leaves.
@@ -222,25 +235,30 @@ As with random forests, the resulting trees can have different depths and number
 ## 3.6 Support vector machines
 
 Support Vector Machine Classifiers are an outlier in two respects. First, they don't use the same loss function: Instead of log-loss, they use hinge loss.
-And second they predict a classification of fraud-vs-legit (separating the two via a hyperplane in a high-dimensional space defined by the kernel), not a formula for $P(Y=1 \mid \mathbf{x}\in\mathcal{X})$. You can generate probabilities via "Platt scaling", which fits a sigmoid function to the predicted class using validation. We'll give both versions of the model form:
+And second they predict a classification of fraud-vs-legit (separating the two via a hyperplane in a high-dimensional space defined by the kernel), not a formula for 
+$$P(Y=1 \mid \mathbf{x}\in\mathcal{X})$$. You can generate probabilities via "Platt scaling", which fits a sigmoid function to the predicted class using validation. We'll give both versions of the model form:
 
 $\textbf{Model form for class prediction}$: 
 $$Y = 0.5 + 0.5 \ sgn \left( \sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{x}_i, \mathbf{x})+b \right)$$
 
 where 
-$K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$ is a user-specified kernel.
+$$K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$$ is a user-specified kernel.
 
 $\textbf{Model form for probabilities}$: 
 $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma \left( A \left( \sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{x}_i, \mathbf{x})+b \right) + B \right)$$
 
-where $K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$ is a user-specified kernel.
+where 
+$$K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$$ is a user-specified kernel.
 
-The model parameters are $w_1,\ldots, w_n\geq 0$, $b\in\mathbb{R}$, plus any parameters involved in the kernel 
+The model parameters are 
+$$w_1, \ldots, w_n\geq 0$$, $$b\in\mathbb{R}$$, plus any parameters involved in the kernel 
 $K$. The parameters $A$ and $B$ are considered to be hyperparameters as they are usually fit using validation. The $2y_i - 1$ term simply translates our {0,1} encoding of legit-vs-fraud to a {-1,1} encoding, and the 0.5 terms in the class predictions translate them back.  The sgn() function returns the sign of its argument (+1, -1, or 0). The support vectors are those $\mathbf{X}_i$ for which $w_i>0$.
 
-We will focus on the "linear kernel", which is simply the dot product, becuase this turns out to be optimal for the Handbook data. In this case, $\sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b$ is just a linear combination of the entries of $\mathbf{x}$.
+We will focus on the "linear kernel", which is simply the dot product, becuase this turns out to be optimal for the Handbook data. In this case, 
+$$\sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b$$ is just a linear combination of the entries of $\mathbf{x}$.
 
-$\textbf{Optimization}$: Given $\lambda > 0$ and a kernel $K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$, the model parameters $\mathbf{w}, b, \mathbf{\xi}$ are to satisfy: 
+$\textbf{Optimization}$: Given $\lambda > 0$ and a kernel 
+$$K:\mathbb{R}^m \times \mathbb{R}^m\rightarrow \mathbb{R}$$, the model parameters $\mathbf{w}, b, \mathbf{\xi}$ are to satisfy: 
 
 $$
 \min_{\mathbf{w}, b, \boldsymbol{\xi}} \;
@@ -254,7 +272,8 @@ $$
 \quad \xi_i \geq 0, \quad \forall i \in \{1, \ldots, n\}
 $$
 
-where $\tilde{y}_i = 2y_i - 1.$ [^10] [^11] 
+where 
+$$\tilde{y}_i = 2y_i - 1.$$ [^10] [^11] 
 
 ## 3.7 K-nearest neighbors
 
@@ -263,7 +282,8 @@ $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y
 
 where $k\geq 1$ is user-specified (or tuned), $N_k(\mathbf{x})$ is the set of indices of the 
 $k$ samples in the training data $T$ with the 
-$k$ smallest values of $||\mathbf{x}_i - \mathbf{x}||$. 
+$k$ smallest values of 
+$$||\mathbf{x}_i - \mathbf{x}||$$. 
 
 $\textbf{Optimization}$: The parameter $k$ is normally considered a hyperparameter (i.e. not learned from the data). So, the model has no model parameters, and no optimization.  
 
@@ -276,14 +296,18 @@ For now at least, I'm just going to consider feedforward nerual networks (aka mu
 $\textbf{Model form}$: 
 $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$ 
 
-where $L\geq 1$ is user-specified, $a_0:=\mathbf{x}$ and for each 
-$1\leq k\leq L-1$, $a_k:=ReLU(W_k a_{k-1} + b_k)$. So the model parameters are the 
-$m\times m$ matrices $W_k$ and the vectors $b_k\in\mathbb{R}^m$.
+where $L\geq 1$ is user-specified, 
+$$a_0:=\mathbf{x}$$ and for each 
+$1\leq k\leq L-1$, 
+$$a_k:=ReLU(W_k a_{k-1} + b_k)$$. So the model parameters are the 
+$m\times m$ matrices $W_k$ and the vectors $$b_k\in\mathbb{R}^m$$.
 
-$\textbf{Optimization}$: Put all the parameters from the $W_k$ and $b_k$ into one long parameter vector $\mathbf{w}\in\mathbb{R}^{Lm(m+1)}$. For a given value of the L2 hyperparameter $\lambda>0$, the model parameters $w$ are determined by minimizing the regularized log-loss: 
+$\textbf{Optimization}$: Put all the parameters from the $W_k$ and $b_k$ into one long parameter vector 
+$$\mathbf{w}\in\mathbb{R}^{Lm(m+1)}$$. For a given value of the L2 hyperparameter $\lambda>0$, the model parameters $w$ are determined by minimizing the regularized log-loss: 
 $$\lambda \|w\|^2 - \frac{1}{\sum_{i=1}^n s_i} \sum_{i=1}^n s_i L(y_i, P(Y=1 \mid \mathbf{x}_i))$$
 
-noting that each $P(Y=1 \mid \mathbf{x}_i)$ is a function of the the parameters $\mathbf{w}$. 
+noting that each 
+$$P(Y=1 \mid \mathbf{x}_i)$$ is a function of the the parameters $\mathbf{w}$. 
 
 ## Up next
 
