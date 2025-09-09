@@ -3,6 +3,9 @@ description: A work in progress collection of my posts on fraud detection
 markdown: kramdown
 remote_theme: pmarsceill/just-the-docs
 
+nav_enabled: true
+has_toc: true
+
 kramdown:
   input: GFM
   math_engine: mathjax
