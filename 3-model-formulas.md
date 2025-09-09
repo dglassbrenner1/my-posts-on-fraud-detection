@@ -119,7 +119,7 @@ Writing each leaf $L_v$ as
 $$L_v = \prod_{j\in J_v} (a_{vj}, b_{vj}]$$ 
 
 where 
-$J_v\subseteq \{1,\ldots,m\}$ and 
+$J_v\subseteq \{1,\ldots, m \}$ and 
 $a_{vj}, b_{vj} \in [ -\infty, +\infty ] \ \forall j\in J_v$, we have 
 
 $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sum_{v=1}^V r_v \ \mathbb{I}(\mathbf{x}\in \prod_{j\in J_v} (a_{vj}, b_{vj}]) 
