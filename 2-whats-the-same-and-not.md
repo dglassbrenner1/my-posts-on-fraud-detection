@@ -45,18 +45,20 @@ $\mathcal{D}$ with their indices
 $i\in\{ 1,\ldots, n \}$
 .) Set $k:=1$ in the former case and $T:=\cup_{i=1}^k T_i$ in either case (so $T$ corresponds to the full training dataset).  Also select a test dataset for final model assessment.
    
-1. **Specify a loss function (or two)**: Specify two loss function $$Loss:\mathbb{R}^W\times\mathcal{P}(\{1,\ldots, n\})\rightarrow\mathbb{R}$$ and $$ValLoss:\mathbb{R}^W\times\mathcal{P}(\{1,\ldots, n\})\rightarrow\mathbb{R}$$ each of which assesses, for a given set of model parameters $\mathbf{w}\in\mathbb{R}^W$ and $S\subseteq \{1,\ldots, n \}$, how close the predicted values $$\{ f_{\mathbf{w}} (\mathbf{x}_i): i\in S \}$$ are to the actual values 
-$\{ y_i: i\in S \}$.  $Loss$ will be the training loss function and $ValLoss$ will be the validation loss. (They can be the same function, if desired.) 
+2. **Specify a loss function (or two)**: Specify two loss function $$Loss:\mathbb{R}^W\times\mathcal{P}(\{1,\ldots, n\})\rightarrow\mathbb{R}$$ and $$ValLoss:\mathbb{R}^W\times\mathcal{P}(\{1,\ldots, n\})\rightarrow\mathbb{R}$$ each of which assesses, for a given set of model parameters $\mathbf{w}\in\mathbb{R}^W$ and 
+$S\subseteq \{1,\ldots, n \}$, how close the predicted values $$\{ f_{\mathbf{w}} (\mathbf{x}_i): i\in S \}$$ are to the actual values 
+$\{ y_i: i\in S \}$.  
+$Loss$ will be the training loss function and $ValLoss$ will be the validation loss. (They can be the same function, if desired.) 
    
-2. **Specify a regularization function**: Define a regularization function $$\Omega:\mathbb{R}^W\times\Lambda\rightarrow\mathbb{R}$$ that penalizes each of the ways your model can be complex (deeper trees, smaller leaves, etc) to varying degrees. The degrees of penalization are specified by hyperparameters $\mathbf{\lambda}$ that take values in a hyperparameter space $\Lambda\subseteq\mathbb{R}^H$ where $H$ is the number of hyperparameters.
+1. **Specify a regularization function**: Define a regularization function $$\Omega:\mathbb{R}^W\times\Lambda\rightarrow\mathbb{R}$$ that penalizes each of the ways your model can be complex (deeper trees, smaller leaves, etc) to varying degrees. The degrees of penalization are specified by hyperparameters $\mathbf{\lambda}$ that take values in a hyperparameter space $\Lambda\subseteq\mathbb{R}^H$ where $H$ is the number of hyperparameters.
    
-3. **Tune the hyperparameters**: Determine values for the hyperparameters that minimize (or seek to minimize) the validation loss on the validation data (or the average loss on the validation folds) when applied to the model parameters $\mathbf{w}_{\mathbf{\lambda}}$ that minimize the regularized loss on the training data (or the average regularized loss on the training folds) for $\lambda$. That is, set the tuned hyperparameters to be: 
+2. **Tune the hyperparameters**: Determine values for the hyperparameters that minimize (or seek to minimize) the validation loss on the validation data (or the average loss on the validation folds) when applied to the model parameters $\mathbf{w}_{\mathbf{\lambda}}$ that minimize the regularized loss on the training data (or the average regularized loss on the training folds) for $\lambda$. That is, set the tuned hyperparameters to be: 
 $$\mathbf{\lambda}^*:= \argmin_{\mathbf{\lambda} \in \Lambda} \left( \sum_{i=1}^k ValLoss\left( \argmin_{\mathbf{w}\in\mathbb{R}^W} \left(\Omega(\mathbf{w}, \mathbf{\lambda}) + \frac{1}{k}\sum_{j=1}^k Loss(\mathbf{w}, T_j) \right), V_i\right) \right)$$ (I'm omitting the multiplicative constant $1/k$ from the $ValLoss$ term.  Also, note that the validation loss isn't regularized. The purpose of regularization is to constrain the model parameters, not the hyperparameters.  The hyperparameters are constrained by the choice of $\Lambda$.) 
    
-4. **Train the final model**: Determine the model parameters $\mathbf{w}\in\mathbb{R}^W$ that minimize the regularized log-loss using the tuned hyperparameters $\mathbf{\lambda}^*$ on the full training data $T$.  That is, set the model parameters to be: 
+1. **Train the final model**: Determine the model parameters $\mathbf{w}\in\mathbb{R}^W$ that minimize the regularized log-loss using the tuned hyperparameters $\mathbf{\lambda}^*$ on the full training data $T$.  That is, set the model parameters to be: 
 $$\mathbf{w}^*:= \argmin_{\mathbf{w}\in\mathbb{R}^W} \left( \Omega(\mathbf{w}, \mathbf{\lambda}^*) + Loss(\mathbf{w}, T) \right)$$ 
    
-5. **Assess the final model**: Assess the final model's capabilities on unseen data by computing any desired performance metrics on the test data.
+1. **Assess the final model**: Assess the final model's capabilities on unseen data by computing any desired performance metrics on the test data.
 
 And we can still apply additional techniques to reduce or prevent overfitting, such as dropping neurons in neural networks or stopping training when the validation loss starts to increase.
 
