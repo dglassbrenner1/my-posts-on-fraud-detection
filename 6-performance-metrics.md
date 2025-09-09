@@ -5,7 +5,7 @@ title: 6. Performance metrics         # page title
 
 # 6. Performance metrics
 
-In Section 4 (What do the models look like?), we fit and tuned our models according to regularized log-loss. While this isn't unreasonable, it wouldn't make much sense to compare the performance of models using regularized log-loss.  For instance, the regularization for tree-based models involved the numbers of leaves, while that for logistic regression used the length of the weight vector.
+In Section 5 (What do the models look like?), we fit and tuned our models according to regularized log-loss. While this isn't unreasonable, it wouldn't make much sense to compare the performance of models using regularized log-loss.  For instance, the regularization for tree-based models involved the numbers of leaves, while that for logistic regression used the length of the weight vector.
 
 According to the Handbook, the ROC AUC is "currently the de-facto metric for assessing fraud detection accuracies". But the Handbook also points to recent research that this metric can be misleading for highly imbalanced data and that the area under the Precision-Recall curve is recommended over ROC AUC.  As you would expect, the choice of metric is tied to business objectives. So let's take a closer look at performance metrics commonly used to assess fraud detection models.
 
@@ -964,6 +964,10 @@ plot_card_precision_recall_ellipse_by_time_and_model(
 The CardPrecision@30 and CardRecall@30 metrics also favor the same group of five models over the two decision trees and k-nearest neighbors model.  Our hypothesized ten analysts would capture a higher share of fraud with fewer false positives using any of the five models (based on the test data), compared to the two decision trees and k-nearest neighbors models. They would collectively capture about 58% of fraud each hour, at the cost of investigating about 96% false positives.  
 
 Note that the 95%-confidence ellipsoids don't respect the fact that precision and recall need to be in [0,1]. This is because the ellipsoids are based on the covariance matrix, just like the 95%-confidence interval from a small poll of the share of people supporting an extremely unpopular ballot initiative measure could stray into negative territory. (We simply ignore the portions of the ellipse outside of the unit square). 
+
+# Up next
+
+We'll look at computing the cost of fraud as a function of our model performance, so we can get to some of our motivating business objectives.
 
 [^1]: Calì, C., & Longobardi, M. (2015). Some mathematical properties of the ROC curve and their applications. Archivio della ricerca - Università degli Studi di Napoli “Federico II”. https://core.ac.uk/download/pdf/55142552.pdf
 
