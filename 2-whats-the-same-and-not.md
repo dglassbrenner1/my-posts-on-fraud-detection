@@ -16,7 +16,7 @@ We use the following notation for the our labeled input data $\mathcal{D}$:
 $$\mathcal{D}:=\{(x_{11},\ldots, x_{1m}, y_1),\ldots, (x_{n1},\ldots,x_{nm}, y_n)\}\subseteq \mathcal{X} \times \{ 0,1 \}$$ 
 
 where eachof the $n$ vectors in $\mathcal{D}$ represents a transaction, $\mathcal{X}\subseteq \mathbb{R}^m$ denotes the feature space, and the target class $y=1$ denotes fraudulent transactions.  We'll assume that any feature engineering has already taken place. (So the $m$ features include all engineered features.)  We also assume that any categorical features have already been numerically encoded in some fashion. We will use boldface type to indicate vectors, e.g., $\mathbf{y}:=(y_1,\ldots, y_n)$.  For the doubly-indexed 
-$x_{ij}$, we let $\mathbf{x}_i := (x_{i1},\ldots,x_{im})$, the features for the $i$th transaction, for 
+$x_{ij}$, we let $$\mathbf{x}_i := (x_{i1},\ldots,x_{im})$$, the features for the $i$th transaction, for 
 $1\leq i\leq n$.
 
 ### Models
@@ -40,10 +40,10 @@ We still try to accomplish the goal (finding the $\mathbf{w}$ for which $f_{\mat
 1. **Set up your training/validation framework**: Choose indices for either training data 
 $$T_1\subseteq \{1, \ldots,n \}$$ and validation data 
 $$V_1\subseteq\{1, \ldots,n\}$$, or a $k$-fold cross-validation setup 
-$(T_1, V_1), \ldots, (T_k, V_k)$ for $k\geq 1$. (I'm identifying members 
+$(T_1, V_1), \ldots, (T_k, V_k)$ for $$k\geq 1$$. (I'm identifying members 
 $$(\mathbf{x}_i, y_i)$$ of 
 $\mathcal{D}$ with their indices 
-$$i\in \{ 1, \ldots, n \}$$
+$$i\in \{1, \ldots, n \}$$
 .) Set $k:=1$ in the former case and 
 $$T:=\cup_{i=1}^k T_i$$ in either case (so $T$ corresponds to the full training dataset).  Also select a test dataset for final model assessment.
    
