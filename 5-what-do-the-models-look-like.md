@@ -378,8 +378,8 @@ plot_permutation_importance_heatmap(feature_importance_df, filename="permutation
 
 For example, the top two features for XGBoost were the average amount spent on the card in the past 30 days and the amount of the transaction.  (I shortened the feature names, so these are Cust_Avg_Amt_30Day and TX_AMOUNT.) So, we'll plot XGBoost's probability of fraud against these two features, hold the other features at their means. 
 
+<img src="./images/permutation_importance_heatmap.png" alt="Permutation importance heatmap" width="50%"/>
 
-![Permutation importance heatmap](./images/permutation_importance_heatmap.png)
 
 ## 5.3 What the models look like
 
@@ -698,3 +698,15 @@ It's hard for me to imagine a general pattern for what neural network models loo
 # Up next
 
 So, we have fit a bunch of models. Next, we'll look at how to evaluate them.
+
+
+<table width="100%">
+  <tr>
+    <td align="left">
+      <a href="4-the-data-we-use.html">← Previous: 4. The data we use</a>
+    </td>
+    <td align="right">
+      <a href="6-performance-metrics.html">Next: 6. Performance metrics →</a>
+    </td>
+  </tr>
+</table>
