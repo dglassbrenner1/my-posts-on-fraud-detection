@@ -1,6 +1,8 @@
 ---
 layout: default     # use your main layout
 title: 1. Commonly used supervised learning models         # page title
+has_toc: true
+nav_enabled: true
 ---
 
 # 1. Commonly used supervised learning models

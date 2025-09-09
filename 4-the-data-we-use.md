@@ -1,6 +1,8 @@
 ---
 layout: default     # use your main layout
 title: 4. The dataset we’ll use (primarily)         # page title
+has_toc: true
+nav_enabled: true
 ---
 
 # 4. The dataset we’ll use (primarily) 

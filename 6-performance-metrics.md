@@ -1,6 +1,9 @@
 ---
 layout: default     # use your main layout
 title: 6. Performance metrics         # page title
+has_toc: true
+nav_enabled: true
+use_math: true
 ---
 
 # 6. Performance metrics

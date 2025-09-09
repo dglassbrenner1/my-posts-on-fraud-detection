@@ -1,6 +1,9 @@
 ---
 layout: default     # use your main layout
 title: 7. Incorporating the cost of fraud         # page title
+has_toc: true
+nav_enabled: true
+use_math: true
 ---
 
 # 7. Incorporating the cost of fraud

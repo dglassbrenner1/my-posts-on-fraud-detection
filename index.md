@@ -1,6 +1,8 @@
 ---
 layout: default     # use your main layout
 title: My understanding of supervised learning for fraud detection         # page title
+has_toc: true
+nav_enabled: true
 ---
 
 # My understanding of supervised learning for fraud detection 
