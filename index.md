@@ -21,7 +21,7 @@ I want to get enough into the mathematical weeds to be able to modify methods to
 
 ## Primary data source
 
-I’ll be working with the synthetic dataset from the online book _Reproducible Machine Learning for Credit Card Fraud Detection – Practical Handbook_. [^1] The synthetic dataset the authors create is designed to mirror real-world transaction streams and already includes several engineered features. Crucially, it simulates two common fraud scenarios — compromised point-of-sale devices and compromised cards — so I can see how models react to different attack patterns. I'll refer to this online book, which also informs a lot of the information presented in these posts, as the "Handbook".
+I’ll be working with the synthetic dataset from the online book _Reproducible Machine Learning for Credit Card Fraud Detection – Practical Handbook_. [^1] The synthetic dataset the authors create is designed to mirror real-world transaction streams and already includes several engineered features. Crucially, it simulates two common fraud scenarios — compromised point-of-sale devices and compromised cards — so I can see how models react to different attack patterns. I'll refer to this online book, which also informs a lot of the technical material in these posts, as the "Handbook".
 
 ## Business objectives
 

@@ -7,7 +7,7 @@ title: 3. Model formulas         # page title
 
 ### My goal for this section
 
-My goal for this section seems simple enough. For each of the models we've identified as useful for fraud detection, I want to do two seemingly simple things:  1) give the formula for the model's predicted fraud rates as a function of the feature vector and any model parameters, and 2) write down the function that is optimized in fitting the model parameters, given a set of tuned hyperparameters.  
+My goal for this section seems simple enough. For each of the models we've identified as useful for fraud detection, I want to do two seemingly simple things:  1) give the formula for the model's predicted fraud rates as a function of the feature vector and any model parameters, and 2) write down the function that is optimized in fitting the model parameters, given a set of tuned hyperparameters. In particular, I want to write out the optimization function in terms of the model parameters $\mathbf{w}$ and hyperparameters $\mathbf{\lambda}$, rather than just hiding them in the $f_{\mathbf{w}}$
 
 For instance, if we were talking (in a non-fraud scenario) about ordinary least squares linear regression on a single feature with an L2 regularization penalty, this is straightforward. Let's say we use mean-square error for the loss and validation loss here, and we have decided on a search space $\Lambda$ of positive numbers in which to search for the L2 hyperparameter. Then, remembering our training and validation folds $(T_1, V_1),\ldots, (T_k, V_k)$, and our full training set $T$, we have: 
 

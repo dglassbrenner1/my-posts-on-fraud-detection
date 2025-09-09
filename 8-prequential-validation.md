@@ -8,7 +8,7 @@ title: 8. Prequential validation         # page title
 Now back to modeling and one of the other ways that modeling fraud is different from other machine learning applications.
 
 Because transactions come in a stream of data and since fraud patterns vary over time, fraud models are often 
-validated using a variant to cross-validation that reflects these. In *prequential validation*, the training and validation 
+validated using a variant of cross-validation that reflects these patterns. In *prequential validation*, the training and validation 
 folds shift over time, as illustrated in this image from the 
 prequential validation from the Handbook:
 
