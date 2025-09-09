@@ -14,7 +14,9 @@ We use the following notation for the our labeled input data $\mathcal{D}$:
 
 $$\mathcal{D}:=\{(x_{11},\ldots, x_{1m}, y_1),\ldots, (x_{n1},\ldots,x_{nm}, y_n)\}\subseteq \mathcal{X} \times \{ 0,1 \}$$ 
 
-where eachof the $n$ vectors in $\mathcal{D}$ represents a transaction, $\mathcal{X}\subseteq \mathbb{R}^m$ denotes the feature space, and the target class $y=1$ denotes fraudulent transactions.  We'll assume that any feature engineering has already taken place. (So the $m$ features include all engineered features.)  We also assume that any categorical features have already been numerically encoded in some fashion. We will use boldface type to indicate vectors, e.g., $\mathbf{y}:=(y_1,\ldots, y_n)$.  For the doubly-indexed $x_{ij}$, we let $\mathbf{x}_i := (x_{i1},\ldots,x_{im})$, the features for the $i$th transaction, for $1\leq i\leq n$.
+where eachof the $n$ vectors in $\mathcal{D}$ represents a transaction, $\mathcal{X}\subseteq \mathbb{R}^m$ denotes the feature space, and the target class $y=1$ denotes fraudulent transactions.  We'll assume that any feature engineering has already taken place. (So the $m$ features include all engineered features.)  We also assume that any categorical features have already been numerically encoded in some fashion. We will use boldface type to indicate vectors, e.g., $\mathbf{y}:=(y_1,\ldots, y_n)$.  For the doubly-indexed 
+$x_{ij}$, we let $\mathbf{x}_i := (x_{i1},\ldots,x_{im})$, the features for the $i$th transaction, for 
+$1\leq i\leq n$.
 
 ### Models
 
@@ -34,20 +36,27 @@ We're still trying to fit a model $f_{\mathbf{w}}$ that performs well not just o
 ### How we try to accomplish the goal
 We still try to accomplish the goal (finding the $\mathbf{w}$ for which $f_{\mathbf{w}}$ best predicts future fraud) through a process like the following.  
 
-1. **Set up your training/validation framework**: Choose indices for either training data $T_1\subseteq \{1,\ldots,n \}$ and validation data 
-$V_1\subseteq\{1,\ldots,n\}$, or a $k$-fold cross-validation setup $(T_1, V_1),\ldots, (T_k, V_k)$ for $k\geq 1$. (I'm identifying members 
-$(\mathbf{x}_i, y_i)$ of $\mathcal{D}$ with their indices $i\in\{1,\ldots, n\}$
+1. **Set up your training/validation framework**: Choose indices for either training data 
+$T_1\subseteq \{1,\ldots,n \}$ and validation data 
+$V_1\subseteq\{1,\ldots,n\}$, or a $k$-fold cross-validation setup 
+$(T_1, V_1),\ldots, (T_k, V_k)$ for $k\geq 1$. (I'm identifying members 
+$(\mathbf{x}_i, y_i)$ of 
+$\mathcal{D}$ with their indices 
+$i\in\{ 1,\ldots, n \}$
 .) Set $k:=1$ in the former case and $T:=\cup_{i=1}^k T_i$ in either case (so $T$ corresponds to the full training dataset).  Also select a test dataset for final model assessment.
    
-2. **Specify a loss function (or two)**: Specify two loss function $$Loss:\mathbb{R}^W\times\mathcal{P}(\{1,\ldots, n\})\rightarrow\mathbb{R}$$ and $$ValLoss:\mathbb{R}^W\times\mathcal{P}(\{1,\ldots, n\})\rightarrow\mathbb{R}$$ each of which assesses, for a given set of model parameters $\mathbf{w}\in\mathbb{R}^W$ and $S\subseteq \{1,\ldots, n \}$, how close the predicted values $$\{ f_{\mathbf{w}} (\mathbf{x}_i): i\in S \}$$ are to the actual values $\{y_i: i\in S\}$.  $Loss$ will be the training loss function and $ValLoss$ will be the validation loss. (They can be the same function, if desired.) 
+1. **Specify a loss function (or two)**: Specify two loss function $$Loss:\mathbb{R}^W\times\mathcal{P}(\{1,\ldots, n\})\rightarrow\mathbb{R}$$ and $$ValLoss:\mathbb{R}^W\times\mathcal{P}(\{1,\ldots, n\})\rightarrow\mathbb{R}$$ each of which assesses, for a given set of model parameters $\mathbf{w}\in\mathbb{R}^W$ and $S\subseteq \{1,\ldots, n \}$, how close the predicted values $$\{ f_{\mathbf{w}} (\mathbf{x}_i): i\in S \}$$ are to the actual values 
+$\{ y_i: i\in S \}$.  $Loss$ will be the training loss function and $ValLoss$ will be the validation loss. (They can be the same function, if desired.) 
    
-3. **Specify a regularization function**: Define a regularization function $$\Omega:\mathbb{R}^W\times\Lambda\rightarrow\mathbb{R}$$ that penalizes each of the ways your model can be complex (deeper trees, smaller leaves, etc) to varying degrees. The degrees of penalization are specified by hyperparameters $\mathbf{\lambda}$ that take values in a hyperparameter space $\Lambda\subseteq\mathbb{R}^H$ where $H$ is the number of hyperparameters.
+2. **Specify a regularization function**: Define a regularization function $$\Omega:\mathbb{R}^W\times\Lambda\rightarrow\mathbb{R}$$ that penalizes each of the ways your model can be complex (deeper trees, smaller leaves, etc) to varying degrees. The degrees of penalization are specified by hyperparameters $\mathbf{\lambda}$ that take values in a hyperparameter space $\Lambda\subseteq\mathbb{R}^H$ where $H$ is the number of hyperparameters.
    
-4. **Tune the hyperparameters**: Determine values for the hyperparameters that minimize (or seek to minimize) the validation loss on the validation data (or the average loss on the validation folds) when applied to the model parameters $\mathbf{w}_{\mathbf{\lambda}}$ that minimize the regularized loss on the training data (or the average regularized loss on the training folds) for $\lambda$. That is, set the tuned hyperparameters to be: $$\mathbf{\lambda}^*:= \argmin_{\mathbf{\lambda} \in \Lambda} \left( \sum_{i=1}^k ValLoss\left( \argmin_{\mathbf{w}\in\mathbb{R}^W} \left(\Omega(\mathbf{w}, \mathbf{\lambda}) + \frac{1}{k}\sum_{j=1}^k Loss(\mathbf{w}, T_j) \right), V_i\right) \right)$$ (I'm omitting the multiplicative constant $1/k$ from the $ValLoss$ term.  Also, note that the validation loss isn't regularized. The purpose of regularization is to constrain the model parameters, not the hyperparameters.  The hyperparameters are constrained by the choice of $\Lambda$.) 
+3. **Tune the hyperparameters**: Determine values for the hyperparameters that minimize (or seek to minimize) the validation loss on the validation data (or the average loss on the validation folds) when applied to the model parameters $\mathbf{w}_{\mathbf{\lambda}}$ that minimize the regularized loss on the training data (or the average regularized loss on the training folds) for $\lambda$. That is, set the tuned hyperparameters to be: 
+$$\mathbf{\lambda}^*:= \argmin_{\mathbf{\lambda} \in \Lambda} \left( \sum_{i=1}^k ValLoss\left( \argmin_{\mathbf{w}\in\mathbb{R}^W} \left(\Omega(\mathbf{w}, \mathbf{\lambda}) + \frac{1}{k}\sum_{j=1}^k Loss(\mathbf{w}, T_j) \right), V_i\right) \right)$$ (I'm omitting the multiplicative constant $1/k$ from the $ValLoss$ term.  Also, note that the validation loss isn't regularized. The purpose of regularization is to constrain the model parameters, not the hyperparameters.  The hyperparameters are constrained by the choice of $\Lambda$.) 
    
-5. **Train the final model**: Determine the model parameters $\mathbf{w}\in\mathbb{R}^W$ that minimize the regularized log-loss using the tuned hyperparameters $\mathbf{\lambda}^*$ on the full training data $T$.  That is, set the model parameters to be: $$\mathbf{w}^*:= \argmin_{\mathbf{w}\in\mathbb{R}^W} \left( \Omega(\mathbf{w}, \mathbf{\lambda}^*) + Loss(\mathbf{w}, T) \right)$$ 
+4. **Train the final model**: Determine the model parameters $\mathbf{w}\in\mathbb{R}^W$ that minimize the regularized log-loss using the tuned hyperparameters $\mathbf{\lambda}^*$ on the full training data $T$.  That is, set the model parameters to be: 
+$$\mathbf{w}^*:= \argmin_{\mathbf{w}\in\mathbb{R}^W} \left( \Omega(\mathbf{w}, \mathbf{\lambda}^*) + Loss(\mathbf{w}, T) \right)$$ 
    
-6. **Assess the final model**: Assess the final model's capabilities on unseen data by computing any desired performance metrics on the test data.
+5. **Assess the final model**: Assess the final model's capabilities on unseen data by computing any desired performance metrics on the test data.
 
 And we can still apply additional techniques to reduce or prevent overfitting, such as dropping neurons in neural networks or stopping training when the validation loss starts to increase.
 
