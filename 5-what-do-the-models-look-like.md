@@ -387,7 +387,8 @@ For example, the top two features for XGBoost were the average amount spent on t
 
 ## 5.3 What the models look like
 
-We're now ready to plot. For each model, I made a 3D plot of $P(Y=1 \mid \mathbf{x})$  and the corresponding 2D contour plot, each plotted against the two features with the highest permutation importance. Let's compare them to our understanding from the equations for $P(Y=1 \mid \mathbf{x})$. (So here, only the two most "important" features in $\mathbf{x}$ are varying.) 
+We're now ready to plot. For each model, I made a 3D plot of $P(Y=1 \mid \mathbf{x})$  and the corresponding 2D contour plot, each plotted against the two features with the highest permutation importance. Let's compare them to our understanding from the equations for 
+$$P(Y=1 \mid \mathbf{x})$$. (So here, only the two most "important" features in $\mathbf{x}$ are varying.) 
 
 <details>
 <summary>Click to expand/hide Python code for plotting the models</summary>
@@ -682,7 +683,7 @@ With a linear kernel, $\sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b
 
 ## 5.3.6 K-nearest neighbors
 
-$\textbf{Model form}$: Given 
+$$\textbf{Model form}$$: Given 
 $$k\geq 1$$, estimate 
 $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ where 
 $$N_k(\mathbf{x})$$ is the set of indices of the $$k$$ samples in $$\mathcal{D}$$ with the $k$ smallest values of 
