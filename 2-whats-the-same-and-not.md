@@ -2,6 +2,7 @@
 layout: default     # use your main layout
 title: 2. What's the same and what's different         # page title
 use_math: true
+nav_order: 3
 has_toc: true
 nav_enabled: true
 ---

@@ -2,6 +2,7 @@
 layout: default     # use your main layout
 title: 5. What do the models look like?         # page title
 has_toc: true
+nav_order: 6
 nav_enabled: true
 use_math: true
 ---

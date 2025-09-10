@@ -2,6 +2,7 @@
 layout: default     # use your main layout
 title: 3. Model formulas         # page title
 use_math: true
+nav_order: 4
 has_toc: true
 nav_enabled: true
 ---
