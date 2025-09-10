@@ -1,5 +1,5 @@
 ---
-layout: default     # use your main layout
+layout: custom     # use your main layout
 title: 1. Commonly used supervised learning models         # page title
 nav_order: 2
 has_toc: true

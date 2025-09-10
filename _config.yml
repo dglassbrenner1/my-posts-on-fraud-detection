@@ -1,13 +1,22 @@
 title: My posts on fraud detection
 description: A work in progress collection of my posts on fraud detection
-markdown: kramdown
-remote_theme: pmarsceill/just-the-docs
 
-nav_enabled: true
+remote_theme: pmarsceill/just-the-docs
+markdown: kramdown
+
+# enable site-wide nav and per-page TOC
+nav: true
 has_toc: true
 
+# use GitHub-Flavored Markdown (optional but recommended)
 kramdown:
   input: GFM
   math_engine: mathjax
-  math_engine_opts:
-    preview: "math rendering…"
+
+# automatically apply your custom layout to all Markdown pages
+defaults:
+  - scope:
+      path: ""          # all files
+      type: "pages"     # or omit type if you want posts too
+    values:
+      layout: custom

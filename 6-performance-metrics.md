@@ -1,5 +1,5 @@
 ---
-layout: default     # use your main layout
+layout: custom     # use your main layout
 title: 6. Performance metrics         # page title
 nav_order: 7
 has_toc: true

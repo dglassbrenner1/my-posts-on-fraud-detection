@@ -1,5 +1,5 @@
 ---
-layout: default     # use your main layout
+layout: custom     # use your main layout
 title: 2. What's the same and what's different         # page title
 use_math: true
 nav_order: 3

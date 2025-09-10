@@ -1,5 +1,5 @@
 ---
-layout: default     # use your main layout
+layout: custom     # use your main layout
 title: 3. Model formulas         # page title
 use_math: true
 nav_order: 4

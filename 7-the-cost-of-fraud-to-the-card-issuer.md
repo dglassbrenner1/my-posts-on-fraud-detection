@@ -1,5 +1,5 @@
 ---
-layout: default     # use your main layout
+layout: custom     # use your main layout
 title: 7. Incorporating the cost of fraud         # page title
 nav_order: 8
 has_toc: true

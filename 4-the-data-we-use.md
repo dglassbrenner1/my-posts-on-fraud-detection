@@ -1,5 +1,5 @@
 ---
-layout: default     # use your main layout
+layout: custom     # use your main layout
 title: 4. The dataset we’ll use (primarily)         # page title
 nav_order: 5
 has_toc: true
