@@ -382,7 +382,7 @@ plot_permutation_importance_heatmap(feature_importance_df, filename="permutation
 
 For example, the top two features for XGBoost were the average amount spent on the card in the past 30 days and the amount of the transaction.  (I shortened the feature names, so these are Cust_Avg_Amt_30Day and TX_AMOUNT.) So, we'll plot XGBoost's probability of fraud against these two features, hold the other features at their means. 
 
-<img src="./images/permutation_importance_heatmap.png" alt="Permutation importance heatmap" width="75%"/>
+<img src="./images/permutation_importance_heatmap.png" alt="Permutation importance heatmap" width="99%"/>
 
 
 ## 5.3 What the models look like
@@ -682,8 +682,11 @@ With a linear kernel, $\sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b
 
 ## 5.3.6 K-nearest neighbors
 
-$\textbf{Model form}$: Given $$k\geq 1$$, estimate 
-$$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ where $$N_k(\mathbf{x})$$ is the set of indices of the $$k$$ samples in $$\mathcal{D}$$ with the $k$ smallest values of $$||\mathbf{X}_i - \mathbf{x}||$$. 
+$\textbf{Model form}$: Given 
+$$k\geq 1$$, estimate 
+$$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ where 
+$$N_k(\mathbf{x})$$ is the set of indices of the $$k$$ samples in $$\mathcal{D}$$ with the $k$ smallest values of 
+$$||\mathbf{X}_i - \mathbf{x}||$$. 
 
 We expect this to look like a smoothed version of the raw fraud surface, kind of akin to taking moving averages in a time series.
 
