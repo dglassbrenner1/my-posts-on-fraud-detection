@@ -682,7 +682,8 @@ With a linear kernel, $\sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b
 
 ## 5.3.6 K-nearest neighbors
 
-$\textbf{Model form}$: Given $k\geq 1$, estimate  $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ where $N_k(\mathbf{x})$ is the set of indices of the $k$ samples in $\mathcal{D}$ with the $k$ smallest values of $||\mathbf{X}_i - \mathbf{x}||$. 
+$\textbf{Model form}$: Given $$k\geq 1$$, estimate 
+$$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \frac{\sum_{i\in N_k(\mathbf{x})} s_i y_i}{\sum_{i\in N_k(\mathbf{x})} s_i}$$ where $$N_k(\mathbf{x})$$ is the set of indices of the $$k$$ samples in $$\mathcal{D}$$ with the $k$ smallest values of $$||\mathbf{X}_i - \mathbf{x}||$$. 
 
 We expect this to look like a smoothed version of the raw fraud surface, kind of akin to taking moving averages in a time series.
 
