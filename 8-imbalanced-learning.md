@@ -134,6 +134,7 @@ for row in rows:
 ``` </pre>
 </details>
 
+<br>
 
 | Class / Cost Ratio | Log-Loss at P(fraud)=10% | Log-Loss at P(fraud)=90% |
 |---|---|---|
@@ -144,7 +145,7 @@ for row in rows:
 | Fraud (cost ratio=20) | 46.0517 | 2.1072 |
 | Legit (weight=1) | 0.1054 | 2.3026 |
 
-
+<br>
 
 <img src="./images/cost-wgted-log-loss-curves-vs-pred-prob.png" alt="cost weighted log loss curves vs predicted probability" />
 

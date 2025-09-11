@@ -6,7 +6,7 @@ has_toc: true
 nav_enabled: true
 ---
 
-# My understanding of supervised learning for fraud detection 
+# Supervised learning for fraud detection 
 
 ## The goal of this series of posts
 
