@@ -303,7 +303,7 @@ But right now our models are pretty simple. We haven't looked at better incorpor
       <a href="6-performance-metrics.html">← Previous: 6. Performance metrics</a>
     </td>
     <td align="right">
-      <a href=""> Next: 8. Post to come! →</a>
+      <a href="8-imbalanced-learning.html"> Next: 8. Imbalanced learning →</a>
     </td>
   </tr>
 </table>
