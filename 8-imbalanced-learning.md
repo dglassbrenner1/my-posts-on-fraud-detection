@@ -156,7 +156,15 @@ When these costs can't be reasonably reliably estimated, the Handbook notes that
 
 This heuristic doesn't sound unreasonable, but I don't want to mix up imbalanced learning and cost-sensitive learning. That is, one way to handle class imbalance is to upweight the minority class, regardless of whether you also incorporate the differential costs of misclassification. But you can also incorporate both concepts at once, learning in a manner that addresses both class imbalance and cost imbalance.  So let's explore this. 
 
+## 8.2 Imbalanced learning
 
+The Handbook explains various imbalance techniques, including: 
+- oversampling: enlarging the training data with random duplicates of fraudulent transactions
+- undersampling: shrinking the training data by randomly removing legitimate transactions 
+- imbalance ratio: assigning sample weights of 1 to legitimate transactions and $1/IR$ to fraudulent transactions
+- SMOTE: enlarging the training data with synthetically-generated fraud cases. The synthetic cases are made by selecting a fraudulent transaction and interpolating between it and one of its k nearest neighbor fraudulent transactions.
+
+As an experiment, I appled each of these to XGBoost, together with a cost of 1,500 dollars per false negative and 75 dollars per false positive. 
 
 
 <details>
@@ -166,6 +174,12 @@ This heuristic doesn't sound unreasonable, but I don't want to mix up imbalanced
 
 ``` </pre>
 </details>
+
+
+<br>
+
+<img src="./images/ROC-and-PR-curves-for-XGBoost-w-imb-from-test-data.png" alt="ROC and PR curves for XGBoost with imbalance techniques" />
+
 
 <table width="100%">
   <tr>
