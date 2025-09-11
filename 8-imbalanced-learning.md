@@ -1,5 +1,5 @@
 ---
-layout: default     # use your main layout
+layout: custom     # use your main layout
 title: 8. Cost-sensitive and imbalanced learning         # page title
 ---
 
