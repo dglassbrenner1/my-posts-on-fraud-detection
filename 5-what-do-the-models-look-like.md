@@ -382,7 +382,7 @@ plot_permutation_importance_heatmap(feature_importance_df, filename="permutation
 
 For example, the top two features for XGBoost were the average amount spent on the card in the past 30 days and the amount of the transaction.  (I shortened the feature names, so these are Cust_Avg_Amt_30Day and TX_AMOUNT.) So, we'll plot XGBoost's probability of fraud against these two features, hold the other features at their means. 
 
-<img src="./images/permutation_importance_heatmap.png" alt="Permutation importance heatmap" width="99%"/>
+<img src="./images/permutation_importance_heatmap.png" alt="Permutation importance heatmap" width="100%"/>
 
 
 ## 5.3 What the models look like
@@ -549,7 +549,7 @@ I used the a linear kernel because this had the highest cross-validation AUC on 
 
 from scipy.stats import uniform, randint
 
-# Extend your classifiers_dict for other SVM kernels
+# Extend the classifiers_dict for other SVM kernels
 classifiers_dict.update({
     'SVM (poly kernel)': SVC(kernel='poly', probability=True, random_state=0),
     'SVM (rbf kernel)': SVC(kernel='rbf', probability=True, random_state=0),
@@ -594,7 +594,9 @@ for name, clf in classifiers_dict.items():
             ('clf', clf)
         ])
 
-# Now use your existing prequential_randomized_tune_single_model function to tune:
+optimized_pipelines = {}
+
+# Tune the SVM with each kernel using the prequential_randomized_tune_single_model:
 for svm_kernel in ['SVM (poly kernel)', 'SVM (rbf kernel)', 'SVM (sigmoid kernel)']:
     print(f"\nTuning model: {svm_kernel}")
     best_params, best_score, all_results = prequential_randomized_tune_single_model(
@@ -664,19 +666,15 @@ print(f"\nBest kernel by Prequential CV AUC: {best_kernel} with score {best_scor
 
 ```text
 
-Kernel: linear, Mean CV AUC: 0.8854
-Kernel: poly, Mean CV AUC: 0.7892
-Kernel: rbf, Mean CV AUC: 0.7849
-Kernel: sigmoid, Mean CV AUC: 0.3789
+Kernel: linear, Mean Prequential CV AUC: 0.8953
+Kernel: poly, Mean Prequential CV AUC: 0.8538
+Kernel: rbf, Mean Prequential CV AUC: 0.8921
+Kernel: sigmoid, Mean Prequential CV AUC: 0.4558
 
-Best kernel by CV AUC: linear with score 0.8854
+Best kernel by Prequential CV AUC: linear with score 0.8953
 ```
 
 With a linear kernel, $\sum_{i=1}^n w_i (2y_i - 1) K(\mathbf{X}_i, \mathbf{x})+b$ is just a linear combination of the entries of $\mathbf{x}$.  So, the decision boundary is a hyperplane, and like logistic regression, the probability surface looks like a sigmoid surface.
-
-![SVM decision boundary against top two features](./images/SVM-decision-boundary-against-top-two-features.png)
-
-<br>
 
 <img src="./images/SVM_(linear kernel)_top2_features_surface.png" alt="SVM linear kernel plot" />
 
