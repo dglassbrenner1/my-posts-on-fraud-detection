@@ -1,6 +1,6 @@
 ---
 layout: custom     # use your main layout
-title: My understanding of supervised learning for fraud detection         # page title
+title: Supervised learning for fraud detection         # page title
 nav_order: 1
 has_toc: true
 nav_enabled: true
