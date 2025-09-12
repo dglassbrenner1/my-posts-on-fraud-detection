@@ -698,7 +698,7 @@ $$P(Y=1 \mid \mathbf{x}\in\mathcal{X}) = \sigma(W_L a_{L-1} + b_L)$$
 where $a_0:=\mathbf{x}$ and for each 
 $1\leq k\leq L-1$, $a_k:=ReLU(W_k a_{k-1} + b_k)$. So the model parameters are the $m\times m$ matrices $W_k$ and the vectors $b_k\in\mathbb{R}^m$.
 
-It's hard for me to imagine a general pattern for what neural network models look like.  In a way, I am surpised by how smooth (in the sense of not very bumpy) the result is. Of course, this could be an artifact of holding all non-displayed features constant. 
+It's hard for me to imagine a general pattern for what neural network models look like. In a way, I am surpised by how smooth (in the sense of not very bumpy) the result is. The ReLU didn't seem to cause any sharp cornering. Overall, the surface looks like a sigmoid surface but with sharper drops in some areas than others. (See the triangular wedge of green in the contour plot.) Of course, as with the other plots, we're not seeing the full complexity of the multi-dimensional surface, since we're holding all non-displayed features constant. 
 
 ![Neural network MLP plot against top two features](./images/Neural_network_(MLP)_top2_features_surface.png)
 
