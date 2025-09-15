@@ -969,6 +969,85 @@ The CardPrecision@30 and CardRecall@30 metrics also favor the same group of five
 
 Note that the 95%-confidence ellipsoids don't respect the fact that precision and recall need to be in [0,1]. This is because the ellipsoids are based on the covariance matrix, just like the 95%-confidence interval from a small poll of the share of people supporting an extremely unpopular ballot initiative measure could stray into negative territory. (We simply ignore the portions of the ellipse outside of the unit square). 
 
+# 6.6 Performance by Fraud Scenario
+
+Recall that there are only three types of fraud in the Handbook's data. Let's see how each model performed by fraud scenario by plotting side-by-side boxplots of the predicted probabilities for each model and scenario. 
+
+
+<details>
+<summary>Click to expand/hide Python code for side-by-side boxplots</summary>
+
+<pre> ```python
+import seaborn as sns
+
+def plot_prob_distributions_by_scenario(pipelines, test_df, scenario_col='TX_FRAUD_SCENARIO', input_features=None):
+    """
+    Plot side-by-side boxplots of predicted probabilities by fraud scenario for each model.
+
+    Args:
+    - pipelines: dict of {model_name: fitted sklearn pipeline}
+    - test_df: DataFrame with test data (contains scenario_col and input features)
+    - scenario_col: str, column name with fraud scenario categories
+    - input_features: list of feature column names used by models
+
+    Returns:
+    None (plots the figure)
+    """
+
+    # Define mapping from code to label
+    scenario_labels = {
+        0: "no fraud",
+        1: "tx over $220",
+        2: "compromised POS terminal",
+        3: "compromised card"
+    }
+
+    # Map scenario codes to categories with desired order
+    test_df[scenario_col] = pd.Categorical(test_df[scenario_col].map(scenario_labels), 
+                                           categories=[scenario_labels[i] for i in sorted(scenario_labels)], 
+                                           ordered=True)
+    
+    # Prepare a long-format DataFrame for seaborn plotting
+    plot_data = []
+
+    for name, pipeline in pipelines.items():
+        if hasattr(pipeline, "predict_proba"):
+            probs = pipeline.predict_proba(test_df[input_features])[:, 1]
+        else:
+            probs = pipeline.predict(test_df[input_features])
+        
+        df_temp = pd.DataFrame({
+            scenario_col: test_df[scenario_col],
+            'predicted_prob': probs,
+            'model': name
+        })
+        plot_data.append(df_temp)
+
+    plot_df = pd.concat(plot_data, ignore_index=True)
+    
+    # Concatenate all models' data
+    plot_df = pd.concat(plot_data)
+    
+    plt.figure(figsize=(12, 6))
+    sns.boxplot(data=plot_df, x=scenario_col, y='predicted_prob', hue='model', palette='Set2',
+                order=[scenario_labels[i] for i in sorted(scenario_labels)])
+    plt.title('Predicted Probability Distributions by Fraud Scenario and Model')
+    plt.xlabel('Fraud Scenario')
+    plt.ylabel('Predicted Probability')
+    plt.legend(title='Model', bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.savefig(f"Model-performance-by-fraud-scenario.png", bbox_inches='tight')
+    plt.tight_layout()
+    plt.show()
+
+plot_prob_distributions_by_scenario(pipelines, test_df, scenario_col='TX_FRAUD_SCENARIO', input_features=input_features)
+
+``` </pre>
+</details>
+
+![Model-performance-by-fraud-scenario](./images/Model-performance-by-fraud-scenario.png)
+
+This doesn't look so good, even for the "obvious" fraud signal.  Only the decision trees and the random forest  truly picked up on the fact that every transaction over 220 dollars was fraudulent. No models detected the compromised terminals or compromised cards well. We'll see if we can do better as we introduce more fraud techniques. 
+
 # Up next
 
 We'll look at computing the cost of fraud as a function of our model performance, so we can get to some of our motivating business objectives.

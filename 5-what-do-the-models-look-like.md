@@ -245,8 +245,8 @@ def prequential_randomized_tune_single_model(df, pipeline, param_distributions,
 
     return best_params, best_logloss, all_results
 
-X_full_train = transactions_df[input_features]
-y_full_train = transactions_df[output_feature]
+X_full_train = train_df[input_features]
+y_full_train = train_df[output_feature]
 
 """ 2. Main loop: Tune all hyperparameters and fit all models """
 
