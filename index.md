@@ -22,6 +22,8 @@ Having read a lot of material explaining machine learning in less-than-mathemati
 
 I want to get enough into the mathematical weeds to be able to modify methods to incorporate particular business circumstances.  And I’d like to have some sense of what plots of the models look like (yeah, right), as this helps me confirm my mathematical understanding.  
 
+At the end, I'll also illustrate two deployments of fraud models. In the first, I deploy an XGBoost model integrated into an interactive Databricks dashboard to monitor suspicious transactions and model performance. In the second, I build and host a Streamlit-based fraud detection API on Hugging Face Spaces to enable interactive model demos and testing.
+
 ## Primary data source
 
 I’ll be working with the synthetic dataset from the online book _Reproducible Machine Learning for Credit Card Fraud Detection – Practical Handbook_. [^1] The synthetic dataset the authors create is designed to mirror real-world transaction streams and already includes several engineered features. Crucially, it simulates two common fraud scenarios — compromised point-of-sale devices and compromised cards — so I can see how models react to different attack patterns. I'll refer to this online book, which also informs a lot of the technical material in these posts, as the "Handbook".
@@ -45,7 +47,7 @@ Some of these questions will surely be easier to answer than others.
 Here is a first post, on models commonly used for fraud detection and who uses them: [Commonly used supervised learning models](1-commonly-used-models.md).
 
 ## Caution 
-These posts reflect my own understanding of the techniques I write about. No one has reviewed or verified the accuracy of my statements besides me. As you can tell from the “lock in my understanding” phrase, I am a newbie to fraud detection. Despite a lack of credentials, I will occasionally put forth my own reactions to choices made in the Handbook, along with my reasoning, for what they are worth. That all said, I cite sources where relevant and welcome constructive comments.
+These posts reflect my own understanding of the techniques I write about. No one has reviewed or verified the accuracy of my statements besides me. That all said, I cite sources where relevant and welcome constructive comments.
 
 [^1]: Le Borgne, Y.-A., Siblini, W., Lebichot, B., & Bontempi, G. (2022). Reproducible Machine Learning for Credit Card Fraud Detection – Practical Handbook. Université Libre de Bruxelles. Retrieved from https://github.com/Fraud-Detection-Handbook/fraud-detection-handbook. The data are at: Fraud-Detection-Handbook/simulated-data-transformed as individual .pkl files.  I combined them into a Parquet file for easy loading. 
 
