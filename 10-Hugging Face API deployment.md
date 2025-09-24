@@ -134,14 +134,16 @@ The Hugging Space app is live at: [Hugging Face API](https://huggingface.co/spac
 It is a simple Streamlit app where a user can enter values for the features of a transaction and select "Predict Fraud" to see the probability that a transaction with the selected features is fraudulent.
 <br>
 
-
-<img src="./images/Hugging Face API_page_1.png" alt="Hugging Face API_page_1" />
-
-<br>
-
-
-<img src="./images/Hugging Face API_page_2.png" alt="Hugging Face API_page_2" />
-
+<table style="border-spacing: 0;">
+  <tr>
+    <td style="padding: 0;">
+      <img src="./images/Hugging Face API_page_1.png" alt="Hugging Face API_page_1" style="width:75%; height:auto;" />
+    </td>
+    <td style="padding: 0;">
+      <img src="./images/Hugging Face API_page_2.png" alt="Hugging Face API_page_2" style="width:75%; height:auto;" />
+    </td>
+  </tr>
+</table>
 
 
 <br>
