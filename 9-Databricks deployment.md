@@ -381,7 +381,8 @@ The final dashboard page simply tracks the numbers and amounts of transactions o
       <a href="/8-imbalanced-learning.html">← Previous: 8. Imbalanced learning</a>
     </td>
     <td align="right">
-      Next: Post to come! →</a>
+      <a href="/10-Hugging Face API deployment.html">
+      Next: 10. Hugging Face API deployment →</a>
     </td>
   </tr>
 </table>
