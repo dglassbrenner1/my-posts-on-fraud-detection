@@ -14,7 +14,9 @@ We also deployed the tuned XGBoost in Hugging Face and created a Streamlit API t
 
 ## 10.1 Generating the app 
 
-We used the following app.py along with suitable Dockerfile, etc.
+Since I had already trained and registered the XGBoost pipeline in Databricks, I just logged the trained pipeline to the MLFlow registry and loaded it in a Hugging Face Space backed by a Git repository via MLFlow. 
+
+Specifically,  We used the following app.py and Dockerfile.
 
 
 <details>
@@ -79,6 +81,54 @@ if st.button("Predict Fraud"):
 </details>
 
 <br>
+
+
+<details>
+<summary>Click to expand/hide Hugging Face Dockerfile instructions</summary>
+
+<pre> ```Dockerfile
+# Use official Python 3.9 base image
+FROM python:3.9
+
+# Add non-root user for permissions compliance in HF Spaces
+RUN useradd -m -u 1000 user
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements.txt separately for Docker cache efficiency
+COPY --chown=user ./requirements.txt requirements.txt
+
+# Install dependencies including streamlit and mlflow (add to your requirements.txt if missing)
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+# Copy all app code
+COPY --chown=user . /app
+
+# Fix permissions
+RUN mkdir -p /app/mlruns && chown -R user:user /app/mlruns
+
+# Use non-root user
+USER user
+
+# Set environment variables for user path and app caches
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH \
+    STREAMLIT_HOME=/tmp/.streamlit \
+    HF_HOME=/tmp/huggingface \
+    STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+
+# Expose Streamlit default port
+EXPOSE 7860
+
+# Run Streamlit app, binding to all interfaces and port 7860 (HF Spaces uses this port)
+CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0.0"]
+
+``` </pre>
+</details>
+
+<br>
+
 
 The Hugging Space app is live at: [text](https://huggingface.co/spaces/dglassbrenner/fraud_detection_api)
 
