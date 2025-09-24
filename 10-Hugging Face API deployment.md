@@ -82,7 +82,6 @@ if st.button("Predict Fraud"):
 
 <br>
 
-
 <details>
 <summary>Click to expand/hide Hugging Face Dockerfile instructions</summary>
 
@@ -130,7 +129,7 @@ CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0
 <br>
 
 
-The Hugging Space app is live at: [text](https://huggingface.co/spaces/dglassbrenner/fraud_detection_api)
+The Hugging Space app is live at: [Hugging Face API](https://huggingface.co/spaces/dglassbrenner/fraud_detection_api)
 
 It is a simple Streamlit app where a user can enter values for the features of a transaction and select "Predict Fraud" to see the probability that a transaction with the selected features is fraudulent.
 <br>
