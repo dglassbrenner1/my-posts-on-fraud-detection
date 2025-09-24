@@ -8,6 +8,7 @@ nav_enabled: true
 ---
 
 # Supervised learning for fraud detection 
+Donna Glassbrenner, Ph.D. 
 
 ## The goal of this series of posts
 
