@@ -603,7 +603,8 @@ plot_card_precision_recall_ellipse_by_time_and_model(
       <a href="/7-the-cost-of-fraud-to-the-card-issuer.html">← Previous: 7. The cost of fraud</a>
     </td>
     <td align="right">
-      Next: Post to come! →</a>
+    <a href="/9-Databricks deployment.html">
+      Next: 9. Databricks deployment →</a>
     </td>
   </tr>
 </table>
