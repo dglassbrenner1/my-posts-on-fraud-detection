@@ -50,7 +50,16 @@ The repo is structured as follows:
 
 
 # Getting Started
-To reproduce or extend the work:
+### To just read the posts
+
+You can browse the Markdown `.md` files directly on GitHub or via the published GitHub Pages site:
+
+- Visit the [GitHub repository](https://github.com/dglassbrenner1/my-posts-on-fraud-detection) to view the posts as rendered Markdown files in the browser.
+- Or visit the [GitHub Pages site](https://dglassbrenner1.github.io/my-posts-on-fraud-detection/) for a nicely formatted website experience.
+
+No cloning or environment setup is required if you only want to read and learn from the posts.
+
+### To reproduce or extend the work:
 
 1. Clone the repository:
 
