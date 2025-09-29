@@ -21,7 +21,33 @@ The focus of this series is to comprehensively explore:
 This research is grounded in a synthetic dataset designed to reflect real-world fraud scenarios, sourced from the *Reproducible Machine Learning for Credit Card Fraud Detection – Practical Handbook* by Le Borgne et al. This extremely helpful book is freely available online at: https://fraud-detection-handbook.github.io/fraud-detection-handbook/Foreword.html.
 
 # Repository Contents
-- **Posts**/: Markdown posts explaining models, metrics, and fraud detection concepts. All Jupyter notebooks, as well as screenshots of the Databricks dashboards and Streamlit app, are embedded in the posts.
+## The repo is structured as follows:
+
+- `_layouts/`  
+  Contains Jekyll layout templates to customize website rendering and post formatting.
+
+- `images/`  
+  Supporting images used in posts and documentation.
+
+- Markdown posts describing topics such as:  
+  - `1-commonly-used-models.md` — Overview of commonly used supervised models for fraud detection  
+  - `2-whats-the-same-and-not.md` — Clarifications on similarities and differences in model approaches  
+  - `3-model-formulas.md` — Mathematical formulas and model explanations  
+  - `4-the-data-we-use.md` — Description of synthetic datasets used  
+  - `5-what-do-the-models-look-like.md` — Visualizations and interpretability of models  
+  - `6-performance-metrics.md` — Evaluation metrics and performance measurements  
+  - `7-the-cost-of-fraud-to-the-card-issuer.md` — Economic impact considerations  
+  - `8-imbalanced-learning.md` — Handling extreme class imbalance  
+  - `9-Databricks deployment.md` — Example of deploying models on Databricks platform  
+  - `10-Hugging Face API deployment.md` — Example of deploying interactive model API on Hugging Face Spaces  
+
+- Site configuration files for Jekyll:  
+  - `_config.yml`  
+  - `index.md`  
+  - `README.md` — This file, providing an overview and usage guide.
+
+- `.gitattributes` and `LICENSE` files for repository configuration and licensing.
+
 
 # Getting Started
 To reproduce or extend the work:
