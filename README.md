@@ -21,7 +21,7 @@ The focus of this series is to comprehensively explore:
 This research is grounded in a synthetic dataset designed to reflect real-world fraud scenarios, sourced from the *Reproducible Machine Learning for Credit Card Fraud Detection – Practical Handbook* by Le Borgne et al. This extremely helpful book is freely available online at: https://fraud-detection-handbook.github.io/fraud-detection-handbook/Foreword.html.
 
 # Repository Contents
-## The repo is structured as follows:
+The repo is structured as follows:
 
 - `_layouts/`  
   Contains Jekyll layout templates to customize website rendering and post formatting.
