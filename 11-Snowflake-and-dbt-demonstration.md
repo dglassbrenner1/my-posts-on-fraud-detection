@@ -114,7 +114,7 @@ Visit the repository to review the project structure, clone for your own experim
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="/10-Hugging Face API deployment.html">← Previous: 10. Hugging Face API deployment</a>
+      <a href="/10-Hugging-Face-API-deployment.html">← Previous: 10. Hugging Face API deployment</a>
     </td>
     <td align="right">
       Next: Post to come! →</a>

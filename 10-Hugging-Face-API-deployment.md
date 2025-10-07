@@ -151,10 +151,10 @@ It is a simple Streamlit app where a user can enter values for the features of a
 <table width="100%">
   <tr>
     <td align="left">
-      <a href="/9-Databricks deployment.html">← Previous: 9. Databricks deployment</a>
+      <a href="/9-Databricks-deployment.html">← Previous: 9. Databricks deployment</a>
     </td>
     <td align="right">
-      <a href="/11-Snowflake and dbt demonstration.html">Next: Snowflake and dbt demonstration →</a>
+      <a href="/11-Snowflake-and-dbt-demonstration.html">Next: 11. Snowflake and dbt demonstration →</a>
     </td>
   </tr>
 </table>
