@@ -154,7 +154,7 @@ It is a simple Streamlit app where a user can enter values for the features of a
       <a href="/9-Databricks deployment.html">← Previous: 9. Databricks deployment</a>
     </td>
     <td align="right">
-      Next: Post to come! →</a>
+      <a href="/11-Snowflake and dbt demonstration.html">Next: Snowflake and dbt demonstration →</a>
     </td>
   </tr>
 </table>
