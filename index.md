@@ -12,7 +12,7 @@ Donna Glassbrenner, Ph.D.
 
 ## The goal of this series of posts
 
-I’m writing this series to lock in my own understanding of supervised learning techniques in fraud detection. I’m not writing this as a tutorial for others, but if you find this helpful to advance your own understanding, great. I’ll use the mathematical and statistical language that makes sense to me and skip explanations of those foundations.  I’ll assume familiarity with basic elements of machine learning, like model fitting, validation, and tuning hyperparameters and familiarity with Python, Jupyter, and scikit-learn.
+In this series of posts, I explore advanced machine learning techniques in fraud detection, focusing on business objectives, visualizations, model deployments, and the underlying math. I’ll use the mathematical and statistical language that makes sense to me and skip explanations of those foundations.  I’ll assume familiarity with basic elements of machine learning, like model fitting, validation, and tuning hyperparameters and familiarity with Python, Jupyter, and scikit-learn.
 
 Having read a lot of material explaining machine learning in less-than-mathematically-specific terms, I am most interested in:
 
