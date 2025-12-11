@@ -1,13 +1,13 @@
 ---
 layout: custom     # use your main layout
-title: Supervised learning for fraud detection         # page title
+title: Machine learning for fraud detection         # page title
 author: Donna Glassbrenner, Ph.D.
 nav_order: 1
 has_toc: true
 nav_enabled: true
 ---
 
-# Supervised learning for fraud detection 
+# Machine learning for fraud detection 
 Donna Glassbrenner, Ph.D. 
 
 ## The goal of this series of posts
